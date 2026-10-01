@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vault &mdash; Orbit Studio</title>
+<meta name="robots" content="noindex, nofollow">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='44' fill='none' stroke='%2322d3ee' stroke-width='6'/%3E%3Ccircle cx='50' cy='10' r='8' fill='%238b5cf6'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/vault.css">
+</head>
+<body class="vault-body">
+
+<!-- Gate. The walkthrough itself isn't in this file at all — it only exists
+     as ciphertext in js/vault-data.js until a correct password decrypts it. -->
+<div class="vault-gate" id="vault-gate">
+  <div class="vault-gate__panel">
+    <span class="vault-gate__mark" aria-hidden="true">
+      <svg viewBox="0 0 200 200">
+        <defs>
+          <linearGradient id="vaultGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#22d3ee"/>
+            <stop offset="100%" stop-color="#8b5cf6"/>
+          </linearGradient>
+        </defs>
+        <circle cx="100" cy="100" r="92" fill="none" stroke="url(#vaultGrad)" stroke-width="3" stroke-dasharray="2 14"/>
+        <circle cx="100" cy="100" r="60" fill="#05070d" stroke="url(#vaultGrad)" stroke-width="3"/>
+        <text x="100" y="118" text-anchor="middle" class="vault-gate__mark-letter">O</text>
+      </svg>
+    </span>
+    <h1>Vault</h1>
+    <p class="vault-gate__sub">Private client walkthrough.</p>
+    <form id="vault-form" autocomplete="off">
+      <label class="vault-gate__label" for="vault-password">Password</label>
+      <input type="password" id="vault-password" class="vault-gate__input" autocomplete="current-password" required>
+      <button type="submit" class="vault-btn vault-btn--primary vault-gate__submit" id="vault-submit">
+        <span class="vault-btn__label">Unlock</span>
+      </button>
+      <p class="vault-gate__error" id="vault-error" role="alert" aria-live="polite"></p>
+    </form>
+  </div>
+</div>
+
+<main class="vault-main" id="vault-main" hidden></main>
+
+<script src="js/vault-data.js"></script>
+<script src="js/vault.js"></script>
+</body>
+</html>

@@ -1,0 +1,1935 @@
+/* ==========================================================================
+   ORBIT — Design Tokens
+   ========================================================================== */
+:root {
+  --bg: #05070d;
+  --bg-alt: #080b14;
+  --surface: #10141f;
+  --surface-2: #161b29;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+
+  --text-primary: #eef1f8;
+  --text-secondary: #9aa3ba;
+  --text-muted: #6b7386;
+
+  --cyan: #22d3ee;
+  --violet: #8b5cf6;
+  --gradient: linear-gradient(135deg, var(--cyan), var(--violet));
+  --gradient-soft: linear-gradient(135deg, rgba(34, 211, 238, 0.15), rgba(139, 92, 246, 0.15));
+
+  --success: #34d399;
+
+  --font-head: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+
+  --space-3xs: clamp(0.25rem, 0.22rem + 0.15vw, 0.375rem);
+  --space-2xs: clamp(0.5rem, 0.45rem + 0.25vw, 0.75rem);
+  --space-xs: clamp(0.75rem, 0.68rem + 0.35vw, 1rem);
+  --space-sm: clamp(1rem, 0.9rem + 0.5vw, 1.5rem);
+  --space-md: clamp(1.5rem, 1.3rem + 1vw, 2.5rem);
+  --space-lg: clamp(2.5rem, 2rem + 2vw, 4rem);
+  --space-xl: clamp(4rem, 3rem + 4vw, 7rem);
+  --space-2xl: clamp(5rem, 3.5rem + 6vw, 9rem);
+
+  --container-w: 1200px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 999px;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 180ms;
+  --dur-base: 320ms;
+  --dur-slow: 600ms;
+  --warp-duration: 1700ms; /* intro "sucked into a black hole" exit — keep in sync with WARP_DURATION in main.js */
+
+  --z-cursor: 9999;
+  --z-intro: 9000;
+  --z-nav: 500;
+  --z-mobile-menu: 600;
+  --z-back-top: 400;
+}
+
+/* ==========================================================================
+   Reset
+   ========================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+/* overflow-x lives on html, not body — overflow-x:hidden on body silently
+   breaks position:sticky for descendants (it makes body its own scroll
+   container instead of the true viewport). html is the real root scroller
+   already, so this guards against horizontal scroll without that side effect. */
+html { -webkit-text-size-adjust: 100%; overflow-x: hidden; }
+/* Scroll easing is owned by Lenis (js/main.js); anchors land below the fixed nav. */
+section[id], main [id] { scroll-margin-top: 90px; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100dvh;
+}
+body.no-scroll { overflow: hidden; height: 100dvh; }
+h1, h2, h3, h4 { font-family: var(--font-head); margin: 0; line-height: 1.15; font-weight: 600; }
+p { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; padding: 0; }
+img, svg { display: block; max-width: 100%; }
+input, textarea, select { font: inherit; color: inherit; }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0; padding: 0; margin: -1px;
+}
+
+.skip-link {
+  position: fixed; top: -50px; left: 1rem; z-index: 10000;
+  background: var(--cyan); color: #05070d; padding: 0.6rem 1rem;
+  border-radius: var(--radius-sm); font-weight: 600; transition: top var(--dur-fast) var(--ease-out);
+}
+.skip-link:focus { top: 1rem; }
+
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container-w);
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+}
+
+.text-gradient {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.text-roll {
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--cyan) 0%, var(--violet) 50%, var(--cyan) 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: text-roll 3s linear infinite;
+}
+@keyframes text-roll {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ==========================================================================
+   Reveal-on-scroll (JS toggles .is-visible)
+   ========================================================================== */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+  transition-delay: calc(var(--reveal-delay, 0) * 90ms);
+}
+[data-reveal].is-visible { opacity: 1; transform: translateY(0); }
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.7rem;
+  min-height: 48px;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  transition: transform var(--dur-fast) var(--ease-spring), box-shadow var(--dur-base) var(--ease-out), background var(--dur-base), border-color var(--dur-base);
+}
+.btn .icon { width: 18px; height: 18px; transition: transform var(--dur-fast) var(--ease-out); }
+.btn:hover .icon { transform: translateX(3px); }
+
+.btn--primary {
+  background: var(--gradient);
+  color: #051019;
+  box-shadow: 0 8px 24px -8px rgba(34, 211, 238, 0.5);
+}
+.btn--primary:hover { box-shadow: 0 12px 32px -6px rgba(139, 92, 246, 0.6); transform: translateY(-2px); }
+.btn--primary:active { transform: translateY(0) scale(0.98); }
+
+.btn--ghost {
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+  backdrop-filter: blur(6px);
+}
+.btn--ghost:hover { border-color: var(--cyan); background: rgba(34, 211, 238, 0.07); transform: translateY(-2px); }
+
+.btn--sm { padding: 0.6rem 1.25rem; min-height: 40px; font-size: 0.875rem; }
+.btn--lg { padding: 1.1rem 2.2rem; min-height: 56px; font-size: 1.02rem; }
+
+/* magnetic hover handled via JS transform on wrapper; keep transition smooth */
+.magnetic { transition: transform 220ms var(--ease-out), box-shadow var(--dur-base), background var(--dur-base), border-color var(--dur-base); }
+
+/* ==========================================================================
+   Orbit Logo (shared SVG element, scaled per context)
+   ========================================================================== */
+.orbit-logo { display: inline-block; }
+.orbit-logo__svg { width: 100%; height: 100%; overflow: visible; }
+.orbit-logo__mark {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 58px;
+  fill: var(--text-primary);
+}
+.ring { transform-origin: 100px 100px; }
+.ring--outer { animation: spin-cw 22s linear infinite; }
+.ring--mid { animation: spin-ccw 16s linear infinite; }
+.ring--orbit-a { animation: spin-cw 9s linear infinite; }
+.ring--orbit-b { animation: spin-ccw 6.5s linear infinite; }
+.orbit-dot {
+  filter: drop-shadow(0 0 6px currentColor);
+  transition: fill 400ms ease-out, color 400ms ease-out;
+}
+
+@keyframes spin-cw { to { transform: rotate(360deg); } }
+@keyframes spin-ccw { to { transform: rotate(-360deg); } }
+
+/* Ring mini-game complete: the logo itself flips from cyan/violet to red. */
+#orbitGradIntro stop { transition: stop-color 400ms ease-out; }
+body.is-triumphant #orbitGradIntro stop:first-child { stop-color: #f43f5e; }
+body.is-triumphant #orbitGradIntro stop:last-child { stop-color: #fb7185; }
+/* Scoped to the intro logo specifically — .orbit-dot is shared with the
+   nav/footer logos, which must stay their normal color regardless of the
+   intro's game state (is-triumphant never gets removed from body). */
+body.is-triumphant .orbit-logo--intro .orbit-dot {
+  fill: #f43f5e;
+  color: #f43f5e; /* currentColor, for the drop-shadow glow above */
+}
+
+.orbit-logo--intro { width: clamp(140px, 30vw, 220px); height: clamp(140px, 30vw, 220px); }
+.orbit-logo--nav { width: 40px; height: 40px; }
+.orbit-logo--nav .ring--outer { animation-duration: 30s; }
+.orbit-logo--footer { width: 36px; height: 36px; }
+
+/* ==========================================================================
+   Intro Gate
+   ========================================================================== */
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-intro);
+  background: radial-gradient(ellipse at 50% 40%, #0b1120 0%, #05070d 65%, #030408 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.intro__canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.6; }
+
+/* Event horizon: a black core that grows from the logo and swallows the screen */
+.intro__horizon {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 32px; height: 32px;
+  margin: -16px 0 0 -16px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #000 0%, #000 45%, rgba(139, 92, 246, 0.55) 62%, rgba(34, 211, 238, 0.35) 78%, transparent 100%);
+  transform: scale(0);
+  opacity: 0;
+  z-index: 2;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+.intro.is-leaving .intro__horizon {
+  animation: horizon-grow var(--warp-duration, 1700ms) linear forwards;
+}
+@keyframes horizon-grow {
+  0%   { transform: scale(0); opacity: 0; }
+  16%  { transform: scale(0.6); opacity: 1; }
+  55%  { transform: scale(12); opacity: 1; }
+  100% { transform: scale(140); opacity: 1; }
+}
+
+.intro__content {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  text-align: center;
+  padding: var(--space-md);
+  will-change: transform, opacity, filter;
+}
+.intro.is-leaving .intro__content {
+  animation: content-suck var(--warp-duration, 1700ms) linear forwards;
+  pointer-events: none;
+}
+/* Dissolves fast (fully gone by ~35% of the warp) rather than staying
+   opaque for most of it — the logo/wordmark were sitting on top of the
+   black-hole warp for nearly the whole transition, so most of that effect
+   was getting hidden behind them instead of seen. */
+@keyframes content-suck {
+  0%   { transform: scale(1);    opacity: 1; filter: blur(0px); }
+  15%  { transform: scale(1.15); opacity: 0.7; filter: blur(1px); }
+  35%  { transform: scale(1.6);  opacity: 0; filter: blur(4px); }
+  100% { transform: scale(1.6);  opacity: 0; filter: blur(4px); }
+}
+
+/* Whole scene dims and blurs slightly as it's pulled toward the horizon */
+.intro.is-leaving {
+  animation: scene-fall var(--warp-duration, 1700ms) linear forwards;
+}
+@keyframes scene-fall {
+  0%   { filter: blur(0) brightness(1); }
+  55%  { filter: blur(2px) brightness(1.12); }
+  100% { filter: blur(6px) brightness(0.5); }
+}
+
+.intro__logo-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  border-radius: var(--radius-lg);
+  padding: var(--space-sm);
+  transition: transform var(--dur-base) var(--ease-spring);
+}
+.intro__logo-btn:hover { transform: scale(1.04); }
+.intro__logo-btn:active { transform: scale(0.97); }
+
+.intro__wordmark {
+  font-family: var(--font-head);
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  padding-left: 0.35em; /* optical centering for letter-spacing */
+}
+.intro__tagline { color: var(--text-secondary); font-size: 0.95rem; letter-spacing: 0.02em; }
+/* Reward for clearing the ring game — swaps the wordmark/tagline text in
+   place (body.is-triumphant, same flag the rings/ship already recolor on)
+   instead of a separate popup, so it reads as part of the win itself. */
+.intro__wordmark-win { display: none; color: #fb7185; }
+.intro__tagline-win { display: none; }
+body.is-triumphant .intro__wordmark-default,
+body.is-triumphant .intro__tagline-default { display: none; }
+body.is-triumphant .intro__wordmark-win { display: inline; }
+/* The prompt only applies while the reward is still unclaimed — once the
+   email is in, the reward panel below carries the message instead. */
+body.is-triumphant:not(.is-claimed) .intro__tagline-win { display: inline; }
+body.is-claimed .intro__tagline-default { display: none; }
+.intro__tagline-highlight { color: #fff; font-weight: 700; }
+
+/* The CTA doubles as an explicit escape hatch while the email form is up,
+   so a stray click on the big button doesn't read as "lost my reward". */
+.intro__cta-skip { display: none; }
+body.is-triumphant:not(.is-claimed) .intro__cta-default { display: none; }
+body.is-triumphant:not(.is-claimed) .intro__cta-skip { display: inline; }
+
+/* --- Email gate + revealed reward ---------------------------------------
+   Both are siblings of .intro__logo-btn (see the note in index.html) and
+   stay fully hidden until the ring game is cleared. */
+.intro__claim,
+.intro__reward { display: none; }
+body.is-triumphant:not(.is-claimed) .intro__claim { display: block; }
+body.is-claimed .intro__reward { display: block; }
+
+.intro__claim {
+  margin-top: var(--space-xs);
+  width: min(100%, 420px);
+  animation: intro-claim-in 420ms var(--ease-out) both;
+}
+.intro__claim-form { display: flex; gap: var(--space-2xs); flex-wrap: wrap; justify-content: center; }
+.intro__claim-input {
+  flex: 1 1 200px;
+  min-width: 0;
+  padding: 0.7rem 1rem;
+  background: rgba(5, 7, 13, 0.75);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-full);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  transition: border-color var(--dur-fast) ease;
+}
+.intro__claim-input::placeholder { color: var(--text-muted); }
+.intro__claim-input:focus { outline: none; border-color: var(--cyan); }
+.intro__claim.has-error .intro__claim-input { border-color: #f87171; }
+.intro__claim-btn {
+  flex: 0 0 auto;
+  padding: 0.7rem 1.4rem;
+  border: none;
+  border-radius: var(--radius-full);
+  background: var(--gradient);
+  color: #051019;
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: opacity var(--dur-fast) ease;
+}
+.intro__claim-btn:hover { opacity: 0.9; }
+.intro__claim-btn:disabled { opacity: 0.6; cursor: default; }
+.intro__claim-msg { margin-top: var(--space-2xs); font-size: 0.85rem; color: #f87171; min-height: 1.2em; }
+
+.intro__reward {
+  margin-top: var(--space-xs);
+  animation: intro-claim-in 420ms var(--ease-out) both;
+}
+.intro__reward-amount { font-family: var(--font-head); font-size: 1.35rem; color: var(--text-primary); }
+.intro__reward-amount strong { color: #fb7185; font-size: 1.6rem; }
+.intro__reward-code {
+  margin-top: var(--space-3xs);
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.04em;
+}
+.intro__reward-code strong {
+  color: #fff;
+  font-family: var(--font-head);
+  letter-spacing: 0.18em;
+  padding: 0.15em 0.55em;
+  border: 1px dashed rgba(251, 113, 133, 0.7);
+  border-radius: var(--radius-sm);
+}
+.intro__reward-note {
+  margin-top: var(--space-2xs);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  max-width: 34ch;
+  margin-inline: auto;
+}
+@keyframes intro-claim-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.intro__cta {
+  margin-top: var(--space-2xs);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1.4rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-strong);
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  position: relative;
+}
+.intro__cta-ring {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.6);
+  animation: pulse-ring 1.8s ease-out infinite;
+  transition: background 400ms ease-out;
+}
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.55); }
+  70% { box-shadow: 0 0 0 10px rgba(34, 211, 238, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0); }
+}
+
+/* Ring mini-game complete: the CTA's own pulse dot turns red too. */
+body.is-triumphant .intro__cta-ring {
+  background: #f43f5e;
+  animation: pulse-ring-red 1.8s ease-out infinite;
+}
+@keyframes pulse-ring-red {
+  0% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.55); }
+  70% { box-shadow: 0 0 0 10px rgba(244, 63, 94, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); }
+}
+
+/* Ring mini-game: fly the ship cursor through all 5 to trigger the pulse. */
+.intro-rings {
+  position: absolute;
+  inset: 0;
+  z-index: 4; /* above the horizon/canvas, below the ship (--z-cursor) and content */
+  pointer-events: none;
+}
+.intro-ring {
+  position: absolute;
+  left: var(--ring-x);
+  top: var(--ring-y);
+  width: 56px;
+  height: 56px;
+  margin: -28px 0 0 -28px;
+  border-radius: 50%;
+  border: 3px solid #38bdf8;
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.55), inset 0 0 14px rgba(56, 189, 248, 0.25);
+  animation: ring-idle-pulse 2.4s ease-in-out infinite;
+}
+@keyframes ring-idle-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.08); opacity: 1; }
+}
+.intro-ring.is-hit {
+  border-color: #f43f5e;
+  box-shadow: 0 0 18px rgba(244, 63, 94, 0.75), inset 0 0 18px rgba(244, 63, 94, 0.35);
+  animation: ring-hit-pop 450ms ease-out forwards;
+}
+@keyframes ring-hit-pop {
+  0%   { transform: scale(1); }
+  45%  { transform: scale(1.45); }
+  100% { transform: scale(1); }
+}
+/* A small red pulse ring of its own radiates out from each ring the instant
+   it's hit — a mini version of the big one that fires once all 5 are done. */
+.intro-ring.is-hit::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid #f43f5e;
+  opacity: 0;
+  pointer-events: none;
+  animation: ring-hit-pulse 600ms ease-out forwards;
+}
+@keyframes ring-hit-pulse {
+  0%   { transform: scale(1); opacity: 0.85; border-width: 2px; }
+  100% { transform: scale(2.6); opacity: 0; border-width: 0.5px; }
+}
+
+/* Click-to-enter: everything that isn't the black hole itself gets pulled
+   toward the center and disappears, rather than just fading in place —
+   echoing the same pull that's about to swallow the whole screen. */
+.intro.is-leaving .intro-ring {
+  left: 50%;
+  top: 50%;
+  transition: left 750ms cubic-bezier(0.55, 0, 1, 0.45), top 750ms cubic-bezier(0.55, 0, 1, 0.45);
+  /* Setting a new animation here overrides the idle ring-idle-pulse from
+     the base rule outright (no animation:none handoff needed) — that
+     handoff was the bug: cancelling ring-idle-pulse and starting a
+     transition on the same opacity/transform properties in the same style
+     change caused the browser to snap opacity straight to 0 instead of
+     honoring its delay. A dedicated keyframe animation has no such
+     ambiguity: fully visible while it shrinks and gets pulled to center,
+     then fades only right at the end — "sucked in, then gone." */
+  animation: ring-suck-in 750ms cubic-bezier(0.55, 0, 1, 0.45) forwards;
+}
+@keyframes ring-suck-in {
+  0%   { transform: scale(1);    opacity: 0.9; }
+  73%  { transform: scale(0.15); opacity: 0.9; }
+  100% { transform: scale(0.15); opacity: 0; }
+}
+.intro.is-leaving .intro-red-pulse {
+  animation: none;
+  opacity: 0;
+  transition: opacity 200ms ease-out;
+}
+
+/* Red ring pulse that radiates out from the logo once all 5 rings are hit —
+   a genuine expanding ring outline (not a filled flash), echoing the shape
+   of the game it's rewarding. */
+.intro-red-pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border-radius: 50%;
+  border: 3px solid rgba(244, 63, 94, 0.9);
+  box-shadow: 0 0 22px rgba(244, 63, 94, 0.55);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 6;
+}
+.intro-red-pulse.is-pulsing {
+  animation: red-pulse-burst 1100ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes red-pulse-burst {
+  0%   { transform: scale(1); opacity: 0.95; border-width: 3px; }
+  60%  { opacity: 0.55; border-width: 1.5px; }
+  100% { transform: scale(48); opacity: 0; border-width: 0.5px; }
+}
+
+@media (max-width: 640px) {
+  /* No continuous mouse tracking on touch, so nothing can "fly through" these. */
+  .intro-rings { display: none; }
+}
+
+.intro.is-hidden { display: none; }
+
+
+/* ==========================================================================
+   Nav
+   ========================================================================== */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: var(--z-nav);
+  padding-block: var(--space-xs);
+  transition: background var(--dur-base) var(--ease-out), backdrop-filter var(--dur-base), border-color var(--dur-base), padding var(--dur-base);
+  border-bottom: 1px solid transparent;
+}
+.nav.is-scrolled {
+  background: rgba(5, 7, 13, 0.72);
+  backdrop-filter: blur(14px) saturate(140%);
+  border-bottom-color: var(--border);
+  padding-block: var(--space-3xs);
+}
+.nav__inner { display: flex; align-items: center; gap: var(--space-md); }
+.nav__brand { display: inline-flex; align-items: center; gap: 0.6rem; }
+.nav__wordmark { font-family: var(--font-head); font-weight: 700; letter-spacing: 0.18em; font-size: 1rem; }
+
+/* Beside the wordmark: replay the intro so the ring mini-game can be played
+   again. Solid/opaque text (not a translucent overlay) — just a quiet,
+   secondary label next to the primary brand mark. */
+.nav__replay {
+  margin-right: auto;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+  white-space: nowrap;
+  padding: 0.3rem 0.6rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  transition: color var(--dur-fast), border-color var(--dur-fast), background var(--dur-fast);
+}
+.nav__replay:hover, .nav__replay:focus-visible {
+  color: var(--cyan);
+  border-color: var(--border-strong);
+  background: rgba(34, 211, 238, 0.06);
+}
+.nav__replay-icon { width: 16px; height: 16px; flex-shrink: 0; }
+/* Same expanding-ring pulse as .back-to-top, just always-on since this
+   button (unlike that one) is permanently visible rather than show/hide. */
+.nav__replay-icon-wrap { position: relative; display: inline-flex; }
+.nav__replay-icon-wrap::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1.5px solid var(--cyan);
+  opacity: 0;
+  pointer-events: none;
+  animation: back-to-top-pulse 2s ease-out infinite;
+}
+.nav__replay-label {
+  display: inline-block;
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  white-space: nowrap;
+  transition: max-width var(--dur-base) var(--ease-out), opacity var(--dur-fast), margin-left var(--dur-base) var(--ease-out);
+}
+.nav__replay:hover .nav__replay-label, .nav__replay:focus-visible .nav__replay-label {
+  max-width: 200px;
+  opacity: 1;
+  margin-left: 0.45rem;
+}
+
+.nav__links { display: flex; align-items: center; gap: var(--space-sm); }
+.nav__links a {
+  font-size: 0.92rem; color: var(--text-secondary);
+  position: relative; padding-block: 0.25rem;
+  transition: color var(--dur-fast);
+}
+.nav__links a::after {
+  content: ""; position: absolute; left: 0; right: 100%; bottom: 0; height: 1.5px;
+  background: var(--gradient); transition: right var(--dur-base) var(--ease-out);
+}
+.nav__links a:hover { color: var(--text-primary); }
+.nav__links a:hover::after { right: 0; }
+
+.nav__cta { flex-shrink: 0; }
+
+.nav__toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+}
+.nav__toggle-bar { width: 20px; height: 2px; background: var(--text-primary); margin-inline: auto; transition: transform var(--dur-base) var(--ease-spring), opacity var(--dur-fast); }
+.nav__toggle[aria-expanded="true"] .nav__toggle-bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav__toggle[aria-expanded="true"] .nav__toggle-bar:nth-child(2) { opacity: 0; }
+.nav__toggle[aria-expanded="true"] .nav__toggle-bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.mobile-menu {
+  position: fixed; inset: 0; z-index: var(--z-mobile-menu);
+  background: rgba(5, 7, 13, 0.98);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transform: translateY(-8px);
+  transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+.mobile-menu.is-open { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.mobile-menu__nav { display: flex; flex-direction: column; align-items: center; gap: var(--space-md); }
+.mobile-menu__nav a { font-family: var(--font-head); font-size: 1.6rem; font-weight: 600; opacity: 0; transform: translateY(14px); transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out); }
+.mobile-menu.is-open .mobile-menu__nav a { opacity: 1; transform: translateY(0); }
+.mobile-menu__nav a:nth-child(1) { transition-delay: 60ms; }
+.mobile-menu__nav a:nth-child(2) { transition-delay: 110ms; }
+.mobile-menu__nav a:nth-child(3) { transition-delay: 160ms; }
+.mobile-menu__nav a:nth-child(4) { transition-delay: 210ms; }
+.mobile-menu__nav a:nth-child(5) { transition-delay: 260ms; }
+.mobile-menu__nav a:nth-child(6) { transition-delay: 310ms; }
+.mobile-menu__cta { margin-top: var(--space-xs); font-size: 1rem !important; }
+
+.mobile-menu__replay {
+  font-family: var(--font-head);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out), color var(--dur-fast);
+  transition-delay: 335ms;
+}
+.mobile-menu.is-open .mobile-menu__replay { opacity: 1; transform: translateY(0); }
+.mobile-menu__replay:hover { color: var(--cyan); }
+
+/* ==========================================================================
+   Hero
+   ========================================================================== */
+/* Pinned while .marquee-section (the very next section) scrolls up and
+   covers it — see .marquee-section's own z-index below for the other half
+   of this. */
+.hero {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding-top: 90px;
+}
+.hero__canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero__glow {
+  position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.35; pointer-events: none;
+}
+.hero__glow--a { width: 500px; height: 500px; background: var(--cyan); top: -10%; left: -10%; }
+.hero__glow--b { width: 420px; height: 420px; background: var(--violet); bottom: -15%; right: -5%; }
+
+/* "Emerging from the black hole" — plays once, right as the intro hands off to the site */
+.hero.is-emerging {
+  animation: hero-emerge 1100ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: transform, filter, opacity;
+}
+@keyframes hero-emerge {
+  0%   { transform: scale(1.55); filter: blur(16px) brightness(2.4); opacity: 0; }
+  14%  { opacity: 1; }
+  55%  { transform: scale(1.07); filter: blur(2px) brightness(1.35); }
+  100% { transform: scale(1); filter: blur(0) brightness(1); }
+}
+
+.hero__burst {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 24px; height: 24px;
+  margin: -12px 0 0 -12px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.95) 0%, rgba(34, 211, 238, 0.6) 35%, rgba(139, 92, 246, 0.3) 60%, transparent 78%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+  will-change: transform, opacity;
+}
+.hero.is-emerging .hero__burst {
+  animation: hero-burst 950ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes hero-burst {
+  0%   { transform: scale(1); opacity: 0.95; }
+  60%  { transform: scale(34); opacity: 0.3; }
+  100% { transform: scale(60); opacity: 0; }
+}
+
+.hero__inner { position: relative; z-index: 2; max-width: 800px; }
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-strong);
+  padding: 0.5rem 1rem; border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.03);
+  margin-bottom: var(--space-sm);
+}
+.eyebrow__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gradient); }
+
+.hero__title {
+  font-size: clamp(2.4rem, 5.4vw, 4.5rem);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-sm);
+}
+.hero__subtitle {
+  font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+  color: var(--text-secondary);
+  max-width: 60ch;
+  margin-bottom: var(--space-md);
+}
+.hero__actions { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
+
+/* ==========================================================================
+   Marquee
+   ========================================================================== */
+.marquee-section {
+  position: relative;
+  z-index: 2;
+  background: var(--bg);
+  padding-block: var(--space-md);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.marquee-section__label {
+  text-align: center; color: var(--text-muted); font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: var(--space-md);
+}
+.marquee {
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  /* Vertical breathing room so a scaled-up item on hover clears this
+     element's own clip box instead of getting its top/bottom cut off. */
+  padding-block: 1.25rem;
+  margin-block: -1.25rem;
+}
+.marquee__track {
+  display: flex; align-items: center; gap: clamp(2rem, 5vw, 4rem); width: max-content;
+  /* Content is duplicated once in the HTML (the aria-hidden copy) so
+     translating exactly -50% loops seamlessly with no gap or restart. */
+  animation: marquee-scroll 25s linear infinite;
+  font-family: var(--font-head); font-weight: 600; font-size: clamp(1.1rem, 2.4vw, 1.6rem);
+  color: var(--text-muted); letter-spacing: 0.04em;
+}
+/* Scale lives on the item itself, not the track — the track's own
+   scroll animation never pauses or slows for this, it just keeps
+   sliding underneath while the hovered item grows in place. */
+.marquee__item {
+  display: inline-flex; flex-direction: column; align-items: center; gap: 0.35rem;
+  transition: transform 300ms var(--ease-spring);
+}
+.marquee__item:hover { transform: scale(1.15); position: relative; z-index: 1; }
+.marquee__logo {
+  height: 48px; width: auto;
+  /* Source mark is solid black on transparent — invert so it reads against
+     the dark background, dimmed to match the marquee's muted wordmarks. */
+  filter: invert(1) opacity(0.8);
+}
+.marquee__logo-tall { height: 48px; width: auto; display: block; }
+/* Filler names — dimmer than the real client links, and plain (non-link)
+   text since there's no real logo or destination for them yet. A generic
+   inline mark stands in for a logo so the item height (and therefore the
+   name's baseline) matches the real client logos above. */
+.marquee__item--placeholder { opacity: 0.55; }
+svg.marquee__logo-tall { width: 48px; height: 48px; }
+/* White circular badge behind the Fraser Valley mark — its own art has a
+   transparent background, so sitting directly on the dark marquee row
+   left its white glow/outline looking a bit rough-edged; a clean white
+   disc behind it reads as a proper logo badge instead. */
+.marquee__logo-badge {
+  display: flex; align-items: center; justify-content: center;
+  width: 48px; height: 48px; border-radius: 50%;
+  background: #fff; padding: 6px; box-sizing: border-box;
+}
+.marquee__logo-badge-img { width: 100%; height: 100%; object-fit: contain; display: block; }
+@keyframes marquee-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ==========================================================================
+   Sections (shared)
+   ========================================================================== */
+.section { padding-block: var(--space-2xl); }
+.section--alt { background: linear-gradient(180deg, transparent, rgba(139, 92, 246, 0.04), transparent); }
+/* .hero is sticky with no containing block short enough to ever release it
+   (see .hero's own comment), so it stays technically "on screen" — z-index
+   1, positioned — for the rest of the page. Every section from here down
+   needs its own position:relative + higher z-index + a genuinely opaque
+   background (not just a translucent tint over nothing) to actually paint
+   over it, or it bleeds through as an overlap once scrolled past .marquee,
+   the only section currently tall enough to fully hide it on its own. */
+#services { position: relative; z-index: 2; background: var(--bg); }
+/* Solid black base layered under the usual --alt tint — an explicitly
+   opaque background rather than trusting a fully transparent gradient. */
+#testimonials {
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(180deg, transparent, rgba(139, 92, 246, 0.04), transparent), var(--bg);
+}
+.section__head { max-width: 640px; margin-bottom: var(--space-lg); }
+.section__eyebrow { color: var(--cyan); font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; margin-bottom: var(--space-2xs); }
+.section__title { font-size: clamp(1.9rem, 3.6vw, 2.75rem); letter-spacing: -0.01em; margin-bottom: var(--space-2xs); }
+.pop-word {
+  display: inline-block;
+  transform-origin: bottom center;
+  transition: transform 350ms var(--ease-spring), font-size 350ms var(--ease-spring),
+              color 250ms ease, text-shadow 250ms ease, filter 250ms ease;
+}
+/* Triggers on the whole heading row (eyebrow + title + subtitle), not just
+   the title text itself, so hovering anywhere near "you" sets it off. */
+#services .section__head:hover .pop-word {
+  transform: scale(1.35) translateY(-4px);
+  color: var(--cyan);
+  text-shadow: 0 10px 28px rgba(34, 211, 238, 0.55);
+}
+/* Same pop, on the hero title's "explore" — but font-size, not transform.
+   That word sits inside .text-gradient (color:transparent +
+   background-clip:text), and transform/scale on a background-clip:text
+   descendant renders as fully invisible in this engine — a real rendering
+   bug, confirmed earlier by screenshot, not just a layout question.
+   font-size is a normal layout property, so the gradient clip recomputes
+   correctly around the bigger glyphs, and — being a real layout change,
+   unlike transform — it naturally reflows "to" out of the way too, with no
+   extra shifting rules needed the way section__title's version requires. */
+/* margin-left, not transform: translateX — same background-clip:text
+   invisibility bug as before applies to any transform here, and margin is
+   a normal layout property so it's safe. Always running, not hover-gated —
+   this one bounces continuously regardless of the mouse. */
+.hero__title .pop-word {
+  animation: pop-word-bounce 3s ease-in-out infinite;
+}
+/* Two equal 50/50 segments, not the uneven 0/25/75/100 split this had
+   before — that made the swing right (a short quarter-duration hop) and
+   the swing back (a long half-duration one) accelerate at different rates,
+   which read as a stutter right where they met. Symmetric segments give
+   one continuous back-and-forth motion instead. */
+@keyframes pop-word-bounce {
+  0%, 100% { margin-left: -10px; }
+  50% { margin-left: 10px; }
+}
+/* Neighboring words part ways to make room for "you" growing — without
+   this the enlarged word would just overlap them instead of clearing space. */
+.pop-word-before, .pop-word-after {
+  display: inline-block;
+  transition: transform 350ms var(--ease-spring);
+}
+#services .section__head:hover .pop-word-before { transform: translateX(-10px); }
+#services .section__head:hover .pop-word-after { transform: translateX(10px); }
+.section__subtitle { color: var(--text-secondary); font-size: 1.05rem; }
+
+.grid { display: grid; gap: var(--space-md); }
+.grid--services { grid-template-columns: repeat(2, 1fr); }
+.grid--work { grid-template-columns: repeat(2, 1fr); }
+.grid--pricing { grid-template-columns: repeat(3, 1fr); align-items: stretch; }
+/* One card instead of a tiered lineup — center it and cap its width so it
+   doesn't stretch edge-to-edge across the full 3-column container. */
+.grid--pricing-single { grid-template-columns: 1fr; justify-items: center; }
+.grid--pricing-single .price-card { max-width: 480px; width: 100%; }
+
+/* ==========================================================================
+   Cards — Services
+   ========================================================================== */
+.card--service {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  overflow: hidden;
+  transition: transform var(--dur-base) var(--ease-out), border-color var(--dur-base), background var(--dur-base);
+}
+.card--service::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px;
+  background: var(--gradient);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  opacity: 0; transition: opacity var(--dur-base);
+  pointer-events: none;
+}
+.card--service:hover { transform: translateY(-6px); border-color: transparent; }
+.card--service:hover::before { opacity: 1; }
+.card__icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 52px; height: 52px; border-radius: var(--radius-sm);
+  background: var(--gradient-soft); color: var(--cyan);
+  margin-bottom: var(--space-sm);
+}
+.card__icon svg { width: 26px; height: 26px; }
+.card--service h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+.card--service p { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: var(--space-sm); }
+.card__link { color: var(--cyan); font-weight: 600; font-size: 0.9rem; display: inline-flex; gap: 0.35rem; }
+.card__link span { transition: transform var(--dur-fast) var(--ease-out); }
+.card__link:hover span { transform: translateX(4px); }
+
+/* ==========================================================================
+   Process timeline
+   ========================================================================== */
+.process { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-sm); position: relative; }
+.process::before {
+  content: ""; position: absolute; top: 26px; left: 10%; right: 10%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-strong) 15%, var(--border-strong) 85%, transparent);
+}
+.process__step {
+  position: relative; text-align: left;
+  transition: transform 300ms var(--ease-spring), box-shadow 300ms ease;
+}
+.process__step:hover {
+  transform: translateY(-6px) scale(1.08);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+  z-index: 2;
+}
+.process__num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 52px; height: 52px; border-radius: 50%;
+  background: var(--surface); border: 1px solid var(--border-strong);
+  font-family: var(--font-head); font-weight: 700; color: var(--cyan);
+  margin-bottom: var(--space-sm); position: relative; z-index: 2;
+}
+.process__step h3 { font-size: 1.05rem; margin-bottom: 0.4rem; }
+.process__step p { color: var(--text-secondary); font-size: 0.9rem; }
+/* Fill circle under each step. Automatic, not hover-driven — js/main.js
+   sets each liquid's height directly (scrubbed by the mouse wheel, see the
+   comment in main.js), so there's no fill keyframe animation to fight over
+   the height property; a short transition below just smooths the jump
+   between wheel-tick updates. */
+/* Positioning/margin live on this wrapper, not .fill-circle itself, so the
+   pulse-wave ring below (an ::after on the wrapper) can expand outward
+   unclipped — .fill-circle needs its own overflow:hidden to mask the
+   liquid into a circle, which would otherwise clip a ring effect too. */
+.fill-circle-wrap {
+  display: block;
+  position: relative;
+  width: 42px;
+  height: 42px;
+  margin: var(--space-sm) 0 0;
+}
+.fill-circle {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid var(--cyan);
+  overflow: hidden;
+  position: relative;
+  transition: border-color 300ms ease;
+}
+.fill-circle__liquid {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 0%;
+  background: linear-gradient(180deg, #67e8f9, var(--cyan));
+  transition: height 120ms linear;
+}
+/* A cyan pulse the instant a circle locks in — filter, not box-shadow,
+   since .fill-circle's own overflow:hidden (needed to clip the liquid to
+   the circle) would clip a regular shadow/ring; drop-shadow renders
+   outside that clip. Grows outward big, recedes, then settles into a
+   subtle persistent glow (forwards keeps that end-state afterward). */
+.fill-circle.is-charged {
+  /* A shade darker than the liquid so the outline still reads as a ring
+     around the fill, instead of blending into it. */
+  border-color: #0e7490;
+  animation: fill-circle-burst 700ms ease-out forwards;
+}
+@keyframes fill-circle-burst {
+  0% { filter: drop-shadow(0 0 0 rgba(34, 211, 238, 0)); }
+  40% { filter: drop-shadow(0 0 22px rgba(34, 211, 238, 0.9)); }
+  70% { filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.4)); }
+  100% { filter: drop-shadow(0 0 4px rgba(34, 211, 238, 0.55)); }
+}
+/* Same expanding-ring pulse wave as .intro-ring.is-hit::after on the
+   entrance page (identical timing/scale/easing) — lives on the wrapper,
+   not .fill-circle itself, so it isn't clipped by that element's own
+   overflow:hidden. */
+.fill-circle-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--cyan);
+  opacity: 0;
+  pointer-events: none;
+}
+.fill-circle-wrap:has(.fill-circle.is-charged)::after {
+  animation: fill-circle-pulse-wave 600ms ease-out forwards;
+}
+@keyframes fill-circle-pulse-wave {
+  0%   { transform: scale(1); opacity: 0.85; border-width: 2px; }
+  100% { transform: scale(2.6); opacity: 0; border-width: 0.5px; }
+}
+/* Whole section reacts once any single circle finishes charging (js/main.js
+   toggles these on #process) — a lasting red theme swap plus a one-off
+   flash that re-triggers on every additional circle charged, even after
+   the section is already red. */
+/* Taller than the shared .section bottom padding and a wider container
+   than the shared 1200px — more breathing room for the 5-column grid. */
+/* position:relative (not sticky) purely so .process-canvas below — an
+   absolutely-positioned child — sizes itself against this section instead
+   of the page; no sticky pin here anymore, see .hero for that now. */
+#process {
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  transition: background 800ms ease;
+  padding-top: calc(var(--space-2xl) + var(--space-lg));
+  padding-bottom: calc(var(--space-2xl) + var(--space-lg) * 2);
+  background: linear-gradient(180deg, transparent, rgba(139, 92, 246, 0.04), transparent), var(--bg);
+}
+.process-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; opacity: 0; transition: opacity 800ms ease; }
+#process.is-charged .process-canvas { opacity: 1; }
+#process .container { position: relative; z-index: 1; max-width: 1400px; }
+/* Starts and ends at transparent (like the default .section--alt gradient
+   it replaces) so the section blends into whatever's above/below it
+   instead of showing a hard seam where the tint begins abruptly. */
+#process.is-charged { background: linear-gradient(180deg, transparent, rgba(34, 211, 238, 0.14) 20%, rgba(34, 211, 238, 0.03) 55%, transparent), var(--bg); }
+#process.is-charged .process::before { background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.55) 15%, rgba(34, 211, 238, 0.55) 85%, transparent); }
+#process.is-charged .process__num { border-color: var(--cyan); }
+/* Each step's own number gets the same treatment as soon as its own circle
+   finishes charging — independent of the section-wide rule above, which
+   only covers the moment all 5 are done. */
+.process__step:has(.fill-circle.is-charged) .process__num { border-color: var(--cyan); }
+/* Hints that scrolling here does something (the wheel scrubs the fill,
+   rather than moving the page right away — see js/main.js), so it fades
+   out once charged instead of lingering after it's no longer needed. */
+/* In normal flow right under the steps, not absolutely bottom-anchored on
+   the section — #process is tall enough (padding stacked on for the sticky
+   scroll-scrub range) that a bottom-anchored hint sits below the fold while
+   the page is frozen mid-scrub, which defeats the point of a scroll hint. */
+.process__scroll-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 150px;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: opacity 400ms ease;
+}
+.process__scroll-hint-icon {
+  width: 20px;
+  height: 20px;
+  animation: process-scroll-bounce 1.6s ease-in-out infinite;
+}
+@keyframes process-scroll-bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.6; }
+  50% { transform: translateY(7px); opacity: 1; }
+}
+#process.is-charged .process__scroll-hint { opacity: 0; pointer-events: none; }
+#process::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(34, 211, 238, 0.45);
+  opacity: 0;
+  pointer-events: none;
+}
+#process.is-flashing::after {
+  animation: process-flash 600ms ease-out;
+}
+@keyframes process-flash {
+  0% { opacity: 0.85; }
+  100% { opacity: 0; }
+}
+
+/* Thinner top padding than the shared .section rule — the usual full
+   section gap read as too much dead space before the "Recent Launches"
+   heading specifically. */
+#work { position: relative; z-index: 2; background: var(--bg); padding-top: var(--space-lg); }
+
+/* ==========================================================================
+   Work cards
+   ========================================================================== */
+.work-card {
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  transition: transform var(--dur-base) var(--ease-out), border-color var(--dur-base);
+  will-change: transform;
+}
+.work-card:hover { border-color: var(--border-strong); }
+.work-card__thumb {
+  aspect-ratio: 16 / 10;
+  position: relative;
+  display: flex; align-items: flex-start; justify-content: flex-start; padding: var(--space-sm);
+}
+.work-card__thumb--1 { background: linear-gradient(135deg, #0ea5c7, #1e293b); }
+.work-card__thumb--2 { background: linear-gradient(135deg, #7c3aed, #1e1b3a); }
+.work-card__thumb--3 { background: linear-gradient(135deg, #0891b2, #4c1d95); }
+.work-card__thumb--4 { background: linear-gradient(135deg, #334155, #0f172a); }
+.work-card__thumb--5 {
+  background: linear-gradient(0deg, rgba(5, 7, 13, 0.55), rgba(5, 7, 13, 0.1)), url("../work-pencilfingerz.jpg");
+  background-size: cover;
+  background-position: center 20%;
+}
+/* Logo on its own solid-black canvas — contain (not cover) so the
+   "BOOKKEEPING" wordmark never gets cropped off the edges. */
+.work-card__thumb--6 {
+  background-color: #000;
+  background-image: url("../work-bedrockbookkeeping.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.work-card__thumb--7 {
+  background-color: #fff;
+  background-image: url("../work-fraservalley.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+/* Same white-canvas treatment as --7, but the Apex lockup is far wider
+   (~2.9:1), so contain on its own would run it right to the card edges —
+   background-origin keeps it inside the thumb's existing padding. */
+.work-card__thumb--9 {
+  background-color: #fff;
+  background-image: url("../logo-apex.webp");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-origin: content-box;
+}
+/* Demo widget, not a real countdown — there's no target date, so
+   js/main.js just re-randomizes the digits on an interval for a
+   "live ticking display" feel. */
+.work-card__thumb--8 { background: #000; overflow: hidden; }
+/* Falling-rain backdrop for the Requiem card, sitting behind the tag and
+   countdown (both stay .position:absolute so they paint on top by plain
+   DOM order — no z-index needed). Adapted from a full-viewport interactive
+   SCSS demo down to a small, non-interactive, plain-CSS/JS version: no
+   wind-control hover zones, no click-for-lightning, no on-screen prompts,
+   and far fewer drops (js/main.js generates them, staggered via random
+   negative animation-delay instead of 500 individually hand-authored
+   per-drop @keyframes) since none of that fits a small card background. */
+.requiem-rain { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.requiem-rain .drop {
+  position: absolute;
+  top: -8%;
+  width: 0;
+  border: 1px solid transparent;
+  border-bottom-color: rgba(255, 59, 59, 0.75);
+  transform: rotate(90deg) translateX(0);
+  animation-name: requiem-rain-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+/* Rotation is identical in both keyframes (90deg — dead straight down, once
+   rotated into translateX's frame) so only the translateX distance
+   actually animates. Without the matching "from", the browser has no
+   choice but to also interpolate the rotation itself from 0deg up to
+   90deg over the fall, which reads as the drop blowing in sideways before
+   straightening out — not what a straight top-to-bottom fall should do. */
+@keyframes requiem-rain-fall {
+  from { transform: rotate(90deg) translateX(0); }
+  to { transform: rotate(90deg) translateX(300px); }
+}
+/* Automatic strike every 7s (js/main.js toggles .is-flashing) instead of
+   the original's click-and-hold trigger — a small background card can't
+   really ask for a click. Two-pulse flicker (bright, dip, bright, fade)
+   reads more like real lightning than a single fade would. */
+.requiem-lightning {
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 30% -10%, rgba(255, 59, 59, 0.95), rgba(255, 59, 59, 0) 60%),
+              linear-gradient(180deg, rgba(255, 59, 59, 0.55), rgba(255, 59, 59, 0.15));
+  opacity: 0;
+  pointer-events: none;
+}
+.requiem-lightning.is-flashing {
+  animation: requiem-lightning-flash 450ms ease-out;
+}
+@keyframes requiem-lightning-flash {
+  0% { opacity: 0; }
+  8% { opacity: 1; }
+  18% { opacity: 0.15; }
+  30% { opacity: 0.9; }
+  100% { opacity: 0; }
+}
+.countdown-demo {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+}
+.countdown-demo__unit { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; }
+.countdown-demo__num {
+  font-family: "Courier New", ui-monospace, monospace;
+  font-weight: 700;
+  font-size: clamp(1.8rem, 4.5vw, 2.6rem);
+  font-variant-numeric: tabular-nums;
+  color: #ff3b3b;
+  text-shadow: 0 0 10px rgba(255, 59, 59, 0.85), 0 0 22px rgba(255, 59, 59, 0.45);
+  animation: countdown-demo-flicker 2.6s ease-in-out infinite;
+}
+.countdown-demo__label {
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 59, 59, 0.6);
+}
+.countdown-demo__sep {
+  font-family: "Courier New", ui-monospace, monospace;
+  font-weight: 700;
+  font-size: clamp(1.8rem, 4.5vw, 2.6rem);
+  color: rgba(255, 59, 59, 0.5);
+  transform: translateY(-0.6em);
+  animation: countdown-demo-blink 1s step-end infinite;
+}
+@keyframes countdown-demo-blink { 50% { opacity: 0.15; } }
+@keyframes countdown-demo-flicker {
+  0%, 100% { text-shadow: 0 0 10px rgba(255, 59, 59, 0.85), 0 0 22px rgba(255, 59, 59, 0.45); }
+  50% { text-shadow: 0 0 14px rgba(255, 59, 59, 1), 0 0 30px rgba(255, 59, 59, 0.6); }
+}
+.work-card__tag {
+  font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase;
+  background: rgba(5, 7, 13, 0.55); backdrop-filter: blur(6px);
+  padding: 0.35rem 0.8rem; border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+.work-card__body { padding: var(--space-sm) var(--space-sm) calc(var(--space-sm) + 3rem); }
+.work-card__body h3 { font-size: 1.15rem; margin-bottom: 0.35rem; }
+.work-card__body p { color: var(--text-secondary); font-size: 0.9rem; }
+/* The link covers the whole card, so a click anywhere on it follows
+   through. Keeping it as the one real <a> (rather than a JS click handler,
+   or wrapping the heading and copy in an anchor) means the card is still a
+   single keyboard-focusable link carrying its existing aria-label.
+   The visible circle is the <svg> itself — padded, rounded and given the
+   gradient background — which avoids touching the markup of every card
+   just to add a wrapper element for it. */
+.work-card__link {
+  position: absolute;
+  inset: 0;
+  display: block;
+  color: #051019;
+}
+.work-card__link svg {
+  position: absolute;
+  right: var(--space-sm); bottom: var(--space-sm);
+  width: 44px; height: 44px;
+  padding: 13px; /* (44 - 18) / 2 — keeps the glyph at its original 18px */
+  box-sizing: border-box;
+  border-radius: 50%;
+  background: var(--gradient);
+  transform: scale(0.85) rotate(-8deg); opacity: 0;
+  transition: transform var(--dur-base) var(--ease-spring), opacity var(--dur-base);
+}
+.work-card { cursor: pointer; }
+.work-card:hover .work-card__link svg { opacity: 1; transform: scale(1) rotate(0deg); }
+.work-card__link-label {
+  position: absolute; right: calc(44px + var(--space-sm) + 0.5rem); bottom: var(--space-sm);
+  height: 44px; display: flex; align-items: center;
+  font-size: 0.78rem; color: var(--text-secondary); white-space: nowrap;
+  opacity: 0; transition: opacity var(--dur-base);
+}
+.work-card:hover .work-card__link-label { opacity: 1; }
+
+/* ==========================================================================
+   Testimonials
+   ========================================================================== */
+.testimonial { max-width: 760px; margin-inline: auto; text-align: center; }
+.testimonial__viewport { overflow: hidden; }
+.testimonial__track { display: flex; transition: transform 500ms var(--ease-out); }
+.testimonial__slide { flex: 0 0 100%; padding-inline: var(--space-sm); }
+.testimonial__quote {
+  font-family: var(--font-head); font-size: clamp(1.2rem, 2.4vw, 1.6rem);
+  line-height: 1.5; margin-bottom: var(--space-md);
+}
+.testimonial__author { display: flex; align-items: center; justify-content: center; gap: 0.8rem; }
+.testimonial__author strong { display: block; font-size: 0.95rem; }
+.testimonial__author small { color: var(--text-muted); font-size: 0.82rem; }
+.testimonial__avatar {
+  width: 46px; height: 46px; border-radius: 50%;
+  background: var(--gradient-soft); color: var(--cyan);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-head); font-weight: 700; font-size: 0.9rem;
+  border: 1px solid var(--border-strong);
+}
+.testimonial__controls { display: flex; align-items: center; justify-content: center; gap: var(--space-sm); margin-top: var(--space-md); }
+.testimonial__btn {
+  width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--border-strong);
+  display: flex; align-items: center; justify-content: center; color: var(--text-secondary);
+  transition: border-color var(--dur-fast), color var(--dur-fast), transform var(--dur-fast);
+}
+.testimonial__btn svg { width: 18px; height: 18px; }
+.testimonial__btn:hover { border-color: var(--cyan); color: var(--cyan); transform: scale(1.06); }
+.testimonial__dots { display: flex; gap: 0.5rem; }
+.testimonial__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border-strong); transition: background var(--dur-fast), transform var(--dur-fast); }
+.testimonial__dot.is-active { background: var(--gradient); transform: scale(1.3); }
+
+/* ==========================================================================
+   Pricing
+   ========================================================================== */
+#pricing { position: relative; z-index: 2; background: var(--bg); }
+.price-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md);
+  padding: var(--space-md); display: flex; flex-direction: column;
+  transition: transform var(--dur-base) var(--ease-out), border-color var(--dur-base);
+  position: relative;
+}
+.price-card:hover { transform: translateY(-6px); }
+.price-card--popular {
+  border-color: var(--cyan);
+  background: linear-gradient(180deg, rgba(34, 211, 238, 0.06), var(--surface) 40%);
+  transform: scale(1.03);
+}
+.price-card--popular:hover { transform: scale(1.03) translateY(-6px); }
+.price-card__badge {
+  position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+  background: var(--gradient); color: #051019; font-size: 0.75rem; font-weight: 700;
+  letter-spacing: 0.05em; text-transform: uppercase; padding: 0.4rem 1rem; border-radius: var(--radius-full);
+}
+.price-card h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+.price-card__desc { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--space-sm); min-height: 3em; }
+/* clamp, not a fixed size — "Typically starting at $2,000" is a lot longer
+   than the plain numeric prices this was originally sized for, and would
+   wrap awkwardly at 2.2rem even in this card's wider single-card layout. */
+.price-card__price { font-family: var(--font-head); font-size: clamp(1.4rem, 1rem + 0.6vw, 1.8rem); font-weight: 700; margin-bottom: var(--space-sm); }
+.price-card__price span { display: block; font-family: var(--font-body); font-size: 0.85rem; font-weight: 400; color: var(--text-muted); }
+.price-card__features { display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: var(--space-md); flex-grow: 1; }
+.price-card__features li { position: relative; padding-left: 1.6rem; color: var(--text-secondary); font-size: 0.92rem; }
+.price-card__features li::before {
+  content: ""; position: absolute; left: 0; top: 0.35em; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--gradient-soft);
+}
+.price-card__features li::after {
+  content: ""; position: absolute; left: 4px; top: 0.55em; width: 8px; height: 4px;
+  border-left: 1.6px solid var(--cyan); border-bottom: 1.6px solid var(--cyan); transform: rotate(-45deg);
+}
+/* Optional extras, priced separately from the plan itself — visually
+   split off (divider, smaller/muted text) so they don't read as included
+   features like the list above. */
+.price-card__addons {
+  border-top: 1px solid var(--border);
+  padding-top: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+.price-card__addons-label {
+  font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--text-muted); font-weight: 600; margin-bottom: 0.5rem;
+}
+.price-card__addons ul { display: flex; flex-direction: column; gap: 0.4rem; }
+.price-card__addons li { font-size: 0.85rem; color: var(--text-secondary); }
+.price-card__cta { width: 100%; }
+
+/* ==========================================================================
+   CTA Banner
+   ========================================================================== */
+.cta-banner { position: relative; z-index: 2; background: var(--bg); padding-block: var(--space-2xl); }
+.cta-banner__inner {
+  text-align: center; max-width: 720px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: var(--space-xl) var(--space-md);
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column; align-items: center; gap: var(--space-sm);
+}
+.cta-banner__inner::before {
+  content: ""; position: absolute; width: 600px; height: 300px; background: var(--gradient);
+  filter: blur(120px); opacity: 0.18; top: -100px; left: 50%; transform: translateX(-50%); pointer-events: none;
+}
+.cta-banner__inner h2 { font-size: clamp(1.9rem, 3.4vw, 2.6rem); position: relative; }
+.cta-banner__inner p { color: var(--text-secondary); position: relative; max-width: 46ch; }
+
+/* ==========================================================================
+   Contact
+   ========================================================================== */
+#contact { position: relative; z-index: 2; background: var(--bg); }
+.contact { display: grid; grid-template-columns: 1fr 1.1fr; gap: var(--space-xl); align-items: start; }
+.contact__list { display: flex; flex-direction: column; gap: var(--space-sm); margin: var(--space-md) 0; }
+.contact__list li { display: flex; align-items: center; gap: 0.8rem; color: var(--text-secondary); }
+.contact__list svg { width: 20px; height: 20px; color: var(--cyan); flex-shrink: 0; }
+.contact__list a:hover { color: var(--text-primary); }
+.contact__socials { display: flex; gap: var(--space-sm); }
+.contact__socials a {
+  font-size: 0.85rem; color: var(--text-secondary); border: 1px solid var(--border-strong);
+  padding: 0.5rem 1rem; border-radius: var(--radius-full);
+  transition: border-color var(--dur-fast), color var(--dur-fast);
+}
+.contact__socials a:hover { border-color: var(--cyan); color: var(--cyan); }
+
+.contact__form {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md);
+  padding: var(--space-md); display: flex; flex-direction: column; gap: var(--space-sm);
+}
+.field { display: flex; flex-direction: column; gap: 0.4rem; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm); }
+.field label { font-size: 0.88rem; color: var(--text-secondary); }
+.field input, .field textarea, .field select {
+  background: var(--surface-2); border: 1px solid var(--border-strong); border-radius: var(--radius-sm);
+  padding: 0.8rem 1rem; color: var(--text-primary); min-height: 48px;
+  transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+}
+.field textarea { min-height: 110px; resize: vertical; }
+.field input:focus, .field textarea:focus, .field select:focus {
+  border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.15); outline: none;
+}
+.field.has-error input, .field.has-error textarea { border-color: #f87171; }
+.field__error { color: #f87171; font-size: 0.8rem; min-height: 1.1em; }
+
+.contact__submit { position: relative; margin-top: 0.4rem; }
+.btn__spinner {
+  display: none; width: 16px; height: 16px; border-radius: 50%;
+  border: 2px solid rgba(5, 16, 25, 0.35); border-top-color: #051019;
+  animation: spin-cw 700ms linear infinite;
+}
+.contact__submit.is-loading .btn__label { opacity: 0.6; }
+.contact__submit.is-loading .btn__spinner { display: inline-block; }
+.contact__success {
+  color: var(--success); font-size: 0.9rem; min-height: 1.2em; text-align: center;
+}
+
+/* ==========================================================================
+   Arcade (Defend the Orbit mini-game)
+   ========================================================================== */
+#arcade { position: relative; z-index: 2; background: var(--bg); }
+.arcade {
+  position: relative;
+  width: 100%;
+  height: min(70vh, 560px);
+  min-height: 360px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: #030509;
+  overflow: hidden;
+}
+.arcade__canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: none; }
+.arcade__hud {
+  position: absolute;
+  top: var(--space-sm);
+  left: var(--space-sm);
+  right: var(--space-sm);
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-head);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+.arcade__hud strong { color: var(--cyan); margin-left: 0.4em; }
+.arcade__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--space-sm);
+  padding: var(--space-lg);
+  background: rgba(3, 5, 9, 0.85);
+  backdrop-filter: blur(3px);
+  transition: opacity 250ms ease, visibility 250ms ease;
+}
+.arcade__overlay.is-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.arcade__overlay-title { font-family: var(--font-head); font-size: 1.4rem; font-weight: 700; }
+.arcade__overlay-text { color: var(--text-secondary); font-size: 0.92rem; max-width: 40ch; }
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.footer { position: relative; z-index: 2; background: var(--bg); border-top: 1px solid var(--border); padding-top: var(--space-xl); }
+.footer__inner { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: var(--space-lg); padding-bottom: var(--space-lg); }
+.footer__brand p { color: var(--text-secondary); margin-top: var(--space-xs); font-size: 0.92rem; max-width: 32ch; }
+.footer__col { display: flex; flex-direction: column; gap: 0.75rem; }
+.footer__col h4 { font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.3rem; }
+.footer__col a { color: var(--text-secondary); font-size: 0.92rem; transition: color var(--dur-fast); }
+.footer__col a:hover { color: var(--text-primary); }
+
+.footer__bottom {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-block: var(--space-md); border-top: 1px solid var(--border);
+  color: var(--text-muted); font-size: 0.85rem; flex-wrap: wrap; gap: 0.75rem;
+}
+.footer__legal { display: flex; gap: var(--space-sm); }
+.footer__legal a:hover { color: var(--text-secondary); }
+
+/* ==========================================================================
+   Back to top + Cursor glow
+   ========================================================================== */
+.back-to-top {
+  position: fixed; right: var(--space-sm); bottom: var(--space-sm); z-index: var(--z-back-top);
+  width: 48px; height: 48px; border-radius: 50%;
+  background: var(--surface); border: 1px solid var(--border-strong);
+  display: flex; align-items: center; justify-content: center; color: var(--text-primary);
+  opacity: 0; transform: translateY(12px) scale(0.9); pointer-events: none;
+  transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-spring), border-color var(--dur-fast);
+}
+.back-to-top.is-visible { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+.back-to-top:hover { border-color: var(--cyan); color: var(--cyan); }
+.back-to-top svg { width: 20px; height: 20px; }
+/* A ring that expands outward and fades, on its own pseudo-element so it
+   never fights the button's own show/hide transform above. Only runs while
+   the button is actually visible. */
+.back-to-top::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  border: 2px solid var(--cyan);
+  opacity: 0;
+  pointer-events: none;
+}
+.back-to-top.is-visible::before {
+  animation: back-to-top-pulse 2s ease-out infinite;
+}
+@keyframes back-to-top-pulse {
+  0% { transform: scale(1); opacity: 0.65; }
+  100% { transform: scale(1.7); opacity: 0; }
+}
+.back-to-top__label {
+  position: absolute;
+  right: 100%;
+  margin-right: 0.75rem;
+  white-space: nowrap;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  padding: 0.45rem 0.8rem;
+  border-radius: var(--radius-sm);
+  opacity: 0;
+  transform: translateX(6px);
+  pointer-events: none;
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+.back-to-top:hover .back-to-top__label { opacity: 1; transform: translateX(0); }
+
+/* Custom cursor, intro screen: a little ship that points the way it's
+   moving, trailing fading rocket exhaust behind it. */
+.has-ship-cursor,
+.has-ship-cursor * {
+  cursor: none !important;
+}
+
+/* Custom cursor, rest of the site: same ship, but as a plain static cursor
+   icon — no lag, no rotation-on-move, no trail-on-the-icon-itself — just a
+   normal pointer with a different picture. Pre-rotated ~107deg (95 + 7,
+   then a further requested 5) so it points up with a slight tilt, closer
+   to a normal cursor's own angle; canvas is square (32x32) so the rotated
+   shape doesn't clip, and the hotspot (14, 4) tracks the nose to its new
+   rotated position. */
+.has-static-ship-cursor,
+.has-static-ship-cursor * {
+  cursor:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%238b5cf6'/%3E%3Cstop offset='100%25' stop-color='%2322d3ee'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg transform='rotate(-107 16 16)'%3E%3Ccircle cx='4' cy='16' r='4' fill='%2322d3ee' fill-opacity='0.55'/%3E%3Cpath d='M28 16 L4 9 L9 16 L4 23 Z' fill='url(%23g)' stroke='%23eef1f8' stroke-width='0.6' stroke-linejoin='round'/%3E%3C/g%3E%3C/svg%3E")
+    14 4,
+    auto;
+}
+/* Belt-and-suspenders alongside the JS teardown — the intro's animated,
+   rotating ship element should never paint once the static cursor takes
+   over (the trail layer stays: it's reused for the home-page trail below). */
+.has-static-ship-cursor #cursor-ship {
+  display: none;
+}
+
+.cursor-ship {
+  position: fixed;
+  top: 0; left: 0;
+  width: 32px; height: 20px;
+  margin: -10px 0 0 -16px;
+  z-index: var(--z-cursor);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out);
+  will-change: transform;
+}
+.cursor-ship.is-active { opacity: 1; }
+/* Click-to-enter: the ship gets pulled toward the center and shrinks away,
+   like it's being sucked into the black hole that's about to swallow the
+   screen — rather than exploding apart. Only transform/opacity animate here,
+   so the ship's own colored glow (cyan, or red once the ring game is won —
+   see body.is-triumphant .cursor-ship__svg) keeps showing through untouched. */
+.cursor-ship.is-sucked-in {
+  animation: ship-suck-in 900ms cubic-bezier(0.55, 0, 1, 0.45) forwards;
+}
+@keyframes ship-suck-in {
+  0% {
+    transform: translate(var(--ship-x, 0), var(--ship-y, 0)) rotate(var(--ship-angle, 0deg));
+    opacity: 1;
+  }
+  100% {
+    transform: translate(50vw, 50vh) scale(0.04) rotate(calc(var(--ship-angle, 0deg) + 540deg));
+    opacity: 0;
+  }
+}
+
+/* Intro screen only: a small precise dot marking the exact cursor
+   position (no lag), layered under the ship's own trailing motion. */
+.cursor-dot {
+  position: fixed;
+  top: 0; left: 0;
+  width: 8px; height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  background: #3b82f6;
+  box-shadow: 0 0 6px rgba(59, 130, 246, 0.9), 0 0 12px rgba(59, 130, 246, 0.5);
+  z-index: calc(var(--z-cursor) + 1);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out);
+  will-change: transform;
+}
+.cursor-dot.is-active { opacity: 1; }
+.cursor-dot.is-sucked-in {
+  animation: dot-suck-in 900ms cubic-bezier(0.55, 0, 1, 0.45) forwards;
+}
+@keyframes dot-suck-in {
+  0% {
+    transform: translate(var(--dot-x, 0), var(--dot-y, 0)) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(50vw, 50vh) scale(0);
+    opacity: 0;
+  }
+}
+/* Rest of the site only: a ring that pulses outward from the cursor's last
+   position once it's been idle for a couple seconds — a gentle "still here"
+   signal rather than the cursor just sitting dead still. */
+.cursor-idle-pulse {
+  position: fixed;
+  top: 0; left: 0;
+  width: 10px; height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(244, 63, 94, 0.8);
+  z-index: var(--z-cursor);
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.cursor-idle-pulse.is-pulsing {
+  animation: cursor-idle-pulse-ring 1s ease-out infinite;
+}
+@keyframes cursor-idle-pulse-ring {
+  0% { transform: translate(var(--idle-x, 0), var(--idle-y, 0)) scale(1); opacity: 0.8; }
+  100% { transform: translate(var(--idle-x, 0), var(--idle-y, 0)) scale(3.2); opacity: 0; }
+}
+
+.cursor-ship__svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.55));
+  transition: filter 400ms ease-out;
+}
+.cursor-ship__glow {
+  fill: var(--cyan);
+  opacity: 0.7;
+  filter: blur(3px);
+  animation: ship-flicker 0.6s ease-in-out infinite alternate;
+  transition: fill 400ms ease-out;
+}
+@keyframes ship-flicker {
+  from { opacity: 0.45; }
+  to   { opacity: 0.9; }
+}
+
+/* Ring mini-game complete: the ship itself turns red too. */
+#shipGrad stop { transition: stop-color 400ms ease-out; }
+body.is-triumphant #shipGrad stop:first-child { stop-color: #fb7185; }
+body.is-triumphant #shipGrad stop:last-child { stop-color: #f43f5e; }
+body.is-triumphant .cursor-ship__glow { fill: #f43f5e; }
+body.is-triumphant .cursor-ship__svg { filter: drop-shadow(0 0 6px rgba(244, 63, 94, 0.55)); }
+
+.cursor-trail {
+  position: fixed;
+  inset: 0;
+  /* Negative by default so the home-page ambient trail sits behind normal
+     page text. While the intro splash is up, .is-above-intro lifts it
+     above the intro's opaque overlay (z-index 9000) so the rocket trail
+     is actually visible there. */
+  z-index: -1;
+  pointer-events: none;
+}
+.cursor-trail.is-above-intro { z-index: 9998; }
+.trail-particle {
+  position: absolute;
+  top: 0; left: 0;
+  border-radius: 50%;
+  background-color: #fff0ee;
+  box-shadow: 0 0 10px rgba(244, 63, 94, 0.9), 0 0 22px rgba(244, 63, 94, 0.5);
+  transform: translate(-50%, -50%) scale(0.7);
+  opacity: 0;
+  filter: blur(0px);
+}
+/* Flame → smoke lifecycle for the intro-screen-only rocket trail: white-hot
+   spark, a quick red flame, then it turns to smoke early and spends most
+   of its (long) life slowly drifting and fading. Matches the 8000ms
+   particle lifetime driven from js/main.js. */
+.trail-particle.is-fading {
+  animation: trail-life 8000ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes trail-life {
+  0% {
+    opacity: 0.95;
+    background-color: #fff0ee;
+    box-shadow: 0 0 10px rgba(244, 63, 94, 0.9), 0 0 22px rgba(244, 63, 94, 0.5);
+    transform: translate(-50%, -50%) scale(0.7);
+    filter: blur(0px);
+  }
+  8% {
+    opacity: 0.92;
+    background-color: #f43f5e;
+    box-shadow: 0 0 12px rgba(244, 63, 94, 0.8), 0 0 24px rgba(220, 38, 60, 0.4);
+    transform: translate(-50%, -50%) scale(1.05);
+    filter: blur(0.5px);
+  }
+  18% {
+    opacity: 0.75;
+    background-color: #9c3345;
+    box-shadow: 0 0 6px rgba(156, 51, 69, 0.35);
+    transform: translate(-50%, -50%) scale(1.7);
+    filter: blur(1.5px);
+  }
+  32% {
+    opacity: 0.55;
+    background-color: #d9d9dd;
+    box-shadow: none;
+    transform: translate(-50%, -50%) scale(2.4);
+    filter: blur(2.5px);
+  }
+  100% {
+    opacity: 0;
+    background-color: #eeeef0;
+    box-shadow: none;
+    transform: translate(-50%, -50%) scale(4.4);
+    filter: blur(6px);
+  }
+}
+
+/* Same flame → smoke lifecycle, but in the ship's default blue/violet
+   palette — used until all 5 rings are hit, when spawnTrailParticle()
+   switches new particles over to the red .is-fading version above. */
+.trail-particle.is-fading-blue {
+  animation: trail-life-blue 8000ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes trail-life-blue {
+  0% {
+    opacity: 0.95;
+    background-color: #eaf9ff;
+    box-shadow: 0 0 10px rgba(34, 211, 238, 0.9), 0 0 22px rgba(139, 92, 246, 0.5);
+    transform: translate(-50%, -50%) scale(0.7);
+    filter: blur(0px);
+  }
+  8% {
+    opacity: 0.92;
+    background-color: #22d3ee;
+    box-shadow: 0 0 12px rgba(34, 211, 238, 0.8), 0 0 24px rgba(139, 92, 246, 0.4);
+    transform: translate(-50%, -50%) scale(1.05);
+    filter: blur(0.5px);
+  }
+  18% {
+    opacity: 0.75;
+    background-color: #4c6f9c;
+    box-shadow: 0 0 6px rgba(76, 111, 156, 0.35);
+    transform: translate(-50%, -50%) scale(1.7);
+    filter: blur(1.5px);
+  }
+  32% {
+    opacity: 0.55;
+    background-color: #d9d9dd;
+    box-shadow: none;
+    transform: translate(-50%, -50%) scale(2.4);
+    filter: blur(2.5px);
+  }
+  100% {
+    opacity: 0;
+    background-color: #eeeef0;
+    box-shadow: none;
+    transform: translate(-50%, -50%) scale(4.4);
+    filter: blur(6px);
+  }
+}
+
+/* Home page (rest of the site): a subtle ambient trail in the site's own
+   brand colors — cyan drifting to violet, the same pair used in the hero's
+   background glows — rather than the intro's fire/smoke. Short-lived since
+   it's active continuously while browsing, not a one-time flourish. */
+.trail-particle.is-home-fading {
+  animation: trail-life-home 1300ms ease-out forwards;
+}
+/* Overrides the fade above for an instant wipe when the cursor moves over
+   the header, footer, or any link/button — the trail shouldn't linger
+   across clickable chrome. */
+.trail-particle.is-dismissing {
+  animation: none !important;
+  transition: opacity 90ms ease-out, transform 90ms ease-out;
+  opacity: 0 !important;
+  transform: translate(-50%, -50%) scale(0.2);
+}
+@keyframes trail-life-home {
+  0% {
+    opacity: 0.85;
+    background-color: #22d3ee;
+    box-shadow: 0 0 8px rgba(34, 211, 238, 0.75), 0 0 16px rgba(34, 211, 238, 0.35);
+    transform: translate(-50%, -50%) scale(0.9);
+    filter: blur(0px);
+  }
+  55% {
+    opacity: 0.5;
+    background-color: #8b5cf6;
+    box-shadow: 0 0 8px rgba(139, 92, 246, 0.45);
+    transform: translate(-50%, -50%) scale(1.3);
+    filter: blur(1px);
+  }
+  100% {
+    opacity: 0;
+    background-color: #8b5cf6;
+    box-shadow: none;
+    transform: translate(-50%, -50%) scale(0.4);
+    filter: blur(2px);
+  }
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .process { grid-template-columns: repeat(3, 1fr); row-gap: var(--space-lg); }
+  .process::before { display: none; }
+  .contact { grid-template-columns: 1fr; }
+  .footer__inner { grid-template-columns: 1fr 1fr; }
+  .cursor-ship, .cursor-trail, .cursor-dot, .back-to-top { display: none; }
+}
+
+@media (max-width: 860px) {
+  .nav__links, .nav__cta, .nav__replay { display: none; }
+  .nav__toggle { display: flex; }
+  .grid--work { grid-template-columns: 1fr; }
+  .grid--pricing { grid-template-columns: 1fr; }
+  .price-card--popular { transform: none; }
+  .price-card--popular:hover { transform: translateY(-6px); }
+  .stats__grid { grid-template-columns: repeat(2, 1fr); }
+  .process { grid-template-columns: 1fr 1fr; }
+  .field-row { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 560px) {
+  .grid--services { grid-template-columns: 1fr; }
+  .stats__grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-lg) var(--space-sm); }
+  .process { grid-template-columns: 1fr; }
+  .footer__inner { grid-template-columns: 1fr; gap: var(--space-md); }
+  .hero__actions { flex-direction: column; align-items: stretch; }
+  .hero__actions .btn { width: 100%; }
+  .intro__wordmark { letter-spacing: 0.25em; }
+}
+
+/* ==========================================================================
+   Reduced Motion
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  [data-reveal] { opacity: 1; transform: none; }
+  .marquee__track { animation: none; }
+  .cursor-ship, .cursor-trail, .cursor-dot, .intro-rings, .intro-red-pulse { display: none; }
+  .has-ship-cursor, .has-ship-cursor * { cursor: auto !important; }
+}

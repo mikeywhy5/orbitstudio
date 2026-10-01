@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orbit Studio &mdash; Coming Soon</title>
+<meta name="description" content="Orbit Studio is launching soon. Custom-built websites, designed and coded from the ground up. Based in the Fraser Valley, B.C. — serving customers worldwide.">
+
+<!-- Deliberately a single self-contained file (styles and script inline, no
+     local asset references). A holding page usually goes up on its own at
+     the domain root before the rest of the site exists, so it shouldn't
+     depend on css/, js/ or any image file being uploaded alongside it. -->
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='44' fill='none' stroke='%2322d3ee' stroke-width='6'/%3E%3Ccircle cx='50' cy='10' r='8' fill='%238b5cf6'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #05070d;
+    --surface: #10141f;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.16);
+    --text-primary: #eef1f8;
+    --text-secondary: #9aa3ba;
+    --text-muted: #6b7386;
+    --cyan: #22d3ee;
+    --violet: #8b5cf6;
+    --gradient: linear-gradient(135deg, var(--cyan), var(--violet));
+    --font-head: "Space Grotesk", "Inter", system-ui, sans-serif;
+    --font-body: "Inter", system-ui, sans-serif;
+    --radius-full: 999px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.25rem;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  #stars { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; }
+  .glow {
+    position: fixed; border-radius: 50%; filter: blur(90px); opacity: 0.5;
+    pointer-events: none; z-index: 0;
+  }
+  .glow--a { width: 420px; height: 420px; background: rgba(34, 211, 238, 0.22); top: -120px; left: -100px; }
+  .glow--b { width: 460px; height: 460px; background: rgba(139, 92, 246, 0.2); bottom: -160px; right: -120px; }
+
+  .wrap { position: relative; z-index: 1; width: 100%; max-width: 560px; text-align: center; }
+
+  .mark { width: 92px; margin: 0 auto 1.75rem; display: block; }
+  .mark svg { width: 100%; height: auto; display: block; }
+  .mark__letter { font-family: var(--font-head); font-size: 62px; font-weight: 700; fill: var(--text-primary); }
+  .ring-spin { transform-origin: 100px 100px; animation: spin 26s linear infinite; }
+
+  .wordmark {
+    font-family: var(--font-head);
+    font-size: clamp(1.25rem, 4vw, 1.6rem);
+    font-weight: 700;
+    letter-spacing: 0.34em;
+    padding-left: 0.34em; /* optical centering against the letter-spacing */
+    margin: 0 0 2.25rem;
+  }
+
+  h1 {
+    font-family: var(--font-head);
+    font-size: clamp(2.1rem, 8vw, 3.4rem);
+    font-weight: 700;
+    line-height: 1.08;
+    margin: 0 0 1rem;
+    letter-spacing: -0.015em;
+  }
+  h1 .accent {
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .lede { color: var(--text-secondary); font-size: 1.02rem; line-height: 1.6; margin: 0 auto 2.25rem; max-width: 44ch; }
+
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+
+  /* Decorative countdown — there's no launch date yet, so the digits just
+     re-randomise on a steady interval to read as "live" (see the script),
+     matching the countdown on the Requiem work card. */
+  .countdown { margin: 0 0 2.25rem; }
+  .countdown__row { display: flex; align-items: flex-start; justify-content: center; gap: 0.5rem; }
+  .countdown__unit { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; min-width: 3.1rem; }
+  .countdown__num {
+    font-family: "Courier New", ui-monospace, monospace;
+    font-weight: 700;
+    font-size: clamp(1.7rem, 6vw, 2.5rem);
+    font-variant-numeric: tabular-nums; /* stops the digits jittering as they tick */
+    color: var(--cyan);
+    text-shadow: 0 0 10px rgba(34, 211, 238, 0.55), 0 0 24px rgba(34, 211, 238, 0.25);
+    line-height: 1;
+  }
+  .countdown__label {
+    font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .countdown__sep {
+    font-family: "Courier New", ui-monospace, monospace;
+    font-weight: 700;
+    font-size: clamp(1.7rem, 6vw, 2.5rem);
+    color: rgba(34, 211, 238, 0.35);
+    line-height: 1;
+    animation: blink 1s step-end infinite;
+  }
+  .countdown__live {
+    font-family: var(--font-head); font-weight: 600;
+    font-size: 1.15rem; color: var(--cyan); margin: 0;
+  }
+  @keyframes blink { 50% { opacity: 0.2; } }
+
+  /* Hidden unless NOTIFY_ENDPOINT is configured — see the note in the script.
+     A signup box that silently bins the address is worse than no box. */
+  .notify { display: none; margin-bottom: 2.25rem; }
+  .notify.is-enabled { display: block; }
+  .notify__form { display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center; }
+  .notify__input {
+    flex: 1 1 220px; min-width: 0; padding: 0.8rem 1.1rem;
+    background: rgba(5, 7, 13, 0.7); border: 1px solid var(--border-strong);
+    border-radius: var(--radius-full); color: var(--text-primary);
+    font-family: var(--font-body); font-size: 0.95rem;
+    transition: border-color 180ms ease;
+  }
+  .notify__input::placeholder { color: var(--text-muted); }
+  .notify__input:focus { outline: none; border-color: var(--cyan); }
+  .notify__btn {
+    flex: 0 0 auto; padding: 0.8rem 1.6rem; border: none; border-radius: var(--radius-full);
+    background: var(--gradient); color: #051019;
+    font-family: var(--font-head); font-weight: 600; font-size: 0.95rem; cursor: pointer;
+    transition: opacity 180ms ease;
+  }
+  .notify__btn:hover { opacity: 0.9; }
+  .notify__btn:disabled { opacity: 0.6; cursor: default; }
+  .notify__msg { margin: 0.75rem 0 0; font-size: 0.88rem; min-height: 1.2em; color: var(--text-secondary); }
+  .notify__msg.is-error { color: #f87171; }
+  .notify__msg.is-ok { color: #34d399; }
+
+  .meta { color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; margin: 0; }
+
+  /* --- Ship cursor -------------------------------------------------------
+     Same effect as the site's intro screen: a ship that lags behind the
+     real pointer and turns to face the way it's travelling, leaving a
+     rocket trail. Reproduced inline rather than pulled from css/styles.css
+     so this page stays deployable on its own. */
+  .has-ship-cursor, .has-ship-cursor * { cursor: none !important; }
+
+  .cursor-ship {
+    position: fixed; top: 0; left: 0;
+    width: 32px; height: 20px;
+    margin: -10px 0 0 -16px;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 320ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+  }
+  .cursor-ship.is-active { opacity: 1; }
+  .cursor-ship__svg {
+    width: 100%; height: 100%; overflow: visible;
+    filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.55));
+  }
+  .cursor-ship__glow { fill: var(--cyan); opacity: 0.7; }
+
+  .cursor-dot {
+    position: fixed; top: 0; left: 0;
+    width: 8px; height: 8px;
+    margin: -4px 0 0 -4px;
+    border-radius: 50%;
+    background: #3b82f6;
+    box-shadow: 0 0 6px rgba(59, 130, 246, 0.9), 0 0 12px rgba(59, 130, 246, 0.5);
+    z-index: 10000;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 320ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+  }
+  .cursor-dot.is-active { opacity: 1; }
+
+  /* Sits above the background starfield but below .wrap, so the exhaust
+     never cuts across the headline the way it would at a higher layer. */
+  .cursor-trail { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  .trail-particle {
+    position: absolute; top: 0; left: 0;
+    border-radius: 50%;
+    background-color: #eaf9ff;
+    transform: translate(-50%, -50%) scale(0.7);
+    opacity: 0;
+  }
+  .trail-particle.is-fading-blue { animation: trail-life-blue 8000ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  @keyframes trail-life-blue {
+    0% {
+      opacity: 0.95; background-color: #eaf9ff;
+      box-shadow: 0 0 10px rgba(34, 211, 238, 0.9), 0 0 22px rgba(139, 92, 246, 0.5);
+      transform: translate(-50%, -50%) scale(0.7); filter: blur(0px);
+    }
+    8% {
+      opacity: 0.92; background-color: #22d3ee;
+      box-shadow: 0 0 12px rgba(34, 211, 238, 0.8), 0 0 24px rgba(139, 92, 246, 0.4);
+      transform: translate(-50%, -50%) scale(1.05); filter: blur(0.5px);
+    }
+    18% {
+      opacity: 0.75; background-color: #4c6f9c;
+      box-shadow: 0 0 6px rgba(76, 111, 156, 0.35);
+      transform: translate(-50%, -50%) scale(1.7); filter: blur(1.5px);
+    }
+    32% {
+      opacity: 0.55; background-color: #d9d9dd; box-shadow: none;
+      transform: translate(-50%, -50%) scale(2.4); filter: blur(2.5px);
+    }
+    100% {
+      opacity: 0; background-color: #eeeef0; box-shadow: none;
+      transform: translate(-50%, -50%) scale(4.4); filter: blur(6px);
+    }
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ring-spin { animation: none; }
+    .cursor-ship, .cursor-dot, .cursor-trail { display: none; }
+    .has-ship-cursor, .has-ship-cursor * { cursor: auto !important; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="stars" aria-hidden="true"></canvas>
+<div class="glow glow--a" aria-hidden="true"></div>
+<div class="glow glow--b" aria-hidden="true"></div>
+
+<div class="cursor-trail" id="cursor-trail" aria-hidden="true"></div>
+<div class="cursor-ship" id="cursor-ship" aria-hidden="true">
+  <svg viewBox="0 0 32 20" class="cursor-ship__svg">
+    <defs>
+      <linearGradient id="shipGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#8b5cf6"/>
+        <stop offset="100%" stop-color="#22d3ee"/>
+      </linearGradient>
+    </defs>
+    <circle class="cursor-ship__glow" cx="4" cy="10" r="4"/>
+    <path d="M28 10 L4 3 L9 10 L4 17 Z" fill="url(#shipGrad)" stroke="#eef1f8" stroke-width="0.6" stroke-linejoin="round"/>
+  </svg>
+</div>
+<div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+
+<main class="wrap">
+  <span class="mark" aria-hidden="true">
+    <svg viewBox="0 0 200 200">
+      <defs>
+        <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#22d3ee"/>
+          <stop offset="100%" stop-color="#8b5cf6"/>
+        </linearGradient>
+      </defs>
+      <g class="ring-spin">
+        <circle cx="100" cy="100" r="92" fill="none" stroke="url(#g)" stroke-width="1.5" stroke-dasharray="2 10" stroke-linecap="round"/>
+        <circle cx="100" cy="8" r="5" fill="#22d3ee"/>
+      </g>
+      <circle cx="100" cy="100" r="60" fill="#05070d" stroke="url(#g)" stroke-width="2"/>
+      <text x="100" y="122" text-anchor="middle" class="mark__letter">O</text>
+    </svg>
+  </span>
+
+  <p class="wordmark">ORBIT STUDIO</p>
+
+  <h1>Something new is <span class="accent">launching soon</span></h1>
+
+  <p class="lede">
+    We build custom websites from the ground up. No templates, no page
+    builders, no recycled code. The new site is on its way.
+  </p>
+
+  <div class="countdown" id="countdown">
+    <p class="sr-only" id="countdown-sr"></p>
+    <div class="countdown__row" id="countdown-row" aria-hidden="true">
+      <span class="countdown__unit"><span class="countdown__num" id="cd-days">00</span><span class="countdown__label">Days</span></span>
+      <span class="countdown__sep">:</span>
+      <span class="countdown__unit"><span class="countdown__num" id="cd-hrs">00</span><span class="countdown__label">Hrs</span></span>
+      <span class="countdown__sep">:</span>
+      <span class="countdown__unit"><span class="countdown__num" id="cd-min">00</span><span class="countdown__label">Min</span></span>
+      <span class="countdown__sep">:</span>
+      <span class="countdown__unit"><span class="countdown__num" id="cd-sec">00</span><span class="countdown__label">Sec</span></span>
+    </div>
+  </div>
+
+  <div class="notify" id="notify">
+    <form class="notify__form" id="notify-form" novalidate>
+      <input
+        type="email"
+        id="notify-email"
+        class="notify__input"
+        placeholder="you@yourbusiness.com"
+        aria-label="Your email address"
+        autocomplete="email"
+        required
+      >
+      <button type="submit" class="notify__btn" id="notify-btn">Notify Me</button>
+    </form>
+    <p class="notify__msg" id="notify-msg" role="status" aria-live="polite"></p>
+  </div>
+
+  <p class="meta">
+    Based in the Fraser Valley, B.C. Canada &mdash; serving customers worldwide.<br>
+    &copy; <span id="year"></span> Orbit Studio
+  </p>
+</main>
+
+<script>
+(() => {
+  "use strict";
+
+  /* ------------------------------------------------------------------
+     Where "Notify Me" signups are sent. Empty by default, and while it's
+     empty the signup box stays HIDDEN rather than collecting addresses
+     that go nowhere — a form that promises to notify someone and then
+     discards their email is worse than not offering one. Paste a
+     Formspree form URL in and the box appears by itself.
+     ------------------------------------------------------------------ */
+  const NOTIFY_ENDPOINT = ""; // e.g. "https://formspree.io/f/abcdwxyz"
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  /* ------------------------------------------------------------------
+     Countdown — decorative, same approach as the Requiem work card on the
+     main site: there's no launch date, so every digit just re-randomises
+     on a steady interval to read as "live" rather than counting toward a
+     real moment. The digits are aria-hidden and the screen-reader line
+     stays generic, so nothing announces a launch time that doesn't exist.
+     ------------------------------------------------------------------ */
+  (function countdown() {
+    const nums = [
+      document.getElementById("cd-days"),
+      document.getElementById("cd-hrs"),
+      document.getElementById("cd-min"),
+      document.getElementById("cd-sec"),
+    ];
+    if (!nums[0]) return;
+
+    document.getElementById("countdown-sr").textContent = "Launching soon.";
+
+    const maxes = [99, 23, 59, 59]; // Days, Hrs, Min, Sec — real-world ranges
+    const pad = (n) => String(n).padStart(2, "0");
+
+    function randomize() {
+      nums.forEach((el, i) => {
+        el.textContent = pad(Math.floor(Math.random() * (maxes[i] + 1)));
+      });
+    }
+
+    randomize();
+    setInterval(randomize, 900);
+  })();
+
+  const notify = document.getElementById("notify");
+  if (NOTIFY_ENDPOINT) {
+    notify.classList.add("is-enabled");
+
+    const form = document.getElementById("notify-form");
+    const input = document.getElementById("notify-email");
+    const btn = document.getElementById("notify-btn");
+    const msg = document.getElementById("notify-msg");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = input.value.trim();
+      msg.className = "notify__msg";
+
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        msg.textContent = "Please enter a valid email address.";
+        msg.classList.add("is-error");
+        input.focus();
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = "Sending…";
+      try {
+        const res = await fetch(NOTIFY_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({ email, source: "Coming soon page" }),
+        });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        // Only claimed once the send actually succeeded.
+        form.style.display = "none";
+        msg.textContent = "You're on the list — we'll be in touch at launch.";
+        msg.classList.add("is-ok");
+      } catch (err) {
+        msg.textContent = "Something went wrong. Please email or call us instead.";
+        msg.classList.add("is-error");
+        btn.disabled = false;
+        btn.textContent = "Notify Me";
+      }
+    });
+  } else {
+    console.warn(
+      "[orbit] NOTIFY_ENDPOINT is empty in coming-soon.html — the signup box is " +
+        "hidden so nobody's address gets collected and dropped. Add a form URL to enable it."
+    );
+  }
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const finePointer = window.matchMedia("(pointer: fine)").matches;
+
+  /* ------------------------------------------------------------------
+     Ship cursor — the same chase effect as the site's intro screen: the
+     ship eases toward the real pointer rather than tracking it exactly,
+     rotates to face its direction of travel, and drops rocket exhaust
+     behind it. Desktop pointers only (there's nothing to chase on a
+     touchscreen) and off under reduced-motion.
+     ------------------------------------------------------------------ */
+  if (finePointer && !reduceMotion) {
+    const ship = document.getElementById("cursor-ship");
+    const dot = document.getElementById("cursor-dot");
+    const trail = document.getElementById("cursor-trail");
+
+    document.body.classList.add("has-ship-cursor");
+
+    let targetX = window.innerWidth / 2;
+    let targetY = window.innerHeight / 2;
+    let curX = targetX, curY = targetY;
+    let curAngle = 0, targetAngle = 0;
+    let lastEmitX = curX, lastEmitY = curY;
+    let active = false;
+
+    const TRAIL_LIFETIME = 8000; // matches the trail-life-blue duration above
+    const MAX_PARTICLES = 140;
+    let particleCount = 0;
+
+    // Shortest-path interpolation so the ship never spins the long way round.
+    const angleLerp = (a, b, t) => {
+      const diff = ((((b - a) % 360) + 540) % 360) - 180;
+      return a + diff * t;
+    };
+
+    function spawnTrailParticle(x, y, headingDeg) {
+      if (particleCount >= MAX_PARTICLES) return;
+      const rad = ((headingDeg + 180) * Math.PI) / 180; // point back, opposite of travel
+      const perp = rad + Math.PI / 2;
+      const jitter = (Math.random() - 0.5) * 6;
+      const px = x + Math.cos(rad) * 13 + Math.cos(perp) * jitter;
+      const py = y + Math.sin(rad) * 13 + Math.sin(perp) * jitter;
+
+      const p = document.createElement("span");
+      p.className = "trail-particle";
+      p.style.left = px + "px";
+      p.style.top = py + "px";
+      const size = 4 + Math.random() * 4;
+      p.style.width = size + "px";
+      p.style.height = size + "px";
+      trail.appendChild(p);
+      particleCount++;
+
+      requestAnimationFrame(() => p.classList.add("is-fading-blue"));
+      setTimeout(() => { p.remove(); particleCount--; }, TRAIL_LIFETIME);
+    }
+
+    document.addEventListener("mousemove", (e) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
+      // The dot marks the exact live pointer position — no lag, unlike the ship.
+      dot.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+      if (!active) {
+        active = true;
+        ship.classList.add("is-active");
+        dot.classList.add("is-active");
+      }
+    });
+    document.addEventListener("mouseleave", () => {
+      active = false;
+      ship.classList.remove("is-active");
+      dot.classList.remove("is-active");
+    });
+
+    (function shipFrame() {
+      const dx = targetX - curX;
+      const dy = targetY - curY;
+      curX += dx * 0.2;
+      curY += dy * 0.2;
+
+      if (Math.hypot(dx, dy) > 0.6) targetAngle = (Math.atan2(dy, dx) * 180) / Math.PI;
+      curAngle = angleLerp(curAngle, targetAngle, 0.2);
+
+      ship.style.transform = `translate(${curX}px, ${curY}px) rotate(${curAngle}deg)`;
+
+      if (active && Math.hypot(curX - lastEmitX, curY - lastEmitY) > 10) {
+        spawnTrailParticle(curX, curY, curAngle);
+        lastEmitX = curX;
+        lastEmitY = curY;
+      }
+      requestAnimationFrame(shipFrame);
+    })();
+  }
+
+  /* ------------------------------------------------------------------
+     Drifting starfield, same visual language as the main site's hero.
+     Skipped entirely under prefers-reduced-motion.
+     ------------------------------------------------------------------ */
+  const canvas = document.getElementById("stars");
+  if (reduceMotion) {
+    canvas.style.display = "none";
+    return;
+  }
+
+  const ctx = canvas.getContext("2d");
+  let w = 0, h = 0, stars = [], rafId = null;
+
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = window.innerWidth;
+    h = window.innerHeight;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    // Density scales with area so it looks the same on a phone and a monitor.
+    const count = Math.round((w * h) / 14000);
+    stars = Array.from({ length: count }, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: Math.random() * 1.3 + 0.4,
+      vx: (Math.random() - 0.5) * 0.12,
+      vy: (Math.random() - 0.5) * 0.12,
+      alt: Math.random() > 0.75,
+    }));
+  }
+
+  function frame() {
+    ctx.clearRect(0, 0, w, h);
+
+    for (const s of stars) {
+      s.x += s.vx;
+      s.y += s.vy;
+      if (s.x < 0) s.x = w; else if (s.x > w) s.x = 0;
+      if (s.y < 0) s.y = h; else if (s.y > h) s.y = 0;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = s.alt ? "rgba(139, 92, 246, 0.9)" : "rgba(34, 211, 238, 0.75)";
+      ctx.fill();
+    }
+
+    // Constellation lines between near neighbours.
+    for (let i = 0; i < stars.length; i++) {
+      for (let j = i + 1; j < stars.length; j++) {
+        const dx = stars[i].x - stars[j].x;
+        const dy = stars[i].y - stars[j].y;
+        const dist = Math.hypot(dx, dy);
+        if (dist < 130) {
+          ctx.beginPath();
+          ctx.moveTo(stars[i].x, stars[i].y);
+          ctx.lineTo(stars[j].x, stars[j].y);
+          ctx.strokeStyle = "rgba(34, 211, 238, " + (0.14 * (1 - dist / 130)).toFixed(3) + ")";
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+      }
+    }
+
+    rafId = requestAnimationFrame(frame);
+  }
+
+  window.addEventListener("resize", resize);
+  resize();
+  frame();
+
+  // Stop burning frames while the tab is in the background.
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      cancelAnimationFrame(rafId);
+    } else if (!rafId || document.visibilityState === "visible") {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(frame);
+    }
+  });
+})();
+</script>
+</body>
+</html>

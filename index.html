@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orbit Studio &mdash; Websites That Bring You Customers</title>
+<meta name="description" content="Orbit Studio designs and builds high-performance websites, then drives real customers to them. Web design, SEO, and lead generation for growing businesses.">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='44' fill='none' stroke='%2322d3ee' stroke-width='6'/%3E%3Ccircle cx='50' cy='10' r='8' fill='%238b5cf6'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="no-scroll">
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<!-- ============ INTRO GATE ============ -->
+<div id="intro" class="intro">
+  <canvas id="intro-canvas" class="intro__canvas" aria-hidden="true"></canvas>
+  <div class="intro__horizon" aria-hidden="true"></div>
+  <div class="intro__content">
+    <button type="button" id="intro-enter" class="intro__logo-btn" aria-label="Enter the Orbit Studio website">
+      <span class="orbit-logo orbit-logo--intro">
+        <svg viewBox="0 0 200 200" class="orbit-logo__svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="orbitGradIntro" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#22d3ee"/>
+              <stop offset="100%" stop-color="#8b5cf6"/>
+            </linearGradient>
+          </defs>
+          <g class="ring ring--outer">
+            <circle cx="100" cy="100" r="92" fill="none" stroke="url(#orbitGradIntro)" stroke-width="1.5" stroke-dasharray="2 10" stroke-linecap="round"/>
+          </g>
+          <g class="ring ring--mid">
+            <circle cx="100" cy="100" r="72" fill="none" stroke="url(#orbitGradIntro)" stroke-width="1" stroke-opacity="0.5" stroke-dasharray="1 8" stroke-linecap="round"/>
+          </g>
+          <g class="ring ring--orbit-a">
+            <circle cx="100" cy="100" r="82" fill="none" stroke="none"/>
+            <circle cx="100" cy="18" r="5" fill="#22d3ee" class="orbit-dot"/>
+          </g>
+          <g class="ring ring--orbit-b">
+            <circle cx="100" cy="100" r="60" fill="none" stroke="none"/>
+            <circle cx="100" cy="40" r="3.5" fill="#8b5cf6" class="orbit-dot"/>
+          </g>
+          <circle cx="100" cy="100" r="46" fill="#05070d" stroke="url(#orbitGradIntro)" stroke-width="1.5"/>
+          <text x="100" y="118" text-anchor="middle" class="orbit-logo__mark">O</text>
+        </svg>
+      </span>
+      <span class="intro__wordmark">
+        <span class="intro__wordmark-default">ORBIT</span>
+        <span class="intro__wordmark-win">CONGRATULATIONS</span>
+      </span>
+      <span class="intro__tagline">
+        <span class="intro__tagline-default">Launch your business into orbit</span>
+        <span class="intro__tagline-win">You've unlocked a reward &mdash; enter your email below to claim it</span>
+      </span>
+      <span class="intro__cta">
+        <span class="intro__cta-ring"></span>
+        <span class="intro__cta-text">
+          <span class="intro__cta-default">Click to Enter</span>
+          <span class="intro__cta-skip">Skip &amp; Enter Site</span>
+        </span>
+      </span>
+    </button>
+
+    <!-- Deliberately a sibling of the button, not inside it: a form control
+         can't live inside a <button> (invalid HTML, and the button would
+         swallow the clicks and keystrokes meant for the input). -->
+    <div class="intro__claim" id="intro-claim">
+      <form class="intro__claim-form" id="intro-claim-form" novalidate>
+        <input
+          type="email"
+          id="intro-claim-email"
+          class="intro__claim-input"
+          placeholder="you@yourbusiness.com"
+          aria-label="Your email address"
+          autocomplete="email"
+          required
+        >
+        <button type="submit" class="intro__claim-btn" id="intro-claim-submit">Unlock Reward</button>
+      </form>
+      <p class="intro__claim-msg" id="intro-claim-msg" role="alert" aria-live="polite"></p>
+    </div>
+
+    <div class="intro__reward" id="intro-reward">
+      <p class="intro__reward-amount"><strong>25% OFF</strong> your first website</p>
+      <p class="intro__reward-code">Discount code <strong>6RINGS</strong></p>
+      <p class="intro__reward-note">Mention this code when you email or call us and we'll apply it to your quote.</p>
+    </div>
+  </div>
+
+  <div class="intro-rings" id="intro-rings" aria-hidden="true">
+    <span class="intro-ring" data-ring style="--ring-x: 18%; --ring-y: 24%;"></span>
+    <span class="intro-ring" data-ring style="--ring-x: 82%; --ring-y: 20%;"></span>
+    <span class="intro-ring" data-ring style="--ring-x: 14%; --ring-y: 78%;"></span>
+    <span class="intro-ring" data-ring style="--ring-x: 86%; --ring-y: 80%;"></span>
+    <span class="intro-ring" data-ring style="--ring-x: 50%; --ring-y: 92%;"></span>
+    <span class="intro-ring" data-ring style="--ring-x: 50%; --ring-y: 8%;"></span>
+  </div>
+  <div class="intro-red-pulse" id="intro-red-pulse" aria-hidden="true"></div>
+</div>
+
+<!-- ============ MAIN SITE ============ -->
+<div id="site" class="site" aria-hidden="true" inert>
+
+  <header class="nav" id="nav">
+    <div class="nav__inner container">
+      <a href="#home" class="nav__brand" aria-label="Orbit Studio home">
+        <span class="orbit-logo orbit-logo--nav">
+          <svg viewBox="0 0 200 200" class="orbit-logo__svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="orbitGradNav" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#22d3ee"/>
+                <stop offset="100%" stop-color="#8b5cf6"/>
+              </linearGradient>
+            </defs>
+            <g class="ring ring--outer">
+              <circle cx="100" cy="100" r="92" fill="none" stroke="url(#orbitGradNav)" stroke-width="3" stroke-dasharray="2 14"/>
+            </g>
+            <g class="ring ring--orbit-a">
+              <circle cx="100" cy="18" r="9" fill="#22d3ee" class="orbit-dot"/>
+            </g>
+            <circle cx="100" cy="100" r="60" fill="#05070d" stroke="url(#orbitGradNav)" stroke-width="3"/>
+            <text x="100" y="118" text-anchor="middle" class="orbit-logo__mark">O</text>
+          </svg>
+        </span>
+        <span class="nav__wordmark">ORBIT</span>
+      </a>
+
+      <button type="button" id="back-to-entrance" class="nav__replay" aria-label="Back to Entrance Page">
+        <span class="nav__replay-icon-wrap">
+          <svg class="nav__replay-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="nav__replay-label">Back to Entrance Page</span>
+      </button>
+
+      <nav class="nav__links" aria-label="Primary">
+        <a href="#services">Services</a>
+        <a href="#work">Work</a>
+        <a href="#process">Process</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#testimonials">Reviews</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <a href="#contact" class="btn btn--primary btn--sm nav__cta">
+        <span>Start a Project</span>
+      </a>
+
+      <button type="button" class="nav__toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <nav aria-label="Mobile" class="mobile-menu__nav">
+      <a href="#services">Services</a>
+      <a href="#work">Work</a>
+      <a href="#process">Process</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#testimonials">Reviews</a>
+      <a href="#contact">Contact</a>
+      <button type="button" id="back-to-entrance-mobile" class="mobile-menu__replay">Back to Entrance Page</button>
+      <a href="#contact" class="btn btn--primary mobile-menu__cta">Start a Project</a>
+    </nav>
+  </div>
+
+  <main id="main-content">
+
+    <!-- ============ HERO (pinned while the marquee slides up to cover it) ============ -->
+    <section class="hero" id="home">
+      <canvas id="hero-canvas" class="hero__canvas" aria-hidden="true"></canvas>
+      <div class="hero__burst" aria-hidden="true"></div>
+      <div class="hero__glow hero__glow--a" aria-hidden="true"></div>
+      <div class="hero__glow hero__glow--b" aria-hidden="true"></div>
+      <div class="container hero__inner">
+        <p class="eyebrow reveal" data-reveal>
+          <span class="eyebrow__dot"></span>
+          Custom, Interactive Web Designs
+        </p>
+        <h1 class="hero__title reveal" data-reveal data-reveal-delay="1">
+          We build websites people <span class="text-gradient">actually want to <span class="pop-word">explore.</span></span>
+        </h1>
+        <p class="hero__subtitle reveal" data-reveal data-reveal-delay="2">
+          At <span class="text-roll">Orbit Studio</span>, every website is custom-designed
+          from the ground up to feel distinctive, intuitive, and unmistakably yours.
+          Built to grab attention, keep visitors engaged, and leave a lasting impression.
+        </p>
+        <div class="hero__actions reveal" data-reveal data-reveal-delay="3">
+          <a href="#contact" class="btn btn--primary btn--lg magnetic">
+            <span>Get a Free Strategy Call</span>
+          </a>
+          <a href="#work" class="btn btn--ghost btn--lg magnetic">
+            <span>See Our Work</span>
+            <svg viewBox="0 0 24 24" class="icon"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MARQUEE ============ -->
+    <section class="marquee-section" aria-label="Trusted by growing businesses">
+      <p class="marquee-section__label">Trusted by ambitious teams</p>
+      <div class="marquee">
+        <div class="marquee__track">
+          <span class="marquee__item"><img src="logo-transparent.png" alt="" class="marquee__logo">PENCIL&nbsp;FINGERZ</span><span class="marquee__item marquee__item--gold"><img src="logo-mark.png" alt="" class="marquee__logo-tall">BEDROCK&nbsp;BOOKKEEPING</span><span class="marquee__item"><span class="marquee__logo-badge"><img src="work-fraservalley.png" alt="" class="marquee__logo-badge-img"></span>FRASER&nbsp;VALLEY&nbsp;SERVICES&nbsp;HUB</span><span class="marquee__item"><img src="logo-requiem.png" alt="" class="marquee__logo-tall">REQUIEM&nbsp;CLOTHING</span><span class="marquee__item"><img src="logo-apex-mark.webp" alt="" class="marquee__logo-tall">APEX&nbsp;PLUMBING</span>
+          <span class="marquee__item" aria-hidden="true"><img src="logo-transparent.png" alt="" class="marquee__logo">PENCIL&nbsp;FINGERZ</span><span class="marquee__item marquee__item--gold" aria-hidden="true"><img src="logo-mark.png" alt="" class="marquee__logo-tall">BEDROCK&nbsp;BOOKKEEPING</span><span class="marquee__item" aria-hidden="true"><span class="marquee__logo-badge"><img src="work-fraservalley.png" alt="" class="marquee__logo-badge-img"></span>FRASER&nbsp;VALLEY&nbsp;SERVICES&nbsp;HUB</span><span class="marquee__item" aria-hidden="true"><img src="logo-requiem.png" alt="" class="marquee__logo-tall">REQUIEM&nbsp;CLOTHING</span><span class="marquee__item" aria-hidden="true"><img src="logo-apex-mark.webp" alt="" class="marquee__logo-tall">APEX&nbsp;PLUMBING</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SERVICES ============ -->
+    <section class="section" id="services">
+      <div class="container">
+        <div class="section__head reveal" data-reveal>
+          <p class="section__eyebrow">What We Do</p>
+          <h2 class="section__title"><span class="pop-word-before">Everything</span> <span class="pop-word">you</span> <span class="pop-word-after">need</span> <span class="pop-word-after">to win</span> online</h2>
+          <p class="section__subtitle">From your first pixel to your <span class="text-roll">thousandth</span> customer.</p>
+        </div>
+
+        <div class="grid grid--services">
+          <article class="card card--service reveal" data-reveal>
+            <span class="card__icon">
+              <svg viewBox="0 0 24 24"><path d="M3 5.5A2.5 2.5 0 0 1 5.5 3h13A2.5 2.5 0 0 1 21 5.5v13a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 18.5v-13Z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 9h18M7 3v6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </span>
+            <h3>Website Design &amp; Development</h3>
+            <p>Fast, beautiful, conversion-focused websites built on modern code &mdash; not bloated templates.</p>
+          </article>
+
+          <article class="card card--service reveal" data-reveal data-reveal-delay="1">
+            <span class="card__icon">
+              <svg viewBox="0 0 24 24"><path d="M3 4h2l1.4 10.6a2 2 0 0 0 2 1.7h8.2a2 2 0 0 0 2-1.6L20 8H6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.5" cy="20" r="1.4" fill="currentColor"/><circle cx="17" cy="20" r="1.4" fill="currentColor"/></svg>
+            </span>
+            <h3>E-Commerce Solutions</h3>
+            <p>Storefronts that make buying effortless, with checkouts tuned to reduce cart abandonment.</p>
+          </article>
+
+          <!-- Hidden for now — not ready to offer this service yet.
+          <article class="card card--service reveal" data-reveal data-reveal-delay="2">
+            <span class="card__icon">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="m21 21-4.3-4.3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M8 11h6M11 8v6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+            </span>
+            <h3>SEO &amp; Search Growth</h3>
+            <p>Technical SEO and content strategy that moves you up the rankings &mdash; and keeps you there.</p>
+            <a href="#contact" class="card__link">Learn more <span aria-hidden="true">&rarr;</span></a>
+          </article>
+          -->
+
+          <!-- Hidden for now — not ready to offer this service yet.
+          <article class="card card--service reveal" data-reveal data-reveal-delay="2">
+            <span class="card__icon">
+              <svg viewBox="0 0 24 24"><path d="M3 11 19 4l-4 16-4-7-8-2Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            </span>
+            <h3>Lead Generation &amp; Ads</h3>
+            <p>Paid and organic campaigns engineered to fill your pipeline with qualified buyers.</p>
+            <a href="#contact" class="card__link">Learn more <span aria-hidden="true">&rarr;</span></a>
+          </article>
+          -->
+
+          <article class="card card--service reveal" data-reveal>
+            <span class="card__icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 3a9 9 0 0 1 0 18M3 12h18" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+            </span>
+            <h3>Branding &amp; Identity</h3>
+            <p>Logos, colour systems and voice guidelines so your business looks as good as it performs.</p>
+          </article>
+
+          <article class="card card--service reveal" data-reveal data-reveal-delay="1">
+            <span class="card__icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+            </span>
+            <h3>Ongoing Care &amp; Support</h3>
+            <p>Hosting, monitoring and monthly improvements so your site keeps getting better after launch.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROCESS ============ -->
+    <section class="section section--alt" id="process">
+      <canvas id="process-canvas" class="process-canvas" aria-hidden="true"></canvas>
+      <div class="container">
+        <div class="section__head reveal" data-reveal>
+          <p class="section__eyebrow">How It Works</p>
+          <h2 class="section__title">From idea to live in five steps</h2>
+          <p class="section__subtitle">A clear, guided process &mdash; you'll always know what's next.</p>
+        </div>
+
+        <ol class="process">
+          <li class="process__step reveal" data-reveal>
+            <span class="process__num">01</span>
+            <h3>Discover</h3>
+            <p>We learn your business, your customers, and what "winning" looks like for you.</p>
+            <span class="fill-circle-wrap"><span class="fill-circle" aria-hidden="true"><span class="fill-circle__liquid"></span></span></span>
+          </li>
+          <li class="process__step reveal" data-reveal data-reveal-delay="1">
+            <span class="process__num">02</span>
+            <h3>Design</h3>
+            <p>A custom visual direction &mdash; on-brand, on-strategy, ready for your feedback.</p>
+            <span class="fill-circle-wrap"><span class="fill-circle" aria-hidden="true"><span class="fill-circle__liquid"></span></span></span>
+          </li>
+          <li class="process__step reveal" data-reveal data-reveal-delay="2">
+            <span class="process__num">03</span>
+            <h3>Develop</h3>
+            <p>Pixel-perfect, blazing-fast build &mdash; tested on every device before it ships.</p>
+            <span class="fill-circle-wrap"><span class="fill-circle" aria-hidden="true"><span class="fill-circle__liquid"></span></span></span>
+          </li>
+          <li class="process__step reveal" data-reveal data-reveal-delay="3">
+            <span class="process__num">04</span>
+            <h3>Launch</h3>
+            <p>We handle the technical rollout so going live is smooth and stress-free.</p>
+            <span class="fill-circle-wrap"><span class="fill-circle" aria-hidden="true"><span class="fill-circle__liquid"></span></span></span>
+          </li>
+          <li class="process__step reveal" data-reveal data-reveal-delay="4">
+            <span class="process__num">05</span>
+            <h3>Grow</h3>
+            <p>A beautiful, interactive website that keeps customers coming long after launch.</p>
+            <span class="fill-circle-wrap"><span class="fill-circle" aria-hidden="true"><span class="fill-circle__liquid"></span></span></span>
+          </li>
+        </ol>
+        <a href="#work" class="process__scroll-hint" aria-label="Keep scrolling to see our work">
+          <svg viewBox="0 0 24 24" class="process__scroll-hint-icon" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Keep Scrolling</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ============ WORK ============ -->
+    <section class="section" id="work">
+      <div class="container">
+        <div class="section__head reveal" data-reveal>
+          <p class="section__eyebrow">Recent Launches</p>
+          <h2 class="section__title">Work we're proud of</h2>
+          <p class="section__subtitle">A few of the businesses we've helped get online.</p>
+        </div>
+
+        <div class="grid grid--work">
+          <article class="work-card reveal" data-reveal data-tilt>
+            <div class="work-card__thumb work-card__thumb--5">
+              <span class="work-card__tag">Artist</span>
+            </div>
+            <div class="work-card__body">
+              <h3>Pencil Fingerz</h3>
+              <p>Rebuilt website, integrated custom hidden pages, booking pages, storefront</p>
+            </div>
+            <span class="work-card__link-label" aria-hidden="true">Click to view website</span>
+            <a href="https://www.pencilfingerz.com" target="_blank" rel="noopener noreferrer" class="work-card__link" aria-label="Visit Pencil Fingerz website">
+              <svg viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </article>
+
+          <article class="work-card reveal" data-reveal data-reveal-delay="1" data-tilt>
+            <div class="work-card__thumb work-card__thumb--6">
+              <span class="work-card__tag">Bookkeeping</span>
+            </div>
+            <div class="work-card__body">
+              <h3>Bedrock Bookkeeping</h3>
+              <p>New site built to attract and convert local clients</p>
+            </div>
+            <span class="work-card__link-label" aria-hidden="true">Click to view website</span>
+            <a href="https://www.bedrockbookkeeping.ca" target="_blank" rel="noopener noreferrer" class="work-card__link" aria-label="Visit Bedrock Bookkeeping website">
+              <svg viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </article>
+
+          <article class="work-card reveal" data-reveal data-reveal-delay="2" data-tilt>
+            <div class="work-card__thumb work-card__thumb--9">
+              <span class="work-card__tag">Plumbing</span>
+            </div>
+            <div class="work-card__body">
+              <h3>Apex Plumbing</h3>
+              <p>Multi-page build covering services, service areas, and customer enquiries</p>
+            </div>
+            <span class="work-card__link-label" aria-hidden="true">Click to view website</span>
+            <a href="https://www.apexplumbing.ca" target="_blank" rel="noopener noreferrer" class="work-card__link" aria-label="Visit Apex Plumbing website">
+              <svg viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </article>
+
+          <article class="work-card reveal" data-reveal data-reveal-delay="3" data-tilt>
+            <div class="work-card__thumb work-card__thumb--7">
+              <span class="work-card__tag">Business Directory &middot; Coming Soon</span>
+            </div>
+            <div class="work-card__body">
+              <h3>Fraser Valley Services Hub</h3>
+              <p>A central hub connecting Fraser Valley customers with local businesses</p>
+            </div>
+            <span class="work-card__link-label" aria-hidden="true">View case study</span>
+            <a href="#contact" class="work-card__link" aria-label="View Fraser Valley Services Hub case study">
+              <svg viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </article>
+
+          <article class="work-card reveal" data-reveal data-reveal-delay="4" data-tilt>
+            <div class="work-card__thumb work-card__thumb--8">
+              <div class="requiem-rain" id="requiem-rain" aria-hidden="true"></div>
+              <div class="requiem-lightning" id="requiem-lightning" aria-hidden="true"></div>
+              <span class="work-card__tag">Online Store &middot; Coming Soon</span>
+              <div class="countdown-demo" aria-hidden="true">
+                <span class="countdown-demo__unit">
+                  <span class="countdown-demo__num" data-countdown-num>00</span>
+                  <span class="countdown-demo__label">Days</span>
+                </span>
+                <span class="countdown-demo__sep">:</span>
+                <span class="countdown-demo__unit">
+                  <span class="countdown-demo__num" data-countdown-num>00</span>
+                  <span class="countdown-demo__label">Hrs</span>
+                </span>
+                <span class="countdown-demo__sep">:</span>
+                <span class="countdown-demo__unit">
+                  <span class="countdown-demo__num" data-countdown-num>00</span>
+                  <span class="countdown-demo__label">Min</span>
+                </span>
+                <span class="countdown-demo__sep">:</span>
+                <span class="countdown-demo__unit">
+                  <span class="countdown-demo__num" data-countdown-num>00</span>
+                  <span class="countdown-demo__label">Sec</span>
+                </span>
+              </div>
+            </div>
+            <div class="work-card__body">
+              <h3>Requiem</h3>
+              <p>Clothing Drop, email list generator, e-commerce</p>
+            </div>
+            <span class="work-card__link-label" aria-hidden="true">View case study</span>
+            <a href="#contact" class="work-card__link" aria-label="View Requiem case study">
+              <svg viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TESTIMONIALS ============ -->
+    <section class="section section--alt" id="testimonials">
+      <div class="container">
+        <div class="section__head reveal" data-reveal>
+          <p class="section__eyebrow">Client Voices</p>
+          <h2 class="section__title">Don't just take our word for it</h2>
+        </div>
+
+        <div class="testimonial reveal" data-reveal role="region" aria-roledescription="carousel" aria-label="Client testimonials">
+          <div class="testimonial__viewport">
+            <ul class="testimonial__track" id="testimonial-track">
+              <li class="testimonial__slide" aria-hidden="false">
+                <p class="testimonial__quote">&ldquo;Orbit Studio didn't just build us a website &mdash; they built us a customer machine. Bookings tripled in four months.&rdquo;</p>
+                <div class="testimonial__author">
+                  <span class="testimonial__avatar">JM</span>
+                  <span>
+                    <strong>Jordan Mercer</strong>
+                    <small>Owner, Kindred Dental</small>
+                  </span>
+                </div>
+              </li>
+              <li class="testimonial__slide" aria-hidden="true">
+                <p class="testimonial__quote">&ldquo;Fast, sharp, and genuinely invested in our growth. The new site paid for itself in under two months.&rdquo;</p>
+                <div class="testimonial__author">
+                  <span class="testimonial__avatar">RS</span>
+                  <span>
+                    <strong>Riya Shah</strong>
+                    <small>Founder, Verv Analytics</small>
+                  </span>
+                </div>
+              </li>
+              <li class="testimonial__slide" aria-hidden="true">
+                <p class="testimonial__quote">&ldquo;Every deadline hit, every detail considered. Orbit Studio feels like an in-house team, not an agency.&rdquo;</p>
+                <div class="testimonial__author">
+                  <span class="testimonial__avatar">DK</span>
+                  <span>
+                    <strong>Daniel Kim</strong>
+                    <small>Director, Atlas Group Hotels</small>
+                  </span>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="testimonial__controls">
+            <button type="button" class="testimonial__btn" id="testimonial-prev" aria-label="Previous testimonial">
+              <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="testimonial__dots" id="testimonial-dots"></div>
+            <button type="button" class="testimonial__btn" id="testimonial-next" aria-label="Next testimonial">
+              <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PRICING ============ -->
+    <section class="section" id="pricing">
+      <div class="container">
+        <div class="section__head reveal" data-reveal>
+          <p class="section__eyebrow">Pricing</p>
+          <h2 class="section__title">Simple pricing, no surprises</h2>
+          <p class="section__subtitle">Every project includes design, build and launch support.</p>
+        </div>
+
+        <div class="grid grid--pricing grid--pricing-single">
+          <article class="price-card reveal" data-reveal>
+            <h3>Custom</h3>
+            <p class="price-card__desc">Every website we build is 100% custom, coded from the ground up with our own process and tools &mdash; never a template, never someone else's old code.</p>
+            <p class="price-card__price">Typically starting at $2,000<span>tailored to your business</span></p>
+            <ul class="price-card__features">
+              <li>No Wix, Squarespace, or drag-and-drop builders</li>
+              <li>Never built on recycled or outdated code</li>
+              <li>Fully custom design &amp; development</li>
+              <li>In-house photography &amp; videography of your business &mdash; not AI-generated stock content</li>
+              <li>Hosted live on the web</li>
+              <li>Consistent, ongoing updates for peace of mind</li>
+            </ul>
+            <div class="price-card__addons">
+              <p class="price-card__addons-label">Optional Add-Ons</p>
+              <ul>
+                <li>Custom Email &mdash; $60/year</li>
+                <li>Contact Forms &mdash; $120/year</li>
+                <li>12-Month Launch Support &mdash; $50/month</li>
+              </ul>
+            </div>
+            <a href="#contact" class="btn btn--primary price-card__cta">Talk to Us</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CTA BANNER ============ -->
+    <section class="cta-banner">
+      <div class="container cta-banner__inner reveal" data-reveal>
+        <h2>Ready to grow your business online?</h2>
+        <p>Tell us about your project &mdash; we'll reply within one business day with next steps.</p>
+        <a href="#contact-form" class="btn btn--primary btn--lg magnetic">
+          <span>Start the Conversation</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section class="section" id="contact">
+      <div class="container">
+        <div class="contact">
+          <div class="contact__info reveal" data-reveal>
+            <p class="section__eyebrow">Get In Touch</p>
+            <h2 class="section__title">Let's build something that works</h2>
+            <p class="section__subtitle">Whether you need a brand-new site or a growth partner for the one you have, we'd love to hear about it.</p>
+
+            <ul class="contact__list">
+              <li>
+                <svg viewBox="0 0 24 24"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h13A2.5 2.5 0 0 1 21 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5v-11Z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="m4 7 8 6 8-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <a href="mailto:hello@orbit.agency">hello@orbit.agency</a>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24"><path d="M4 5c0-.6.4-1 1-1h3l2 5-2 1.5a11 11 0 0 0 5.5 5.5L15 14l5 2v3c0 .6-.4 1-1 1A15 15 0 0 1 4 5Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+                <a href="tel:+16043168878">(604) 316-8878</a>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+                <span>Remote-first &middot; serving clients worldwide</span>
+              </li>
+            </ul>
+
+            <div class="contact__socials">
+              <a href="#">LinkedIn</a>
+              <a href="#">Instagram</a>
+              <a href="#">X</a>
+            </div>
+          </div>
+
+          <form class="contact__form" id="contact-form" novalidate>
+            <div class="field">
+              <label for="f-name">Full name</label>
+              <input type="text" id="f-name" name="name" autocomplete="name" required>
+              <span class="field__error" aria-live="polite"></span>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="f-email">Email</label>
+                <input type="email" id="f-email" name="email" autocomplete="email" required>
+                <span class="field__error" aria-live="polite"></span>
+              </div>
+              <div class="field">
+                <label for="f-company">Company</label>
+                <input type="text" id="f-company" name="company" autocomplete="organization">
+              </div>
+            </div>
+            <div class="field">
+              <label for="f-budget">Project budget</label>
+              <select id="f-budget" name="budget">
+                <option value="">Select a range</option>
+                <option>Under $2,000</option>
+                <option>$2,000 &ndash; $5,000</option>
+                <option>$5,000 &ndash; $10,000</option>
+                <option>$10,000+</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-message">Tell us about your project</label>
+              <textarea id="f-message" name="message" rows="4" required></textarea>
+              <span class="field__error" aria-live="polite"></span>
+            </div>
+            <button type="submit" class="btn btn--primary btn--lg contact__submit">
+              <span class="btn__label">Send Message</span>
+              <span class="btn__spinner" aria-hidden="true"></span>
+            </button>
+            <p class="contact__success" id="contact-success" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ARCADE ============ -->
+    <section class="section" id="arcade">
+      <div class="container">
+        <div class="section__head reveal" data-reveal>
+          <p class="section__eyebrow">Just for Fun</p>
+          <h2 class="section__title">Defend the Orbit</h2>
+          <p class="section__subtitle">Move your mouse to steer. Click to fire.</p>
+        </div>
+        <div class="arcade">
+          <canvas id="arcade-canvas" class="arcade__canvas"></canvas>
+          <div class="arcade__hud">
+            <span>Score <strong id="arcade-score">0</strong></span>
+            <span>Lives <strong id="arcade-lives">3</strong></span>
+          </div>
+          <div class="arcade__overlay" id="arcade-overlay">
+            <p class="arcade__overlay-title" id="arcade-overlay-title">Defend the Orbit</p>
+            <p class="arcade__overlay-text" id="arcade-overlay-text">Move your mouse to steer your ship, click to fire. Enemies get faster the longer you survive.</p>
+            <button type="button" class="btn btn--primary" id="arcade-start">Start Game</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a href="#home" class="nav__brand" aria-label="Orbit Studio home">
+          <span class="orbit-logo orbit-logo--footer">
+            <svg viewBox="0 0 200 200" class="orbit-logo__svg" aria-hidden="true">
+              <defs>
+                <linearGradient id="orbitGradFooter" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#22d3ee"/>
+                  <stop offset="100%" stop-color="#8b5cf6"/>
+                </linearGradient>
+              </defs>
+              <g class="ring ring--outer">
+                <circle cx="100" cy="100" r="92" fill="none" stroke="url(#orbitGradFooter)" stroke-width="3" stroke-dasharray="2 14"/>
+              </g>
+              <g class="ring ring--orbit-a">
+                <circle cx="100" cy="18" r="9" fill="#22d3ee" class="orbit-dot"/>
+              </g>
+              <circle cx="100" cy="100" r="60" fill="#05070d" stroke="url(#orbitGradFooter)" stroke-width="3"/>
+              <text x="100" y="118" text-anchor="middle" class="orbit-logo__mark">O</text>
+            </svg>
+          </span>
+          <span class="nav__wordmark">ORBIT STUDIO</span>
+        </a>
+        <p>Websites that bring you real customers.</p>
+        <p>Based in the Fraser Valley, B.C. Canada &mdash; serving customers worldwide.</p>
+      </div>
+
+      <nav class="footer__col" aria-label="Company">
+        <h4>Company</h4>
+        <a href="#work">Our Work</a>
+        <a href="#process">Process</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <nav class="footer__col" aria-label="Services">
+        <h4>Services</h4>
+        <a href="#services">Web Design</a>
+        <a href="#services">SEO &amp; Growth</a>
+        <a href="#services">Branding</a>
+        <a href="#services">Support</a>
+      </nav>
+
+    </div>
+
+    <div class="container footer__bottom">
+      <p>&copy; <span id="year"></span> Orbit Studio. All rights reserved.</p>
+      <div class="footer__legal">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <button type="button" class="back-to-top" id="back-to-top" aria-label="Back to top">
+    <span class="back-to-top__label" aria-hidden="true">Back to top</span>
+    <svg viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+
+  <div class="cursor-trail" id="cursor-trail" aria-hidden="true"></div>
+  <div class="cursor-ship" id="cursor-ship" aria-hidden="true">
+    <svg viewBox="0 0 32 20" class="cursor-ship__svg">
+      <defs>
+        <linearGradient id="shipGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#8b5cf6"/>
+          <stop offset="100%" stop-color="#22d3ee"/>
+        </linearGradient>
+      </defs>
+      <circle class="cursor-ship__glow" cx="4" cy="10" r="4"/>
+      <path d="M28 10 L4 3 L9 10 L4 17 Z" fill="url(#shipGrad)" stroke="#eef1f8" stroke-width="0.6" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-idle-pulse" id="cursor-idle-pulse" aria-hidden="true"></div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
