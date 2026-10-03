@@ -1208,8 +1208,8 @@ code:
 });
 
 fx({
-id:'scroll-driven-css', cat:'scroll', title:'Scroll-Driven, No JavaScript',
-desc:'An animation tied directly to how far an element has travelled up the screen. Runs efficiently enough to stay smooth on older phones, and anything that cannot run it simply sees the finished state.',
+id:'scroll-driven-css', cat:'scroll', title:'Animation Tied to Scroll',
+desc:'An animation tied directly to how far a section has travelled up the screen. Runs efficiently enough to stay smooth on older phones, and anything that cannot run it simply shows the finished state.',
 dur:'scroll-linked', ease:[0,0,1,1], trigger:'view() timeline', tags:['CSS only','animation-timeline'], scroll:true,
 flag:'Chromium 115+',
 code:
@@ -1413,7 +1413,7 @@ code:
 
 fx({
 id:'shine-sweep', cat:'hover', title:'Shine Sweep',
-desc:'A skewed white gradient slides across the surface on hover. Two rules and no JavaScript. Works on buttons, cards, and logo tiles &mdash; anywhere you want a hint of gloss without a full animation.',
+desc:'A soft diagonal gleam slides across the surface on hover. Works on buttons, cards and logo tiles &mdash; anywhere you want a hint of gloss without a full animation.',
 dur:'750ms', ease:[.25,.6,.3,1], trigger:'hover', tags:['CSS only','pseudo-element'],
 code:
 `<style>
@@ -1515,7 +1515,7 @@ code:
 
 fx({
 id:'spotlight-card', cat:'hover', title:'Spotlight Card',
-desc:'The pointer writes its position into two CSS custom properties and a radial gradient reads them. Because the gradient lives on a border-sized pseudo-element, the light appears to graze the edge rather than sit on top of the content.',
+desc:'A pool of light follows the pointer around the card, grazing the edge rather than sitting flat on top of the content. Makes a panel feel lit rather than merely coloured.',
 dur:'follows pointer', ease:[.4,0,.2,1], trigger:'pointermove', tags:['CSS variables','radial-gradient'],
 code:
 `<style>
@@ -1674,7 +1674,7 @@ code:
 
 fx({
 id:'burger-morph', cat:'hover', title:'Hamburger to Close',
-desc:'Three bars become an X without swapping icons: the middle bar fades, and the outer two translate to center and counter-rotate. One element, one class toggle, and it reverses cleanly.',
+desc:'The three menu bars fold into a cross and back again in one continuous movement, rather than swapping one icon for another. Small, but it is what tells people the menu is open.',
 dur:'380ms', ease:[.68,-.6,.32,1.6], trigger:'click', tags:['transform','aria-expanded'],
 code:
 `<style>
@@ -1792,7 +1792,7 @@ code:
 
 fx({
 id:'page-curtain', cat:'trans', title:'Page Load Curtain',
-desc:'Two panels part from the center to uncover the page, and the headline rises through the gap just behind them. Put the panels first in the markup so they paint before anything else and there is no flash of unstyled page.',
+desc:'Two panels part from the centre to uncover the page, with the headline rising through the gap just behind them. Turns the first second of a visit into something deliberate.',
 dur:'1.1s', ease:[.76,0,.24,1], trigger:'page load', tags:['keyframes','load'],
 code:
 `<style>
@@ -2005,7 +2005,7 @@ code:
 });
 
 fx({
-id:'accordion', cat:'trans', title:'Height-Agnostic Accordion',
+id:'accordion', cat:'trans', title:'Accordion at Any Height',
 desc:'Sections that open and close smoothly no matter how much content they hold. It sounds trivial; it is the thing the web spent a decade getting wrong, and this version simply works at any height.',
 dur:'400ms', ease:[.65,0,.35,1], trigger:'click', tags:['grid-template-rows','CSS'],
 code:
@@ -2069,7 +2069,7 @@ code:
 
 fx({
 id:'tab-slide', cat:'trans', title:'Tabs with Sliding Indicator',
-desc:'The underline is one element that moves and resizes to match the active tab, rather than a border on each. Position and width are measured from the button and written into CSS variables, so it adapts to any label length.',
+desc:'The underline slides and resizes to meet whichever tab is active, rather than jumping between them. It adapts to any label length, so it keeps working when you rename a tab.',
 dur:'380ms', ease:[.34,1.3,.64,1], trigger:'click', tags:['CSS variables','getBoundingClientRect'],
 code:
 `<style>
@@ -2203,8 +2203,8 @@ code:
 });
 
 fx({
-id:'flip-expand', cat:'trans', title:'FLIP Shared Element',
-desc:'Measure the start rect, move the element, measure the end rect, then invert the difference with a transform and release it. FLIP animates layout changes at 60fps without ever animating layout properties.',
+id:'flip-expand', cat:'trans', title:'Item Glides to Its New Place',
+desc:'An item moves to a new position and glides there instead of jumping. The technique behind every interface that feels like one continuous space rather than a series of redraws.',
 dur:'520ms', ease:[.22,1,.36,1], trigger:'click', tags:['FLIP','Web Animations API'],
 code:
 `<style>
@@ -2310,7 +2310,7 @@ code:
 
 fx({
 id:'typewriter', cat:'text', title:'Typewriter with Cycling Words',
-desc:'Types a phrase, pauses, deletes it, moves to the next. The caret blinks on its own CSS timer so it keeps pulsing while the text is idle &mdash; that is what sells it as a cursor rather than a loading bar.',
+desc:'Types a phrase, pauses, deletes it, moves on to the next. The cursor keeps blinking while the text sits still &mdash; that is what sells it as typing rather than a loading bar.',
 dur:'70ms/char type, 38ms delete', ease:[0,0,1,1], trigger:'loop', tags:['setTimeout','loop'],
 code:
 `<style>
@@ -2603,7 +2603,7 @@ code:
 
 fx({
 id:'wave-letters', cat:'text', title:'Wave Letters',
-desc:'One keyframe animation on every letter, with a negative delay stepped by index so each sits in a different phase of the same wave. Negative delays start mid-cycle, so the wave is already running on the first frame.',
+desc:'Each letter rides a wave a fraction behind the one before it, so the word ripples continuously. It is already mid-motion the moment it appears, which stops it looking like it is starting up.',
 dur:'1.6s loop', ease:[.45,0,.55,1], trigger:'loop', tags:['negative delay','CSS only'],
 code:
 `<style>
@@ -2938,8 +2938,8 @@ code:
 });
 
 fx({
-id:'canvas-wireframe', cat:'3d', title:'Canvas Wireframe Projection',
-desc:'Real 3D with no library at all: rotate the vertices with sine and cosine, divide x and y by z for perspective, then draw the edges on a 2D canvas. About forty lines, and it is the same maths every 3D engine starts from.',
+id:'canvas-wireframe', cat:'3d', title:'Wireframe Projection',
+desc:'A true three-dimensional object drawn edge by edge and turning in real space, built from scratch rather than loaded in from somewhere else. Light enough to sit on a page that still has to load quickly.',
 dur:'continuous', ease:[0,0,1,1], trigger:'rAF loop', tags:['canvas','projection maths'],
 code:
 `<style>
@@ -3429,7 +3429,7 @@ code:
 /* ========================= LOADERS & UI ========================= */
 
 fx({
-id:'skeleton', cat:'ui', title:'Skeleton Shimmer',
+id:'skeleton', cat:'ui', title:'Loading Placeholder Shimmer',
 desc:'Gray blocks in the shape of the content that is loading, with a highlight sweeping across. Match the block sizes to the real content or the swap-in causes a visible jolt.',
 dur:'1.5s loop', ease:[0,0,1,1], trigger:'loop', tags:['CSS only','background-position'],
 code:
@@ -3473,7 +3473,7 @@ code:
 });
 
 fx({
-id:'progress-ring', cat:'ui', title:'SVG Progress Ring',
+id:'progress-ring', cat:'ui', title:'Progress Ring',
 desc:'A ring that fills to show a percentage, starting from the top. Reads faster than a number for anything you want understood at a glance.',
 dur:'900ms', ease:[.22,1,.36,1], trigger:'click', tags:['stroke-dashoffset','SVG'],
 code:
@@ -3834,7 +3834,7 @@ code:
 
 fx({
 id:'bento-grid', cat:'layout', title:'Bento Grid Expand',
-desc:'A grid of mismatched tiles where the hovered cell claims extra columns and the rest reflow to fit. Because grid handles the reflow, the neighbors slide rather than jump.',
+desc:'A grid of mismatched tiles where the one you hover claims more room and the rest make way. The neighbours slide rather than jump, so nothing ever looks like it broke.',
 dur:'520ms', ease:[.22,1,.36,1], trigger:'hover', tags:['CSS grid','grid-column'],
 code:
 `<style>
@@ -4057,7 +4057,7 @@ code:
 });
 
 fx({
-id:'custom-scrollbar', cat:'layout', title:'Styled Scroll Region',
+id:'custom-scrollbar', cat:'layout', title:'Custom Scrollbar',
 desc:'A scrollbar that matches the site rather than the operating system. A small detail, but the kind that separates a considered build from a generic one.',
 dur:'static', ease:[0,0,1,1], trigger:'always', tags:['scrollbar-color','::-webkit-scrollbar'],
 code:
@@ -4162,7 +4162,7 @@ code:
 
 fx({
 id:'scroll-fill-text', cat:'scroll', title:'Text Fills on Scroll',
-desc:'A hard-stop gradient is clipped to the text and its stop position is driven by scroll progress, so the words appear to fill with ink as you read past them. No per-word markup needed.',
+desc:'The words fill with colour as you read past them, like ink soaking through. Strong for a single statement you want people to finish.',
 dur:'scroll-linked', ease:[0,0,1,1], trigger:'scroll position', tags:['background-clip','rAF'], scroll:true, h:true,
 code:
 `<style>
@@ -4292,7 +4292,7 @@ code:
 
 fx({
 id:'slide-label-btn', cat:'hover', title:'Sliding Label Button',
-desc:'Two copies of the label stacked in one clipped box: the first slides out the top as the second arrives from below. Because both are real text it stays selectable and readable to screen readers, unlike a pseudo-element swap.',
+desc:'One label slides out of the top as another arrives from below. Both are real text, so it stays selectable and readable aloud to anyone using a screen reader.',
 dur:'380ms', ease:[.22,1,.36,1], trigger:'hover', tags:['CSS only','overflow'],
 code:
 `<style>
@@ -4324,7 +4324,7 @@ code:
 
 fx({
 id:'svg-border-draw', cat:'hover', title:'Drawing Border',
-desc:'An SVG rectangle with its dash pattern set to the full perimeter, then pulled into view on hover so the outline appears to draw itself. Unlike a CSS border it can start from a chosen corner and travel one way round.',
+desc:'An outline draws itself around the element on hover, starting from a chosen corner and travelling one way round. More deliberate than a border simply appearing.',
 dur:'620ms', ease:[.22,1,.36,1], trigger:'hover', tags:['stroke-dashoffset','SVG'],
 code:
 `<style>
@@ -4471,7 +4471,7 @@ code:
 /* ============ ADDITIONS — TRANSITIONS, TEXT, 3D, BG, UI, LAYOUT ============ */
 
 fx({
-id:'popover-menu', cat:'trans', title:'Native Popover Menu',
+id:'popover-menu', cat:'trans', title:'Pop-Up Menu',
 desc:'A menu that opens above everything, closes when you click away or press Escape, and handles keyboard focus correctly. All of that comes from the browser itself, so it stays reliable.',
 dur:'260ms', ease:[.34,1.4,.64,1], trigger:'click', tags:['popover','@starting-style'],
 flag:'Chromium 114+ / Safari 17',
@@ -4932,7 +4932,7 @@ code:
 
 fx({
 id:'star-rating', cat:'ui', title:'Star Rating',
-desc:'Radio inputs in reverse order so the CSS sibling combinator can fill every star before the hovered one. Fully keyboard operable and it submits like a normal form field, because it is one.',
+desc:'Stars fill as you move across them and stay put when you click. Fully operable from the keyboard, and it submits like any other form field because underneath it is one.',
 dur:'180ms', ease:[.34,1.4,.64,1], trigger:'hover + click', tags:['CSS only','radio group'],
 code:
 `<style>
@@ -5038,7 +5038,7 @@ code:
 
 fx({
 id:'drag-reorder', cat:'layout', title:'Drag to Reorder',
-desc:'Pointer drag picks a row up, and the rows it passes animate to their new places using FLIP rather than jumping. The list order in the DOM is the source of truth, so it stays correct for forms and submission.',
+desc:'Pick a row up and the others move aside to make room, settling into their new order. The order you see is the order that gets saved.',
 dur:'280ms settle', ease:[.22,1,.36,1], trigger:'drag', tags:['FLIP','pointer capture'],
 code:
 `<style>
@@ -5713,7 +5713,7 @@ code:
 
 fx({
 id:'plasma-field', cat:'bg', title:'Plasma Field',
-desc:'Overlapping sine waves sampled per cell and mapped to a color ramp. Drawn on a deliberately small canvas and stretched up by CSS, which is what keeps a per-pixel effect cheap enough to run behind real content.',
+desc:'Slow overlapping waves of colour that never quite repeat. Drawn small and scaled up, which is what keeps something this fluid cheap enough to sit behind real content.',
 dur:'continuous', ease:[0,0,1,1], trigger:'rAF loop', tags:['canvas','sine interference'],
 code:
 `<style>
@@ -6711,7 +6711,7 @@ pairing({
 });
 
 fx({
-id:'type-scale', cat:'type', title:'Modular Type Scale', static:true,
+id:'type-scale', cat:'type', title:'Heading Size Scale', static:true,
 desc:'Pick a ratio and every step is the one below multiplied by it, so sizes relate instead of being chosen at random. 1.25 suits dense interfaces; 1.5 and up want editorial space to breathe.',
 meta:'6 steps', tags:['interactive','scale'], h:true,
 code:
@@ -7185,7 +7185,7 @@ pairing({
 /* ======================== TYPE — WORKING TOOLS ======================== */
 
 fx({
-id:'fluid-type', cat:'type', title:'Fluid Type with clamp()', static:true,
+id:'fluid-type', cat:'type', title:'Type That Scales With the Screen', static:true,
 desc:'Text that scales smoothly with the screen, from a comfortable size on a phone up to a maximum on a desktop, with nothing jumping in between. Drag the width to watch it move and then stop dead at both limits.',
 meta:'clamp(min, fluid, max)', tags:['responsive','clamp'], h:true,
 code:
@@ -7245,7 +7245,7 @@ code:
 });
 
 fx({
-id:'measure-leading', cat:'type', title:'Measure & Leading', static:true,
+id:'measure-leading', cat:'type', title:'Line Length and Spacing', static:true,
 desc:'The two settings that decide whether body copy is comfortable. Aim for 45&ndash;75 characters a line; the wider you set it, the more line height you need or the eye loses its place on the return.',
 meta:'45–75 characters', tags:['readability','interactive'], h:true,
 code:
@@ -7355,7 +7355,7 @@ code:
 });
 
 fx({
-id:'tracking-scale', cat:'type', title:'Optical Tracking', static:true,
+id:'tracking-scale', cat:'type', title:'Letter Spacing by Eye', static:true,
 desc:'Letter-spacing is not one value. Large type needs tightening and small caps need opening up, because spacing that looks right at 12px looks loose at 48px. Toggle the correction to see the difference.',
 meta:'size-aware spacing', tags:['typography','interactive'], h:true,
 code:
@@ -7406,7 +7406,7 @@ code:
 });
 
 fx({
-id:'opentype-features', cat:'type', title:'OpenType Features', static:true,
+id:'opentype-features', cat:'type', title:'Typeface Refinements', static:true,
 desc:'Refinements already built into the typeface, switched on. Figures that line up in columns, proper fractions, true small capitals &mdash; the typographic polish most sites leave sitting unused.',
 meta:'4 features', tags:['font-feature-settings','detail'], h:true,
 code:
@@ -7512,8 +7512,8 @@ code:
 /* ========================= LAYOUT — MORE ========================= */
 
 fx({
-id:'auto-fit-grid', cat:'layout', title:'Responsive Grid, No Breakpoints', static:true,
-desc:'Cards reflow from four across down to one as the screen narrows, working it out themselves at every width in between. Drag the width and watch the column count change on its own.',
+id:'auto-fit-grid', cat:'layout', title:'Self-Arranging Card Grid', static:true,
+desc:'Cards rearrange themselves from four across down to one as the screen narrows, working it out at every width in between. Drag the width and watch the column count change on its own.',
 meta:'one line, no media queries', tags:['CSS grid','auto-fit'], h:true,
 code:
 `<style>
@@ -7732,7 +7732,7 @@ code:
 });
 
 fx({
-id:'overlap-grid', cat:'layout', title:'Overlapping Grid Areas', static:true,
+id:'overlap-grid', cat:'layout', title:'Deliberate Overlap', static:true,
 desc:'Two elements placed in the same grid cell so they deliberately overlap &mdash; the trick behind a caption sitting over an image edge, or a card breaking out of its section. Far steadier than absolute positioning, because the grid still controls the flow.',
 meta:'same cell, stacked', tags:['CSS grid','z-index'],
 code:
@@ -7817,7 +7817,7 @@ code:
 });
 
 fx({
-id:'aspect-gallery', cat:'layout', title:'Aspect-Ratio Gallery', static:true,
+id:'aspect-gallery', cat:'layout', title:'Gallery That Never Jumps', static:true,
 desc:'Every tile holds its shape before the images arrive, so the grid never jumps about as the page loads. A feature tile can take four times the space without disturbing the rest.',
 meta:'no layout shift', tags:['aspect-ratio','grid span'],
 code:
@@ -7896,8 +7896,8 @@ code:
 });
 
 fx({
-id:'container-query', cat:'layout', title:'Container Queries', static:true,
-desc:'The card asks how wide <em>its own container</em> is, not the viewport, so the same component can sit in a sidebar and a full-width row and lay itself out correctly in both. This is what media queries could never do.',
+id:'container-query', cat:'layout', title:'Component Adapts to Its Space', static:true,
+desc:'A card measures the space it has been given rather than the size of the screen, so the same card sits correctly in a narrow sidebar and a full-width row. Build a component once and trust it anywhere.',
 meta:'@container', tags:['container queries','component'], h:true,
 flag:'Chromium 105+ / Safari 16+',
 code:
@@ -8381,7 +8381,7 @@ code:
 
 fx({
 id:'dots-loader', cat:'ui', title:'Three-Dot Loader',
-desc:'Three dots on the same keyframes with a stepped negative delay, so the wave is already mid-flight on the first frame. Use it for waits under a few seconds; anything longer needs a progress bar with a real number.',
+desc:'Three dots rising and falling in sequence. Use it for waits under a few seconds &mdash; anything longer needs a progress bar with a real number, or people assume it has hung.',
 dur:'1.4s loop', ease:[.45,0,.55,1], trigger:'loop', tags:['negative delay','CSS only'],
 code:
 `<style>
@@ -8676,7 +8676,7 @@ code:
 
 fx({
 id:'section-color-shift', cat:'scroll', title:'Section Color Shift',
-desc:'The page background eases to each section&rsquo;s own color as it takes over the viewport. Put the transition on the body and let an observer set a variable &mdash; no per-section JavaScript needed.',
+desc:'The page background eases to each section&rsquo;s own colour as it takes over the screen. Gives a long page distinct chapters without any hard edges between them.',
 dur:'900ms', ease:[.45,0,.55,1], trigger:'section enter', tags:['CSS variables','IntersectionObserver'], scroll:true, h:true,
 code:
 `<style>
@@ -8815,7 +8815,7 @@ code:
 
 fx({
 id:'scroll-dots-nav', cat:'scroll', title:'Section Dot Nav',
-desc:'Fixed dots marking each section, filling as it becomes active and clickable to jump. The observer keeps the marker honest whether you scroll there or click there &mdash; one source of truth.',
+desc:'Fixed dots marking each section, filling as it becomes active and clickable to jump straight there. Stays honest whether you scroll there or click there.',
 dur:'340ms', ease:[.34,1.4,.64,1], trigger:'scroll + click', tags:['IntersectionObserver','scrollIntoView'], scroll:true, h:true,
 code:
 `<style>
@@ -8878,7 +8878,7 @@ code:
 
 fx({
 id:'alternating-reveal', cat:'scroll', title:'Alternating Reveal',
-desc:'Rows enter from alternating sides, which gives a long list a rhythm instead of a single repeated motion. The direction comes from a data attribute, so reordering the markup never breaks the pattern.',
+desc:'Rows enter from alternating sides, which gives a long list a rhythm instead of one repeated motion. Reordering the list never breaks the pattern.',
 dur:'760ms', ease:[.22,1,.36,1], trigger:'on enter', tags:['IntersectionObserver','direction'], scroll:true, h:true,
 code:
 `<style>
@@ -8927,7 +8927,7 @@ code:
 
 fx({
 id:'bar-chart-fill', cat:'scroll', title:'Bars Fill on Entry',
-desc:'Bars grow to their real value when the chart scrolls in, each one a beat behind the last. The width lives in a CSS variable so the markup carries the data and the stylesheet carries the motion.',
+desc:'Bars grow to their real values when the chart scrolls into view, each a beat behind the last. Makes figures land as a result rather than a decoration.',
 dur:'900ms + 110ms step', ease:[.22,1,.36,1], trigger:'on enter', tags:['IntersectionObserver','scaleX'], scroll:true,
 code:
 `<style>
@@ -9326,7 +9326,7 @@ code:
 
 fx({
 id:'zoom-blur-swap', cat:'trans', title:'Zoom & Blur Swap',
-desc:'The outgoing image pushes toward you and blurs out while the incoming one arrives slightly oversized and settles. Blur is expensive to composite, so keep it to a single element and a short duration.',
+desc:'The outgoing image pushes toward you and softens while the incoming one arrives slightly oversized and settles. Keep it to one image and a short duration, or it starts to feel heavy.',
 dur:'620ms', ease:[.22,1,.36,1], trigger:'click', tags:['filter:blur','scale'],
 code:
 `<style>
@@ -10095,7 +10095,7 @@ pairing({
 
 fx({
 id:'arrow-slide-link', cat:'hover', title:'Arrow Slide Link',
-desc:'The label shifts left as an arrow slides out from behind it, so the link appears to lean toward where it is taking you. Two transforms on one transition &mdash; no extra markup beyond the arrow.',
+desc:'The label shifts aside as an arrow slides out from behind it, so the link appears to lean toward wherever it is taking you.',
 dur:'380ms', ease:[.22,1,.36,1], trigger:'hover', tags:['CSS only','transform'],
 code:
 `<style>
@@ -10391,7 +10391,7 @@ code:
 
 fx({
 id:'tooltip-pop', cat:'hover', title:'Tooltip Pop',
-desc:'Springs up from the element with a matching arrow, and appears on focus as well as hover so keyboard users get it too. The arrow is a rotated square, which keeps the border continuous.',
+desc:'Springs up from the element with a matching arrow, and appears on keyboard focus as well as hover, so it is not lost on anyone navigating without a mouse.',
 dur:'260ms', ease:[.34,1.56,.64,1], trigger:'hover + focus', tags:['spring','a11y'],
 code:
 `<style>
@@ -10510,7 +10510,7 @@ code:
 
 fx({
 id:'blinds-wipe', cat:'trans', title:'Venetian Blinds',
-desc:'Slats rotating open in sequence to uncover what is behind them. Each slat is one element with a staggered delay, so the number of slats is a single constant to change.',
+desc:'Slats rotating open in sequence to uncover what is behind them. The number of slats is a single setting, so it can be as fine or as bold as you want.',
 dur:'900ms', ease:[.65,0,.35,1], trigger:'click', tags:['stagger','scaleY'],
 code:
 `<style>
@@ -10554,7 +10554,7 @@ code:
 
 fx({
 id:'grid-filter-flip', cat:'trans', title:'Filtered Grid Reflow',
-desc:'When the filter changes, surviving tiles glide to their new positions instead of snapping. FLIP again: record every rect, change the DOM, then invert the difference and let it play.',
+desc:'When the filter changes, the tiles that survive glide to their new positions instead of snapping. Keeps people oriented, so filtering never feels like the page reloaded.',
 dur:'520ms', ease:[.22,1,.36,1], trigger:'click', tags:['FLIP','Web Animations API'],
 code:
 `<style>
@@ -10856,7 +10856,7 @@ code:
 });
 
 fx({
-id:'skeleton-to-content', cat:'trans', title:'Skeleton to Content',
+id:'skeleton-to-content', cat:'trans', title:'Placeholder Becomes Content',
 desc:'The placeholder crossfades into the real thing rather than being swapped out. Overlapping the two by a couple of hundred milliseconds removes the flash that makes most loading states feel abrupt.',
 dur:'420ms', ease:[.22,1,.36,1], trigger:'click', tags:['crossfade','loading'],
 code:
@@ -11550,8 +11550,8 @@ code:
 /* ========================= LAYOUT — MORE ========================= */
 
 fx({
-id:'subgrid-align', cat:'layout', title:'Subgrid Alignment', static:true,
-desc:'Cards of different content lengths whose headings, body and buttons still line up across the row, because each card inherits the parent grid&rsquo;s rows rather than defining its own. The fix for the ragged card row that flexbox cannot solve.',
+id:'subgrid-align', cat:'layout', title:'Cards That Line Up Across a Row', static:true,
+desc:'Cards of different content lengths whose headings, body text and buttons still line up across the row. The fix for the ragged, mismatched card row you see on most sites.',
 meta:'grid-template-rows: subgrid', tags:['subgrid','alignment'], h:true,
 flag:'Chromium 117+ / FF 71+',
 code:
@@ -11599,7 +11599,7 @@ code:
 });
 
 fx({
-id:'dense-packing', cat:'layout', title:'Dense Auto-Packing', static:true,
+id:'dense-packing', cat:'layout', title:'Gap-Free Packing', static:true,
 desc:'Wide and narrow items packed together so no gaps are left behind. Right for a photo wall; wrong for anything meant to be read in sequence, because the eye no longer follows a fixed order.',
 meta:'grid-auto-flow: dense', tags:['CSS grid','packing'],
 code:
@@ -11847,7 +11847,7 @@ code:
 });
 
 fx({
-id:'gap-only-dividers', cat:'layout', title:'Dividers Without Extra Markup', static:true,
+id:'gap-only-dividers', cat:'layout', title:'Dividers Between Items', static:true,
 desc:'Clean rules between items that stay correct when the list wraps or changes length. No stray line left hanging at the end, ever.',
 meta:'gap as a rule', tags:['CSS grid','no pseudo-elements'],
 code:
@@ -11879,8 +11879,8 @@ code:
 });
 
 fx({
-id:'anchor-positioning', cat:'layout', title:'Anchor Positioning', static:true,
-desc:'An element positioned relative to another anywhere in the document, with no shared parent and no JavaScript measuring. Replaces the whole category of popover-positioning libraries &mdash; where it is supported.',
+id:'anchor-positioning', cat:'layout', title:'Panel That Anchors Itself', static:true,
+desc:'A panel that positions itself against another element anywhere on the page, with no shared wrapper and no measuring. Replaces a whole category of fiddly pop-up positioning code, where browsers support it.',
 meta:'anchor-name / position-anchor', tags:['anchor positioning','popover'], h:true,
 flag:'Chromium 125+',
 code:
@@ -12452,7 +12452,7 @@ code:
 
 fx({
 id:'sticky-caption-swap', cat:'scroll', title:'Sticky Visual, Swapping Captions',
-desc:'The image pins while the text beside it changes step by step. The editorial staple for explaining a process against one photograph, and it needs only an observer on each caption.',
+desc:'The image stays pinned while the text beside it changes step by step. The editorial staple for explaining a process against one photograph.',
 dur:'480ms per swap', ease:[.22,1,.36,1], trigger:'section enter', tags:['position:sticky','IntersectionObserver'], scroll:true, h:true,
 code:
 `<style>
@@ -12879,7 +12879,7 @@ code:
 
 fx({
 id:'sticky-quote-cycle', cat:'scroll', title:'Sticky Quote Carousel',
-desc:'A pinned quote block whose active quote is chosen directly from scroll position through the runway, rather than by an observer watching separate trigger elements.',
+desc:'A pinned quote block whose quote changes as you scroll through the section, chosen directly from how far you have travelled rather than by fixed trigger points.',
 dur:'scroll-linked', ease:[0,0,1,1], trigger:'scroll position', tags:['rAF','index mapping'], scroll:true, h:true,
 code:
 `<style>
@@ -12921,7 +12921,7 @@ code:
 });
 
 fx({
-id:'path-follow-scroll', cat:'scroll', title:'Dot Follows an SVG Path',
+id:'path-follow-scroll', cat:'scroll', title:'Dot Follows a Drawn Path',
 desc:'A marker travels along a drawn route as you scroll. Good for a journey, a process, or a map of the areas you cover.',
 dur:'scroll-linked', ease:[0,0,1,1], trigger:'scroll position', tags:['getPointAtLength','SVG'], scroll:true, h:true,
 code:
@@ -13129,7 +13129,7 @@ code:
 
 fx({
 id:'snap-panel-scroll', cat:'scroll', title:'Snapping Panel Reveal',
-desc:'A pinned viewport advances through panels one full step at a time as you scroll, snapping to the nearest panel rather than tracking continuously like the Horizontal Scroll Section.',
+desc:'A pinned window advancing one full panel at a time as you scroll, settling on each rather than tracking continuously like the Horizontal Scroll Section.',
 dur:'scroll-linked', ease:[0,0,1,1], trigger:'scroll position', tags:['position:sticky','stepped index'], scroll:true, h:true,
 code:
 `<style>
@@ -13391,7 +13391,7 @@ code:
 
 fx({
 id:'underline-checklist-scroll', cat:'scroll', title:'Checklist Underlines on Scroll',
-desc:'A vertical list where each line gets struck through as it scrolls past the middle of the viewport, so the list appears to check itself off as you read down it.',
+desc:'A list where each line strikes through as it passes the middle of the screen, so it appears to tick itself off as you read down it.',
 dur:'scroll-linked', ease:[0,0,1,1], trigger:'scroll position', tags:['rAF','scaleX'], scroll:true, h:true,
 code:
 `<style>
@@ -13585,7 +13585,7 @@ code:
 
 fx({
 id:'distance-scale-grid-scroll', cat:'scroll', title:'Grid Scales by Distance from Centre',
-desc:'Every tile continuously rescales based on how close it is to the vertical centre of the viewport, computed fresh on every scroll frame rather than toggled by a threshold.',
+desc:'Tiles grow and shrink depending on how close they are to the middle of the screen, recalculated continuously rather than snapping at a fixed point.',
 dur:'scroll-linked', ease:[0,0,1,1], trigger:'scroll position', tags:['rAF','continuous scale'], scroll:true, h:true,
 code:
 `<style>
@@ -13667,7 +13667,7 @@ code:
 
 fx({
 id:'badge-counter-scroll', cat:'scroll', title:'Sticky Section Badge Counter',
-desc:'A small pinned badge shows which numbered section is active out of the total, updating from an IntersectionObserver watching each section rather than a scroll-position calculation.',
+desc:'A small pinned badge showing which numbered section you are in, out of the total. Useful on a long page where people lose their place.',
 dur:'240ms', ease:[.34,1.4,.64,1], trigger:'section enter', tags:['IntersectionObserver','position:fixed'], scroll:true, h:true,
 code:
 `<style>
@@ -13707,7 +13707,7 @@ code:
 
 fx({
 id:'tilt-warp-scroll', cat:'scroll', title:'Perspective Tilt by Scroll Position',
-desc:'A card tilts in 3D by an amount driven continuously by its distance from the viewport centre, so it appears flat when centred and leans away as it nears the edges.',
+desc:'A card lies flat when it is centred on the screen and leans away as it nears the edges, driven continuously by where it sits.',
 dur:'scroll-linked', ease:[0,0,1,1], trigger:'scroll position', tags:['rAF','perspective'], scroll:true, h:true,
 code:
 `<style>
@@ -13840,7 +13840,7 @@ code:
 
 fx({
 id:'peel-corner', cat:'hover', title:'Peeling Corner',
-desc:'A triangular fold lifts off the top corner on hover, like the corner of a sticker starting to peel, using a clipped pseudo-element rotated back on itself.',
+desc:'A triangular fold lifts off the top corner on hover, like the corner of a sticker starting to peel away.',
 dur:'340ms', ease:[.22,1,.36,1], trigger:'hover', tags:['clip-path','pseudo-element'],
 code:
 `<style>
@@ -13906,7 +13906,7 @@ code:
 
 fx({
 id:'icon-bounce-nav', cat:'hover', title:'Bouncing Nav Icon',
-desc:'An icon hops up and back down on hover using a single keyframe animation rather than a transition, so repeated hovers always restart the same bounce from the top.',
+desc:'An icon hops up and back down on hover. It restarts cleanly from the top every time, so repeated hovers never look stuttery.',
 dur:'480ms', ease:[.34,1.56,.64,1], trigger:'hover', tags:['keyframes','restart on hover'],
 code:
 `<style>
@@ -13974,7 +13974,7 @@ code:
 
 fx({
 id:'glow-pulse-btn', cat:'hover', title:'Pulsing Glow on Hover',
-desc:'A soft shadow breathes in and out only while the pointer is over the button, using an infinite keyframe animation that is added and removed rather than left always running.',
+desc:'A soft halo breathes in and out while the pointer is over the button, and stops entirely when it leaves rather than running quietly forever.',
 dur:'1.4s loop while hovered', ease:[.45,0,.55,1], trigger:'hover', tags:['box-shadow','conditional animation'],
 code:
 `<style>
@@ -14017,7 +14017,7 @@ code:
 });
 
 fx({
-id:'underline-draw-svg', cat:'hover', title:'SVG Underline Draw',
+id:'underline-draw-svg', cat:'hover', title:'Hand-Drawn Underline',
 desc:'A hand-drawn squiggle that draws itself under a link on hover. Looser and more human than a straight rule.',
 dur:'420ms', ease:[.4,0,.2,1], trigger:'hover', tags:['SVG','stroke-dashoffset'],
 code:
@@ -14090,7 +14090,7 @@ code:
 
 fx({
 id:'drag-hint-shimmer', cat:'hover', title:'Drag Hint Shimmer',
-desc:'A faint diagonal highlight sweeps once across a draggable handle on hover, signalling that the element can be picked up without adding a label.',
+desc:'A faint diagonal highlight sweeps once across a handle on hover, signalling that it can be picked up without having to label it.',
 dur:'700ms', ease:[.25,.6,.3,1], trigger:'hover', tags:['CSS only','affordance'],
 code:
 `<style>
@@ -14335,7 +14335,7 @@ code:
 
 fx({
 id:'magnetic-icon-set', cat:'hover', title:'Magnetic Icon Row',
-desc:'A row of icons each pull toward the cursor within their own cell, a lighter multi-element variant of the single Magnetic Button that reacts across a whole toolbar.',
+desc:'A row of icons that each pull toward the cursor within their own space &mdash; the Magnetic Button idea spread across a whole toolbar.',
 dur:'follows pointer', ease:[.22,1,.36,1], trigger:'pointermove', tags:['pointermove','per-element pull'],
 code:
 `<style>
@@ -14501,7 +14501,7 @@ code:
 
 fx({
 id:'accordion-exclusive', cat:'trans', title:'Single-Open Accordion',
-desc:'Opening one panel automatically closes whichever was open, unlike the independent Height-Agnostic Accordion where every row can stay expanded at once.',
+desc:'Opening one panel automatically closes whichever was open, unlike the independent Accordion at Any Height where every row can stay expanded at once.',
 dur:'400ms', ease:[.22,1,.36,1], trigger:'click', tags:['grid-template-rows','exclusive state'],
 code:
 `<style>
@@ -14734,7 +14734,7 @@ code:
 
 fx({
 id:'card-expand-overlay', cat:'trans', title:'Card Expands to Overlay',
-desc:'Clicking a card grows it to fill the screen using FLIP, then shrinks it back to its original grid position on close, rather than opening a separate modal element.',
+desc:'Clicking a card grows it to fill the screen, then shrinks it back to exactly where it came from on close. Keeps the sense of place that a separate pop-up loses.',
 dur:'480ms', ease:[.65,0,.35,1], trigger:'click', tags:['FLIP','Web Animations API'],
 code:
 `<style>
@@ -15504,7 +15504,7 @@ code:
 
 fx({
 id:'gradient-text-hover-shift', cat:'text', title:'Gradient Shifts on Hover',
-desc:'A two-colour gradient clipped to text slides to a different position on hover, changing which colour dominates without any extra markup or JavaScript.',
+desc:'A two-colour gradient across the text slides to a different position on hover, changing which colour leads.',
 dur:'400ms', ease:[.22,1,.36,1], trigger:'hover', tags:['background-clip','background-position'],
 code:
 `<style>
@@ -17288,7 +17288,7 @@ code:
 
 fx({
 id:'honeycomb-pulse-bg', cat:'bg', title:'Pulsing Honeycomb',
-desc:'A hexagonal grid built from a repeating gradient where alternating cells brighten on a staggered loop, giving a technical texture some quiet life without any JavaScript.',
+desc:'A hexagonal field where alternating cells brighten on a staggered loop, giving a technical texture some quiet life.',
 dur:'4s loop', ease:[.45,0,.55,1], trigger:'loop', tags:['clip-path','stagger'],
 code:
 `<style>
@@ -17393,8 +17393,8 @@ code:
 });
 
 fx({
-id:'skeleton-list-rows', cat:'ui', title:'Skeleton List Rows',
-desc:'A vertical list of placeholder rows shimmering together, the layout companion to the card-shaped Skeleton Shimmer already in this section.',
+id:'skeleton-list-rows', cat:'ui', title:'Loading Placeholder Rows',
+desc:'A vertical list of placeholder rows shimmering together, the layout companion to the card-shaped Loading Placeholder Shimmer already in this section.',
 dur:'1.5s loop', ease:[0,0,1,1], trigger:'loop', tags:['background-position','list layout'],
 code:
 `<style>
@@ -17583,7 +17583,7 @@ code:
 
 fx({
 id:'accordion-faq-icon-rotate', cat:'ui', title:'FAQ Row with Rotating Icon',
-desc:'A compact single-row expand control with a plus that rotates into a cross, a smaller and simpler unit than the multi-row Height-Agnostic Accordion.',
+desc:'A compact single-row expand control with a plus that rotates into a cross, a smaller and simpler unit than the multi-row Accordion at Any Height.',
 dur:'260ms', ease:[.22,1,.36,1], trigger:'click', tags:['grid-template-rows','rotate'],
 code:
 `<style>
@@ -17799,7 +17799,7 @@ code:
 
 fx({
 id:'countdown-timer-flip', cat:'ui', title:'Countdown Timer',
-desc:'A live minutes-and-seconds countdown with each digit updating independently, useful above a limited-time offer rather than as a decorative element.',
+desc:'A live minutes-and-seconds countdown with each digit updating on its own. Suited to a genuine deadline above a limited offer, not to decoration.',
 dur:'1s tick', ease:[0,0,1,1], trigger:'loop', tags:['setInterval','live countdown'],
 code:
 `<style>
@@ -17858,8 +17858,8 @@ code:
 });
 
 fx({
-id:'card-skeleton-grid', cat:'ui', title:'Skeleton Grid of Cards',
-desc:'A grid of shimmering placeholder tiles for a gallery or product listing, the multi-tile layout companion to the single-card Skeleton Shimmer.',
+id:'card-skeleton-grid', cat:'ui', title:'Loading Placeholder Cards',
+desc:'A grid of shimmering placeholder tiles for a gallery or product listing, the multi-tile layout companion to the single-card Loading Placeholder Shimmer.',
 dur:'1.5s loop', ease:[0,0,1,1], trigger:'loop', tags:['background-position','grid layout'],
 code:
 `<style>
@@ -18205,7 +18205,7 @@ code:
 });
 
 fx({
-id:'toggle-all-checkbox', cat:'ui', title:'Select All with Indeterminate State',
+id:'toggle-all-checkbox', cat:'ui', title:'Select All with a Partial State',
 desc:'The header checkbox shows a dash rather than a tick when only some rows are selected, using the native indeterminate property rather than a second custom icon.',
 dur:'click-driven', ease:[0,0,1,1], trigger:'click', tags:['indeterminate','native checkbox'],
 code:
@@ -18284,8 +18284,8 @@ code:
 });
 
 fx({
-id:'skeleton-to-content-load', cat:'ui', title:'Skeleton Swaps to Content', h:true,
-desc:'A loading skeleton crossfades into the real content once it is ready, the moment this vault treats as page load in a demo, rather than shimmering forever like Skeleton Shimmer on its own.',
+id:'skeleton-to-content-load', cat:'ui', title:'Placeholder Swaps to Content', h:true,
+desc:'A loading placeholder crossfades into the real content once it is ready, the moment this vault treats as page load in a demo, rather than shimmering forever like Loading Placeholder Shimmer on its own.',
 dur:'900ms delay + 350ms', ease:[.4,0,.2,1], trigger:'on load', tags:['setTimeout','crossfade'],
 code:
 `<style>
@@ -18405,7 +18405,7 @@ code:
 });
 
 fx({
-id:'pinterest-masonry-css', cat:'layout', title:'CSS Masonry (native)', static:true,
+id:'pinterest-masonry-css', cat:'layout', title:'Masonry Layout', static:true,
 desc:'The proposed native masonry value lays out variable-height items without the column-count trick, keeping reading order and visual order in agreement unlike the older approach.',
 meta:'grid-template-rows: masonry', tags:['CSS grid','experimental'], h:true,
 flag:'Firefox behind flag',
@@ -18545,7 +18545,7 @@ code:
 
 fx({
 id:'card-with-ribbon-badge', cat:'layout', title:'Card with Corner Ribbon', static:true,
-desc:'A rotated ribbon sits across the top corner of a card using only a transformed pseudo-element, the classic &ldquo;sale&rdquo; or &ldquo;new&rdquo; badge with no extra markup.',
+desc:'A rotated ribbon across the top corner of a card &mdash; the classic sale or new badge, without anything extra sitting in the layout.',
 meta:'clip-path, rotated corner', tags:['badge','pseudo-element'],
 code:
 `<style>
@@ -18712,7 +18712,7 @@ code:
 
 fx({
 id:'sticky-cta-bar-bottom', cat:'layout', title:'Sticky Bottom CTA Bar', static:true,
-desc:'A call-to-action bar pins to the bottom of the viewport, the pattern mobile commerce sites use to keep &ldquo;Buy now&rdquo; reachable no matter how far you have scrolled.',
+desc:'A call-to-action bar pinned to the bottom of the screen. The pattern mobile shops use to keep Buy now reachable however far down someone has scrolled.',
 meta:'position:sticky, bottom anchored', tags:['CTA','mobile pattern'], h:true,
 code:
 `<style>
@@ -18788,7 +18788,7 @@ code:
 
 fx({
 id:'notification-list-unread', cat:'layout', title:'Notification List with Unread Marker', static:true,
-desc:'Unread items carry a small dot and a tinted background using only an added class, so the same row template serves both read and unread states without duplicating markup.',
+desc:'Unread items carry a small dot and a tinted background, so one row design serves both states and nothing has to be duplicated.',
 meta:'flexbox, state via class', tags:['notifications','list'], h:true,
 code:
 `<style>
