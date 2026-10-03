@@ -1,7 +1,3 @@
-# Motion Vault — a separate tool that happens to live in this folder.
-# Excluded so it doesn't publish to /features/ on the live site.
-features/
-
 # OS / editor cruft
 .DS_Store
 Thumbs.db
