@@ -58,13 +58,6 @@
         <span class="intro__tagline-default">Launch your business into orbit</span>
         <span class="intro__tagline-win">You've unlocked a reward &mdash; enter your email below to claim it</span>
       </span>
-      <span class="intro__cta">
-        <span class="intro__cta-ring"></span>
-        <span class="intro__cta-text">
-          <span class="intro__cta-default">Click to Enter</span>
-          <span class="intro__cta-skip">Skip &amp; Enter Site</span>
-        </span>
-      </span>
     </button>
 
     <!-- Deliberately a sibling of the button, not inside it: a form control
@@ -91,6 +84,20 @@
       <p class="intro__reward-code">Discount code <strong>6RINGS</strong></p>
       <p class="intro__reward-note">Mention this code when you email or call us and we'll apply it to your quote.</p>
     </div>
+
+    <!-- Pulled out of the logo button so it can sit after the claim form.
+         Once the ring game is won the email box is the thing to act on, and
+         "Skip & Enter Site" should read as the way past it rather than the
+         first option above it. The claim and reward blocks collapse when
+         hidden, so in every other state this still lands directly under the
+         tagline exactly as before. -->
+    <button type="button" id="intro-cta" class="intro__cta">
+      <span class="intro__cta-ring"></span>
+      <span class="intro__cta-text">
+        <span class="intro__cta-default">Click to Enter</span>
+        <span class="intro__cta-skip">Skip &amp; Enter Site</span>
+      </span>
+    </button>
   </div>
 
   <div class="intro-rings" id="intro-rings" aria-hidden="true">

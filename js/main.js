@@ -84,6 +84,7 @@
      ====================================================================== */
   const intro = document.getElementById("intro");
   const introEnter = document.getElementById("intro-enter");
+  const introCta = document.getElementById("intro-cta");
   const site = document.getElementById("site");
   const hero = document.querySelector(".hero");
   const body = document.body;
@@ -324,6 +325,8 @@
   }
 
   introEnter.addEventListener("click", enterSite);
+  // its own button now, so Enter and Space are handled natively
+  if (introCta) introCta.addEventListener("click", enterSite);
   introEnter.addEventListener("keydown", (e) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
@@ -688,8 +691,13 @@
       // across them). Only suppressed over the button's own area; the
       // trail still shows normally everywhere else on screen.
       if (document.body.classList.contains("is-triumphant")) {
-        const btnRect = introEnter.getBoundingClientRect();
-        if (x >= btnRect.left && x <= btnRect.right && y >= btnRect.top && y <= btnRect.bottom) return;
+        const over = (el) => {
+          if (!el) return false;
+          const r = el.getBoundingClientRect();
+          return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+        };
+        // the CTA and the email box sit outside the logo button now
+        if (over(introEnter) || over(introCta) || over(document.getElementById("intro-claim"))) return;
       }
       const rad = ((headingDeg + 180) * Math.PI) / 180; // point back, opposite of travel
       const perp = rad + Math.PI / 2;

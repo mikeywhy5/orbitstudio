@@ -413,7 +413,14 @@ body.is-claimed .intro__reward { display: block; }
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Its own button now rather than a span inside the logo button, so it carries
+   the resets and the hover state the parent used to give it. */
 .intro__cta {
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out),
+              transform var(--dur-base) var(--ease-spring);
   margin-top: var(--space-2xs);
   display: inline-flex;
   align-items: center;
@@ -428,6 +435,9 @@ body.is-claimed .intro__reward { display: block; }
   color: var(--text-secondary);
   position: relative;
 }
+.intro__cta:hover { border-color: var(--cyan); color: var(--text-primary); transform: scale(1.04); }
+.intro__cta:active { transform: scale(0.97); }
+
 .intro__cta-ring {
   width: 8px; height: 8px; border-radius: 50%;
   background: var(--cyan);
