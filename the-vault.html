@@ -20918,13 +20918,20 @@ function apply(){
 }
 
 moreBtn.addEventListener('click', function(){
-  const before = document.querySelectorAll('.spec:not(.hide)').length;
+  /* No scrolling here on purpose. The new cards are inserted above this
+     button, so leaving the page exactly where it is puts them right under
+     where the reader is already looking, and the page staying still is itself
+     the signal that the click landed. The smooth scroll this used to do
+     fought with the stages loading underneath it and read as a stutter. */
   state.limit += pageSize();
   apply();
-  // land on the first of the new batch rather than leaving the reader at the
-  // bottom of the old one
-  const all = document.querySelectorAll('.spec:not(.hide)');
-  if (all[before]) all[before].scrollIntoView({ behavior:'smooth', block:'start' });
+
+  /* The button has just jumped a screenful down behind the new cards, so
+     without this the press appears to do nothing on a long page: say so. */
+  const left = Number((moreBtn.textContent.match(/\((\d+) left\)/) || [])[1] || 0);
+  toast(left > 0
+    ? 'Loaded ' + pageSize() + ' more — ' + left + ' still to come'
+    : 'Loaded the last of them');
 });
 
 /* --- controls --- */
