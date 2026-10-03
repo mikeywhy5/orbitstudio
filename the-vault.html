@@ -561,7 +561,7 @@ body.locked .gate{display:flex}
       </svg>
     </span>
     <h1 class="gate__title">The Vault</h1>
-    <p class="gate__sub">Orbit Studio&rsquo;s effects showcase. Enter the password we gave you.</p>
+    <p class="gate__sub">A private look at what we can build. Enter the password we gave you.</p>
     <form class="gate__form" id="gateForm" novalidate>
       <input type="password" id="gatePw" class="gate__input" placeholder="Password"
              autocomplete="current-password" autocapitalize="off" spellcheck="false" aria-label="Password">
@@ -21082,7 +21082,7 @@ document.addEventListener('keydown', function(ev){
 /* ---- password gate --------------------------------------------------------
    A deterrent, not a lock. Everything below still ships inside this file, so
    anyone who opens devtools can read past it; what it buys is that the
-   showcase is not simply there for anyone who finds the URL. The password is
+   catalogue is not simply there for anyone who finds the URL. The password is
    kept as a SHA-256 digest rather than in plain text, and build() is deferred
    until the gate opens so 584 stages never load behind it. */
 const GATE_HASH = "9877f886f03e5e1c520003c8fbf3ce3e81cf2dd1dc4548c96cc475614cb3f87c";
