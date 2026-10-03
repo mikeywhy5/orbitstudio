@@ -12,8 +12,7 @@ dependencies — open `index.html` and it runs.
 | --- | --- |
 | `index.html` | The main site: intro gate, hero, services, process, portfolio, testimonials, pricing, contact, arcade game |
 | `coming-soon.html` | Standalone holding page. Fully self-contained (inline CSS/JS, no local assets) so it can be deployed on its own |
-| `vault.html` | Private client-walkthrough page, AES-GCM encrypted behind a password |
-| `the-vault.html` | **The Vault** — public catalogue of 584 motion effects. Visitors star favourites and email the shortlist. Despite the name, unrelated to `vault.html` |
+| `the-vault.html` | **The Vault** — catalogue of 584 motion effects behind a password. Visitors star favourites and email the shortlist |
 
 ## Running locally
 
@@ -24,8 +23,8 @@ npx serve .
 ```
 
 Opening `index.html` directly from the filesystem mostly works, but
-`vault.html` will not decrypt — the Web Crypto API it uses is only available
-over HTTPS or on `localhost`.
+`the-vault.html` will not unlock — it hashes the password with the Web Crypto
+API, which browsers only expose over HTTPS or on `localhost`.
 
 ## Configuration
 
@@ -46,21 +45,27 @@ reference numbers only, then to a clipboard copy.
 The contact form in `index.html` currently simulates submission and does not
 send anywhere — wire it to a form service before relying on it for enquiries.
 
-## Vault page
+## The Vault
 
-`vault.html` holds a private sales walkthrough. The content is not in the page;
-it ships as an AES-256-GCM encrypted blob in `js/vault-data.js` and is decrypted
-in the browser with a PBKDF2-derived key when the correct password is entered.
+`the-vault.html` is a catalogue of 584 motion effects a prospective client can
+browse on their own. They star what they like, and **Export** either copies the
+shortlist or opens their mail app addressed to `MAIL_TO`. Favourites live in
+their browser, so they can leave and come back to the same list.
 
-The plaintext source and the build script live **outside this repository**, in
-`vault-src/`, deliberately — a plaintext copy alongside the site would defeat
-the encryption. To change the content, edit `vault-src/vault-content.html` and
-re-run:
+It opens behind a password (`showcase`), kept as a SHA-256 digest rather than
+in plain text. **This is a deterrent, not a lock.** Every effect still ships
+inside the file, so anyone willing to open devtools can read past the gate —
+what it buys is that the showcase is not simply there for anyone who finds the
+URL. For real secrecy the payload would have to be encrypted, as the old
+`vault.html` did it, and the password would have to be long enough not to
+guess.
 
-```bash
-node vault-src/build-vault.js
-```
+Two settings near the end of the file:
 
-Note this protects against casual inspection, not a determined attacker: a short
-password can be brute-forced offline against the blob. Use a long passphrase if
-the content is ever genuinely sensitive.
+| Constant | What it does |
+| --- | --- |
+| `GATE_HASH` | SHA-256 of the password. Change it with `node -e "console.log(require('crypto').createHash('sha256').update('newpassword').digest('hex'))"` |
+| `PAGE_CAT` / `PAGE_ALL` | How many cards a category (15) and the All tab (25) open with, and how many each "Show more" adds |
+
+Cards are built once and hidden past the limit, so a stage that has not been
+revealed never loads its iframe — that is what keeps 584 live demos affordable.

@@ -204,7 +204,46 @@ body{
   display:none;padding:70px 20px;text-align:center;color:var(--chalk-3);
   font-family:var(--mono);font-size:13px;
 }
+/* ---------- password gate ---------- */
+body.locked > *:not(.gate){display:none !important}
+body.locked{overflow:hidden}
+.gate{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;
+  padding:24px;background:var(--ink);background-image:var(--wash)}
+body.locked .gate{display:flex}
+.gate__box{width:100%;max-width:400px;text-align:center}
+.gate__logo{display:block;width:62px;margin:0 auto 22px}
+.gate__logo svg{width:100%;height:auto;display:block}
+.gate__title{font-family:var(--display);font-weight:700;font-size:clamp(1.9rem,6vw,2.5rem);
+  letter-spacing:.01em;color:var(--chalk);margin:0 0 10px}
+.gate__sub{font-family:var(--body);font-size:14px;line-height:1.6;color:var(--chalk-2);margin:0 0 26px}
+.gate__form{display:flex;flex-direction:column;gap:10px}
+.gate__input{font-family:var(--body);font-size:15px;color:var(--chalk);text-align:center;
+  background:var(--slab);border:1px solid var(--rule-2);border-radius:var(--r-sm);padding:14px 16px;
+  transition:border-color var(--dur-fast)}
+.gate__input::placeholder{color:var(--chalk-3)}
+.gate__input:focus{outline:none;border-color:var(--signal)}
+.gate__btn{font-family:var(--body);font-weight:600;font-size:15px;color:var(--on-signal);
+  background:var(--signal);border:0;border-radius:var(--r-sm);padding:14px;cursor:pointer;
+  transition:filter var(--dur-fast)}
+.gate__btn:hover{filter:brightness(1.08)}
+.gate__msg{min-height:1.2em;margin:14px 0 0;font-family:var(--body);font-size:13px;color:#F0A0B0}
+.gate__back{display:inline-block;margin-top:26px;font-family:var(--body);font-size:13px;
+  color:var(--chalk-3);text-decoration:none}
+.gate__back:hover{color:var(--signal)}
+.gate.shake .gate__box{animation:gateShake 420ms var(--ease-out)}
+@keyframes gateShake{10%,90%{transform:translateX(-3px)}30%,70%{transform:translateX(6px)}
+  50%{transform:translateX(-6px)}100%{transform:translateX(0)}}
+@media (prefers-reduced-motion:reduce){.gate.shake .gate__box{animation:none}}
+
 .sheet.is-empty .empty{display:block}
+/* paging: a long catalogue arrives a screenful at a time rather than all 584 at once */
+.morewrap{display:flex;justify-content:center;padding:34px 0 8px}
+.sheet.is-empty .morewrap{display:none}
+.morebtn{font-family:var(--body);font-weight:600;font-size:14px;color:var(--chalk);
+  background:none;border:1px solid var(--rule-2);border-radius:999px;padding:13px 30px;cursor:pointer;
+  transition:color var(--dur-fast),border-color var(--dur-fast),background var(--dur-fast)}
+.morebtn:hover{color:var(--signal);border-color:var(--signal);background:var(--signal-soft)}
+.morebtn:focus-visible{outline:2px solid var(--signal);outline-offset:3px}
 
 /* ---------- specimen card ---------- */
 .spec{
@@ -337,10 +376,10 @@ body{
   margin:0 0 6px;line-height:1.15;
 }
 .desc{font-size:13.5px;line-height:1.5;color:var(--chalk-2);margin:0 0 12px}
-.desc code{
-  font-family:var(--mono);font-size:11.5px;background:var(--chip);
-  border:1px solid var(--rule);border-radius:4px;padding:1px 4px;color:var(--chalk);
-}
+/* 87 of the descriptions name a CSS property inline. Rewriting all 584 for a
+   non-technical reader is a separate job; in the meantime these read as prose
+   rather than as code chips, which is most of the distraction. */
+.desc code{font-family:inherit;font-size:inherit;background:none;border:0;padding:0;color:var(--chalk)}
 
 .specline{
   display:flex;align-items:center;gap:10px;padding:9px 15px;
@@ -503,7 +542,35 @@ body{
 }
 </style>
 </head>
-<body>
+<body class="locked">
+
+<div class="gate" id="gate">
+  <div class="gate__box">
+    <span class="gate__logo" aria-hidden="true">
+      <svg viewBox="0 0 200 200">
+        <defs>
+          <linearGradient id="gateGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:var(--signal)"/>
+            <stop offset="100%" style="stop-color:var(--signal-2)"/>
+          </linearGradient>
+        </defs>
+        <circle cx="100" cy="100" r="92" fill="none" stroke="url(#gateGrad)" stroke-width="7" stroke-dasharray="2 14"/>
+        <circle cx="100" cy="18" r="11" style="fill:var(--signal)"/>
+        <circle cx="100" cy="100" r="60" fill="none" stroke="url(#gateGrad)" stroke-width="7"/>
+        <text x="100" y="123" text-anchor="middle" class="orbit-mark">O</text>
+      </svg>
+    </span>
+    <h1 class="gate__title">The Vault</h1>
+    <p class="gate__sub">Orbit Studio&rsquo;s effects showcase. Enter the password we gave you.</p>
+    <form class="gate__form" id="gateForm" novalidate>
+      <input type="password" id="gatePw" class="gate__input" placeholder="Password"
+             autocomplete="current-password" autocapitalize="off" spellcheck="false" aria-label="Password">
+      <button type="submit" class="gate__btn">Unlock</button>
+    </form>
+    <p class="gate__msg" id="gateMsg" role="alert" aria-live="polite"></p>
+    <a class="gate__back" href="index.html">&#8592; Back to orbitstudio.ca</a>
+  </div>
+</div>
 
 <header class="masthead">
   <div class="masthead-in">
@@ -534,7 +601,7 @@ body{
       </h1>
       <span class="tagline">
         <span class="tagline-main">This catalogue was created by Orbit Studio</span>
-        <span class="tagline-sub"><b id="total">0</b> effects &middot; vanilla html/css/js</span>
+        <span class="tagline-sub"><b id="total">0</b> effects &middot; star the ones you like</span>
       </span>
       <div class="tools">
         <button class="pickbtn" id="pickFilter" aria-pressed="false">
@@ -562,16 +629,16 @@ body{
 <main class="sheet" id="sheet">
   <div class="grid" id="grid"></div>
   <p class="empty">No specimens match that filter.</p>
+  <div class="morewrap" id="moreWrap" hidden>
+    <button type="button" class="morebtn" id="moreBtn"></button>
+  </div>
 </main>
 
 <footer class="colophon">
   <div class="masthead-in" style="padding:0">
-    <b>How to use it.</b> Every stage below runs the real code, live. Hit <b>&#8635;</b> on a stage to replay a one-shot animation.
-    While you are walking a client through it, tap the <b>&#9733;</b> on anything they like &#8594; filter to <b>Favorites</b> to review just those &#8594; <b>Export</b> copies the lot as a plain text list you can paste into a quote. Favorites persist if you close the page.<br>
-    <b>What you copy.</b> A self-contained fragment: a <b>&lt;style&gt;</b> block, the markup, and a <b>&lt;script&gt;</b> block where needed. Paste it straight into any HTML page. No libraries, no build step, nothing to install.<br>
-    <b>Two things to adjust.</b> Stages use the Orbit dark surface, so colors are tuned for dark backgrounds &#8212; retune them for lighter sections. Class names are prefixed per effect so nothing collides when you paste several onto one page.<br>
-    <b>Fonts.</b> The chrome and the snippets call for <b>Space Grotesk</b> and <b>Inter</b>, matching the Orbit Studio site. Both load from Google Fonts, so this page needs a connection to look exactly on-brand; offline it falls back to Bahnschrift and Segoe UI and stays perfectly usable. Pasted snippets inherit whatever your page already loads.<br>
-    <b>The curve glyph</b> on each spec line is that effect's actual easing function, drawn to scale. A curve that overshoots the top box is an overshoot easing; a straight diagonal is <b>linear</b>, which almost always means an infinite loop.
+    <b>How it works.</b> Every panel below is the real effect running live, not a video. Press <b>&#8635;</b> to play a one-shot animation again, or <b>&#9654;</b> where a scroll drives it.<br>
+    <b>Picking favourites.</b> Tap the <b>&#9734;</b> on anything you like. Your picks are kept on this device, so you can come back and carry on. When you are ready, <b>Export</b> emails the shortlist straight to us.<br>
+    <b>On a phone?</b> A few effects want a mouse. The <b>Mobile friendly</b> filter hides those so you only see what will work for your visitors on a phone.
   </div>
 </footer>
 
@@ -20330,7 +20397,7 @@ const toastEl= document.getElementById('toast');
 
 // `only` is null or 'yes' (touch-friendly). Kept as a value rather than a
 // boolean so another suitability filter can be added without reworking apply().
-let state = { cat:'all', q:'', onlyPicked:false, only:null, onlyStudio:false };
+let state = { cat:'all', q:'', onlyPicked:false, only:null, onlyStudio:false, limit:25 };
 
 /* Orbit Studio's own curated shortlist — the specimens picked to carry a
    client demo, spanning every category. Separate from the visitor's starred
@@ -20615,6 +20682,7 @@ function build(){
     railCounts[key] = b.querySelector('.c');   // updated live by apply()
     b.addEventListener('click', function(){
       state.cat = key;
+      resetPage();
       [...rail.children].forEach(function(x){ x.setAttribute('aria-selected', x === b ? 'true':'false'); });
       apply();
     });
@@ -20677,32 +20745,7 @@ function build(){
       '<h3>' + e.title + '</h3>' +
       '<p class="desc">' + e.desc + '</p>';
 
-    const specline = document.createElement('div');
-    specline.className = 'specline';
-    // Palettes and type pairings have no timing, so the easing glyph would be
-    // meaningless on them — they carry a plain descriptor instead.
-    specline.innerHTML = e.static
-      ? '<span class="dur">' + e.meta + '</span>' +
-        '<span class="dot">/</span>' +
-        '<span>' + e.tags.join(' &middot; ') + '</span>'
-      : curveGlyph(e.ease) +
-        '<span class="dur">' + e.dur + '</span>' +
-        '<span class="dot">/</span>' +
-        '<span>' + e.trigger + '</span>' +
-        '<span class="dot">/</span>' +
-        '<span>' + e.tags.join(' &middot; ') + '</span>';
-
-    const actions = document.createElement('div');
-    actions.className = 'actions';
-    actions.innerHTML =
-      '<button class="toggle" type="button">&lt;/&gt; Code</button>' +
-      '<button class="copy" type="button">Copy</button>';
-
-    const codeBox = document.createElement('div');
-    codeBox.className = 'code';
-    codeBox.innerHTML = '<pre><code>' + highlight(e.code) + '</code></pre>';
-
-    card.append(stage, body, specline, actions, codeBox);
+    card.append(stage, body);
     grid.appendChild(card);
 
     // note cards are plain static HTML already in the DOM — nothing to lazy
@@ -20754,20 +20797,6 @@ function build(){
       if (state.onlyPicked) apply();
     });
 
-    actions.querySelector('.toggle').addEventListener('click', function(ev){
-      const open = codeBox.classList.toggle('open');
-      ev.currentTarget.innerHTML = open ? '&lt;/&gt; Hide' : '&lt;/&gt; Code';
-    });
-
-    const copyBtn = actions.querySelector('.copy');
-    copyBtn.addEventListener('click', function(){
-      copyText(e.code).then(function(){
-        copyBtn.textContent = 'Copied';
-        copyBtn.classList.add('done');
-        setTimeout(function(){ copyBtn.textContent = 'Copy'; copyBtn.classList.remove('done'); }, 1500);
-      }).catch(function(){ toast('Copy blocked — open the code panel and select it'); });
-    });
-
     cards.push({
       e:e, card:card, mobile:mobileRating(e),
       hay:(e.title + ' ' + e.desc + ' ' + e.tags.join(' ') + ' ' +
@@ -20812,6 +20841,20 @@ function clearAllPicks(){
   apply();
 }
 
+/* How many cards a view opens with, and how many each Show more adds.
+   Browsing one category is a considered look, so it starts small; All is for
+   skimming, so it moves in bigger steps. */
+const PAGE_CAT = 15;
+const PAGE_ALL = 25;
+function pageSize(){ return state.cat === 'all' ? PAGE_ALL : PAGE_CAT; }
+
+const moreWrap = document.getElementById('moreWrap');
+const moreBtn  = document.getElementById('moreBtn');
+
+/* Any change to what is being filtered starts the count again — otherwise
+   switching category while 300 are expanded dumps 300 of the next one. */
+function resetPage(){ state.limit = pageSize(); }
+
 function apply(){
   const q = state.q.trim().toLowerCase();
 
@@ -20827,7 +20870,7 @@ function apply(){
   }
 
   const tally = {};
-  let available = 0, shown = 0;
+  let available = 0, matched = 0, shown = 0;
 
   cards.forEach(function(c){
     const rest = passesRest(c);
@@ -20836,8 +20879,12 @@ function apply(){
       available++;
     }
     const ok = rest && (state.cat === 'all' || c.e.cat === state.cat);
-    c.card.classList.toggle('hide', !ok);
-    if (ok) shown++;
+    if (ok) matched++;
+    // past the limit it stays in the DOM but hidden, so its iframe is never
+    // observed and never loads — that is what keeps 584 stages affordable
+    const visible = ok && matched <= state.limit;
+    c.card.classList.toggle('hide', !visible);
+    if (visible) shown++;
   });
 
   Object.keys(railCounts).forEach(function(key){
@@ -20846,19 +20893,37 @@ function apply(){
     railCounts[key].parentElement.classList.toggle('empty', n === 0);
   });
 
+  const left = matched - shown;
+  moreWrap.hidden = left <= 0;
+  if (left > 0){
+    const step = Math.min(pageSize(), left);
+    moreBtn.textContent = 'Show ' + step + ' more  (' + left + ' left)';
+  }
+
   sheet.classList.toggle('is-empty', shown === 0);
 }
+
+moreBtn.addEventListener('click', function(){
+  const before = document.querySelectorAll('.spec:not(.hide)').length;
+  state.limit += pageSize();
+  apply();
+  // land on the first of the new batch rather than leaving the reader at the
+  // bottom of the old one
+  const all = document.querySelectorAll('.spec:not(.hide)');
+  if (all[before]) all[before].scrollIntoView({ behavior:'smooth', block:'start' });
+});
 
 /* --- controls --- */
 let qTimer;
 qInput.addEventListener('input', function(){
   clearTimeout(qTimer);
-  qTimer = setTimeout(function(){ state.q = qInput.value; apply(); }, 120);
+  qTimer = setTimeout(function(){ state.q = qInput.value; resetPage(); apply(); }, 120);
 });
 
 document.getElementById('pickFilter').addEventListener('click', function(){
   state.onlyPicked = !state.onlyPicked;
   this.setAttribute('aria-pressed', state.onlyPicked);
+  resetPage();
   apply();
 });
 
@@ -20867,6 +20932,7 @@ const mobBtn = document.getElementById('mobFilter');
 mobBtn.addEventListener('click', function(){
   state.only = state.only === 'yes' ? null : 'yes';
   mobBtn.setAttribute('aria-pressed', state.only === 'yes');
+  resetPage();
   apply();
 });
 
@@ -20875,6 +20941,7 @@ const studioBtn = document.getElementById('studioFilter');
 studioBtn.addEventListener('click', function(){
   state.onlyStudio = !state.onlyStudio;
   studioBtn.setAttribute('aria-pressed', state.onlyStudio);
+  resetPage();
   apply();
 });
 
@@ -21009,10 +21076,60 @@ expDlg.addEventListener('click', function(ev){ if (ev.target === expDlg) expDlg.
 
 document.addEventListener('keydown', function(ev){
   if (ev.key === '/' && document.activeElement !== qInput){ ev.preventDefault(); qInput.focus(); qInput.select(); }
-  if (ev.key === 'Escape' && document.activeElement === qInput){ qInput.value=''; state.q=''; apply(); qInput.blur(); }
+  if (ev.key === 'Escape' && document.activeElement === qInput){ qInput.value=''; state.q=''; resetPage(); apply(); qInput.blur(); }
 });
 
-build();
+/* ---- password gate --------------------------------------------------------
+   A deterrent, not a lock. Everything below still ships inside this file, so
+   anyone who opens devtools can read past it; what it buys is that the
+   showcase is not simply there for anyone who finds the URL. The password is
+   kept as a SHA-256 digest rather than in plain text, and build() is deferred
+   until the gate opens so 584 stages never load behind it. */
+const GATE_HASH = "9877f886f03e5e1c520003c8fbf3ce3e81cf2dd1dc4548c96cc475614cb3f87c";
+const GATE_KEY  = "thevault.unlocked.v1";
+const gate    = document.getElementById("gate");
+const gateMsg = document.getElementById("gateMsg");
+let built = false;
+
+async function sha256(text){
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return [...new Uint8Array(buf)].map(function(b){ return b.toString(16).padStart(2,"0"); }).join("");
+}
+
+function unlock(){
+  document.body.classList.remove("locked");
+  if (!built){ built = true; build(); }
+}
+
+document.getElementById("gateForm").addEventListener("submit", async function(ev){
+  ev.preventDefault();
+  const input = document.getElementById("gatePw");
+  const tried = input.value.trim().toLowerCase();
+  if (!tried){ gateMsg.textContent = "Enter the password to continue."; return; }
+
+  if (!window.isSecureContext || !crypto.subtle){
+    gateMsg.textContent = "This page has to be opened over https to unlock.";
+    return;
+  }
+
+  if (await sha256(tried) === GATE_HASH){
+    try { localStorage.setItem(GATE_KEY, "1"); } catch(err){}
+    gateMsg.textContent = "";
+    unlock();
+  } else {
+    gateMsg.textContent = "That password is not right.";
+    input.select();
+    gate.classList.remove("shake");
+    void gate.offsetWidth;        // restart the animation on a repeat attempt
+    gate.classList.add("shake");
+  }
+});
+
+/* Someone who has already been let in should not have to ask again. */
+let alreadyIn = false;
+try { alreadyIn = localStorage.getItem(GATE_KEY) === "1"; } catch(err){}
+if (alreadyIn) unlock();
+else document.getElementById("gatePw").focus();
 </script>
 </body>
 </html>
