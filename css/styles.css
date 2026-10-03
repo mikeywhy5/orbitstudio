@@ -740,6 +740,46 @@ body.is-triumphant .intro__cta-ring {
   100% { transform: scale(1); filter: blur(0) brightness(1); }
 }
 
+/* ---- phones take the cheap road out of the intro -------------------------
+   The desktop exit animates filter:blur() across the whole viewport twice in
+   a row: 1700ms of scene-fall blurring to 6px and dimming to brightness(.5),
+   then 1100ms of hero-emerge starting at blur(16px). A full-screen blur is
+   the most expensive thing you can hand a phone GPU, and because scene-fall
+   also darkens as it goes, a phone that cannot keep up sits on a black
+   screen for seconds before the hero ever paints.
+
+   On a touch device the same beats run on opacity and transform only, which
+   the compositor does for free, and in well under half the time. Desktop is
+   untouched. */
+@media (pointer: coarse), (max-width: 768px) {
+  :root { --warp-duration: 600ms; }   /* JS reads this back, see main.js */
+
+  @keyframes scene-fall {
+    0%   { opacity: 1; }
+    100% { opacity: 0.55; }
+  }
+  @keyframes content-suck {
+    0%   { transform: scale(1);    opacity: 1; }
+    35%  { transform: scale(1.35); opacity: 0; }
+    100% { transform: scale(1.35); opacity: 0; }
+  }
+  .hero.is-emerging {
+    animation: hero-emerge-lite 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    will-change: transform, opacity;
+  }
+  @keyframes hero-emerge-lite {
+    0%   { transform: scale(1.06); opacity: 0; }
+    100% { transform: scale(1);    opacity: 1; }
+  }
+
+  /* two 500px orbs at blur(90px) are a lot of offscreen surface to composite
+     on a phone, and at this size they read as a flat wash anyway */
+  .hero__glow { filter: blur(60px); }
+  .hero__glow--a { width: 300px; height: 300px; }
+  .hero__glow--b { width: 260px; height: 260px; }
+}
+
+
 .hero__burst {
   position: absolute;
   top: 50%; left: 50%;

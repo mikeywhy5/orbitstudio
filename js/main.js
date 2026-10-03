@@ -38,8 +38,17 @@
   const cursorDot = document.getElementById("cursor-dot");
   const cursorIdlePulse = document.getElementById("cursor-idle-pulse");
 
-  // Must match --warp-duration in styles.css
-  const WARP_DURATION = 1700;
+  /* Read back from CSS so the canvas warp, the fallback timer and the
+     keyframes can never drift apart — phones override it to something far
+     shorter (see the coarse-pointer block in styles.css). */
+  const WARP_DURATION = (() => {
+    const v = getComputedStyle(document.documentElement)
+      .getPropertyValue("--warp-duration").trim();
+    const ms = v.endsWith("ms") ? parseFloat(v)
+             : v.endsWith("s")  ? parseFloat(v) * 1000
+             : NaN;
+    return Number.isFinite(ms) && ms > 0 ? ms : 1700;
+  })();
 
   /* ======================================================================
      Smooth scroll (Lenis) — same inertia/easing model used on khula.studio
@@ -1193,7 +1202,8 @@
     const cx = width / 2;
     const cy = height / 2;
     const maxDist = Math.hypot(width, height) / 2 + 40;
-    const count = 160;
+    // a phone draws this onto a canvas with twice the pixels of its screen
+    const count = isCoarsePointer ? 70 : 160;
     // Scattered across the whole screen, not clustered near center — this is
     // the "sucked into the black hole" direction: stars pulled inward and
     // consumed, not flown past like warp-speed travel.
