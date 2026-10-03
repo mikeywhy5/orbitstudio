@@ -535,6 +535,20 @@ body.locked .gate{display:flex}
   .grid{grid-template-columns:1fr}
   .sheet{padding:18px 14px 70px}
   .masthead-in{padding:0 14px}
+
+  /* Starring is the whole point of this page on a phone, and 34px is under
+     every touch-target guideline. Grow the hit area without moving the glyph,
+     so the layout is unchanged and only the tappable region gets bigger. */
+  .star-btn{width:44px;height:44px;margin:-11px -11px -11px 0}
+
+  /* Same for the toolbar: these were 32px tall, which is a miss waiting to
+     happen next to a filter that changes what you are looking at. */
+  .pickbtn,.studiobtn,.mobbtn,.exportbtn,.clearbtn,.backlink{min-height:44px}
+
+  /* Three buttons across a 320px dialog forces "Email my list" onto two lines
+     and leaves each one barely a thumb wide. Stack them, most-used first. */
+  .expdlg-btns{flex-direction:column-reverse}
+  .expdlg-btns button{flex:none;width:100%;min-height:46px}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
