@@ -709,7 +709,7 @@ function fx(o){ EFFECTS.push(o); }
 
 fx({
 id:'sticky-stack', cat:'scroll', title:'Sticky Stacking Cards',
-desc:'Each card sticks at a slightly deeper offset than the one before, so they pile up like a hand of cards as you scroll. Pure CSS — the only JS-free way to get this is exactly this <code>position:sticky</code> ladder.',
+desc:'Cards pile up on top of one another as you scroll, like a hand of cards being laid down. A memorable way to walk someone through a few key points without them ever leaving the screen.',
 dur:'scroll-linked', ease:[0,0,1,1], trigger:'scroll position', tags:['position:sticky','CSS only'], scroll:true, h:true,
 code:
 `<style>
@@ -745,7 +745,7 @@ code:
 
 fx({
 id:'horizontal-scroll', cat:'scroll', title:'Horizontal Scroll Section',
-desc:'A tall spacer holds a sticky viewport; vertical scroll distance is remapped onto <code>translateX</code> of the track inside. The section width sets how long the horizontal run lasts.',
+desc:'Scrolling down moves the content sideways instead, carrying you along a row of panels. Useful for a process, a timeline, or a product range you want seen in order.',
 dur:'scroll-linked', ease:[0,0,1,1], trigger:'scroll position', tags:['position:sticky','rAF'], scroll:true, h:true,
 code:
 `<style>
@@ -811,7 +811,7 @@ code:
 
 fx({
 id:'count-up', cat:'scroll', title:'Counting Stat Numbers',
-desc:'Stat figures roll from zero when the block scrolls in, eased so they decelerate into the final value instead of stopping dead. <code>tabular-nums</code> stops the digits from jittering as they change width.',
+desc:'Figures count up from zero as they come into view and ease to a stop on the real number. The usual way to make results &mdash; jobs completed, years in business &mdash; land harder than plain text.',
 dur:'1.6s', ease:[.16,1,.3,1], trigger:'on enter', tags:['rAF','IntersectionObserver'], scroll:true,
 code:
 `<style>
@@ -872,7 +872,7 @@ code:
 
 fx({
 id:'parallax-layers', cat:'scroll', title:'Parallax Depth Layers',
-desc:'Three layers translate at different fractions of scroll distance, so the background drifts slower than the foreground. Everything runs inside one <code>requestAnimationFrame</code> tick to stay off the scroll thread.',
+desc:'Background, middle and foreground drift at different speeds as you scroll, so a flat page gains real depth. Subtle enough to feel expensive rather than gimmicky.',
 dur:'scroll-linked', ease:[0,0,1,1], trigger:'scroll position', tags:['rAF','transform'], scroll:true, h:true,
 code:
 `<style>
@@ -990,7 +990,7 @@ code:
 
 fx({
 id:'curtain-wipe', cat:'scroll', title:'Curtain Wipe Reveal',
-desc:'An <code>inset()</code> clip-path opens downward over a dashed well, so the closed state shows you where the reveal will land instead of rendering as an empty box. The panel counter-scales from 1.25 and carries a rolling gradient, which is what keeps the wipe edge readable as it travels.',
+desc:'A panel opens downward like a curtain, showing where the content will land before it arrives. The opening edge carries a moving gradient, so the motion stays readable the whole way down.',
 dur:'1.4s wipe / 3.2s roll', ease:[.55,0,.25,1], trigger:'on enter', tags:['clip-path','IntersectionObserver'], scroll:true, h:true,
 code:
 `<style>
@@ -1109,7 +1109,7 @@ code:
 
 fx({
 id:'fade-rise', cat:'scroll', title:'Fade & Rise',
-desc:'The workhorse reveal. Elements sit 28px low and transparent, then ease up into place the first time they enter the viewport. <code>unobserve</code> after firing so it never replays.',
+desc:'Content lifts gently into place the first time you scroll to it, then stays put. The workhorse reveal &mdash; used sparingly it makes a page feel considered rather than static.',
 dur:'700ms', ease:[.22,1,.36,1], trigger:'on enter', tags:['IntersectionObserver','CSS'], scroll:true,
 code:
 `<style>
@@ -1157,7 +1157,7 @@ code:
 
 fx({
 id:'stagger', cat:'scroll', title:'Staggered Cascade',
-desc:'One observer on the container, then each child gets a <code>transition-delay</code> from its index. Reads as a single deliberate gesture instead of six separate ones. Keep the step under 90ms or it drags.',
+desc:'Items in a row arrive one after another rather than all at once, so a group reads as a single deliberate gesture. Keep the gap short or it starts to feel slow.',
 dur:'620ms + 70ms step', ease:[.22,1,.36,1], trigger:'on enter', tags:['IntersectionObserver','stagger'], scroll:true,
 code:
 `<style>
@@ -1209,7 +1209,7 @@ code:
 
 fx({
 id:'scroll-driven-css', cat:'scroll', title:'Scroll-Driven, No JavaScript',
-desc:'<code>animation-timeline: view()</code> ties a keyframe animation directly to an element&rsquo;s trip through the viewport — no observer, no scroll listener, and it runs off the main thread. Wrap it in <code>@supports</code> and let older browsers just see the finished state.',
+desc:'An animation tied directly to how far an element has travelled up the screen. Runs efficiently enough to stay smooth on older phones, and anything that cannot run it simply sees the finished state.',
 dur:'scroll-linked', ease:[0,0,1,1], trigger:'view() timeline', tags:['CSS only','animation-timeline'], scroll:true,
 flag:'Chromium 115+',
 code:
@@ -1250,7 +1250,7 @@ code:
 
 fx({
 id:'scroll-progress', cat:'scroll', title:'Reading Progress Bar',
-desc:'A hairline bar across the top that fills as you move through the page. Uses <code>scaleX</code> on a pre-sized element rather than animating width, so it never triggers layout.',
+desc:'A hairline bar across the top that fills as you move down the page. Quietly tells a reader how much is left, which keeps people on long pages.',
 dur:'scroll-linked', ease:[0,0,1,1], trigger:'scroll position', tags:['rAF','transform'], scroll:true,
 code:
 `<style>
@@ -1300,7 +1300,7 @@ code:
 
 fx({
 id:'magnetic-btn', cat:'hover', title:'Magnetic Button',
-desc:'The button leans toward your cursor while you are near it, then springs back on exit. The <code>0.32</code> pull factor is the whole effect &mdash; above about 0.5 it stops feeling like attraction and starts feeling broken.',
+desc:'The button leans toward the cursor as it gets close, then springs back when you move away. Makes a call to action feel like it wants to be clicked.',
 dur:'260ms in / 520ms release', ease:[.34,1.56,.64,1], trigger:'pointer proximity', tags:['pointermove','transform'],
 code:
 `<style>
@@ -1346,7 +1346,7 @@ code:
 
 fx({
 id:'tilt-card', cat:'hover', title:'3D Tilt Card',
-desc:'Pointer position maps to <code>rotateX</code> / <code>rotateY</code> inside a perspective wrapper, and a gloss layer tracks the same coordinates so the highlight moves like a real reflection. Cap the tilt near 12&deg; &mdash; more looks like a bug.',
+desc:'The card tips toward the pointer and a highlight travels across it like light on a real surface. Keep the tilt shallow &mdash; too much and it reads as a fault rather than a flourish.',
 dur:'follows pointer / 600ms reset', ease:[.22,1,.36,1], trigger:'pointermove', tags:['perspective','transform'],
 code:
 `<style>
@@ -1440,7 +1440,7 @@ code:
 
 fx({
 id:'underline-wipe', cat:'hover', title:'Underline Wipe',
-desc:'The rule grows from the left on hover and retracts to the right on exit, by flipping <code>transform-origin</code> between the two states. That asymmetry is what separates it from the usual scale-from-center underline.',
+desc:'The underline grows from the left on hover and clears away to the right on the way out. That asymmetry is what separates it from the underline every template ships with.',
 dur:'340ms', ease:[.65,0,.35,1], trigger:'hover', tags:['CSS only','transform-origin'],
 code:
 `<style>
@@ -1472,7 +1472,7 @@ code:
 
 fx({
 id:'ripple', cat:'hover', title:'Material Ripple',
-desc:'A circle spawns at the exact click point and expands past the edges while fading out. Sized from the element diagonal so it always covers the corner furthest from the press, and it cleans up after itself on <code>animationend</code>.',
+desc:'A ring spreads from the exact point you pressed and fades out past the edges. Confirms a tap instantly, which matters most on phones where there is no cursor to react.',
 dur:'620ms', ease:[.22,1,.36,1], trigger:'click', tags:['pointerdown','keyframes'],
 code:
 `<style>
@@ -1602,7 +1602,7 @@ code:
 
 fx({
 id:'fill-wipe', cat:'hover', title:'Fill Wipe Button',
-desc:'A background panel wipes in from the bottom edge and the label flips to the contrasting color as it passes. <code>z-index</code> on the label is what keeps the text above the incoming fill.',
+desc:'A block of colour sweeps up from the bottom edge and the label flips to contrast as it passes. A solid, confident hover for a main button.',
 dur:'400ms', ease:[.65,0,.35,1], trigger:'hover', tags:['CSS only','pseudo-element'],
 code:
 `<style>
@@ -1631,7 +1631,7 @@ code:
 
 fx({
 id:'glow-border', cat:'hover', title:'Rotating Gradient Border',
-desc:'A conic gradient spins behind the card and a solid inset panel masks all but a 1px rim, so the border itself appears to have light traveling around it. Uses <code>@property</code> so the angle is a real animatable type.',
+desc:'Light appears to travel continuously around the rim of the card. Draws the eye to one panel &mdash; a featured plan, say &mdash; without having to make it bigger than everything else.',
 dur:'4s loop', ease:[0,0,1,1], trigger:'hover', tags:['@property','conic-gradient'],
 flag:'Chromium / Safari 16.4+',
 code:
@@ -1712,7 +1712,7 @@ code:
 
 fx({
 id:'cursor-follower', cat:'hover', title:'Trailing Cursor Dot',
-desc:'A dot chases the pointer with linear interpolation, so it lags and settles instead of snapping. <code>mix-blend-mode:difference</code> inverts whatever it passes over, which keeps it readable on any background.',
+desc:'A dot follows the pointer with a slight lag, inverting whatever it passes over so it stays visible on any background. Gives a site a signature of its own on desktop.',
 dur:'continuous lerp', ease:[0,0,1,1], trigger:'pointermove', tags:['rAF','mix-blend-mode'],
 code:
 `<style>
@@ -1761,7 +1761,7 @@ code:
 
 fx({
 id:'squish-press', cat:'hover', title:'Squish Press',
-desc:'Lifts 2px on hover, compresses on <code>:active</code>, then overshoots on release. The overshoot is doing all the work &mdash; it is what makes a button feel physical rather than just responsive.',
+desc:'Lifts on hover, compresses when pressed, then overshoots slightly on release. The overshoot is doing all the work &mdash; it is what makes a button feel physical rather than merely responsive.',
 dur:'120ms press / 460ms release', ease:[.34,1.56,.64,1], trigger:'hover + active', tags:['CSS only',':active'],
 code:
 `<style>
@@ -1835,7 +1835,7 @@ code:
 
 fx({
 id:'view-transition', cat:'trans', title:'View Transitions Crossfade',
-desc:'<code>document.startViewTransition()</code> snapshots the page before and after your DOM change and tweens between them. Give matching elements the same <code>view-transition-name</code> and the browser morphs one into the other for you.',
+desc:'Moving between pages crossfades instead of cutting, and anything shared between them glides from one position to the next. Makes a multi-page site feel like a single, continuous app.',
 dur:'520ms', ease:[.22,1,.36,1], trigger:'click', tags:['View Transitions','progressive'],
 flag:'Chromium 111+',
 code:
@@ -1887,7 +1887,7 @@ code:
 
 fx({
 id:'modal-pop', cat:'trans', title:'Modal Pop-Out',
-desc:'A native <code>&lt;dialog&gt;</code> so you get focus trapping, Esc to close, and the top layer for free. The only added work is animating <code>::backdrop</code> and holding the element visible long enough for the exit to finish.',
+desc:'A dialog that scales up over a dimmed page. Built on the browser&rsquo;s own, so keyboard focus, Escape to close and screen readers all behave correctly without extra work.',
 dur:'320ms in / 200ms out', ease:[.34,1.56,.64,1], trigger:'click', tags:['dialog','::backdrop'],
 code:
 `<style>
@@ -1938,7 +1938,7 @@ code:
 
 fx({
 id:'drawer', cat:'trans', title:'Slide-Out Drawer',
-desc:'An off-canvas panel that slides in over a dimmed backdrop, with the nav items staggering in behind it. <code>inert</code> on the closed panel keeps its links out of the tab order.',
+desc:'A panel slides in from the side over a dimmed page, with the menu items arriving behind it. The standard mobile navigation, done properly.',
 dur:'420ms', ease:[.22,1,.36,1], trigger:'click', tags:['transform','inert'],
 code:
 `<style>
@@ -2006,7 +2006,7 @@ code:
 
 fx({
 id:'accordion', cat:'trans', title:'Height-Agnostic Accordion',
-desc:'Animating to <code>height:auto</code> has never worked. Animating <code>grid-template-rows</code> from <code>0fr</code> to <code>1fr</code> does, at any content height, with no JavaScript measuring. This is the fix people spent a decade writing plugins for.',
+desc:'Sections that open and close smoothly no matter how much content they hold. It sounds trivial; it is the thing the web spent a decade getting wrong, and this version simply works at any height.',
 dur:'400ms', ease:[.65,0,.35,1], trigger:'click', tags:['grid-template-rows','CSS'],
 code:
 `<style>
@@ -2406,7 +2406,7 @@ code:
 
 fx({
 id:'shimmer-text', cat:'text', title:'Gradient Shimmer Text',
-desc:'An oversized gradient is clipped to the glyphs and slid across on a loop. <code>background-clip:text</code> with a transparent fill is the whole mechanism &mdash; the animation only moves the background position.',
+desc:'A band of colour slides through the letters on a loop. Best on a single headline, where it draws the eye exactly where you want reading to start.',
 dur:'3.5s loop', ease:[0,0,1,1], trigger:'loop', tags:['background-clip','CSS only'],
 code:
 `<style>
@@ -2486,7 +2486,7 @@ code:
 
 fx({
 id:'blur-in', cat:'text', title:'Blur-In Word Reveal',
-desc:'Words arrive out of focus and sharpen as they settle. Animating <code>filter:blur()</code> is expensive to composite, so keep it to a headline and never run it across a whole paragraph.',
+desc:'Words arrive out of focus and sharpen as they settle. Keep it to a headline &mdash; across a full paragraph it becomes hard work to read.',
 dur:'800ms + 80ms/word', ease:[.22,1,.36,1], trigger:'on load', tags:['filter:blur','stagger'],
 code:
 `<style>
@@ -2567,7 +2567,7 @@ code:
 
 fx({
 id:'text-mask-window', cat:'text', title:'Text as a Window',
-desc:'The type becomes a cut-out and a drifting conic gradient shows through it. Swap the gradient for a <code>&lt;video&gt;</code> behind the same clip and you get footage playing inside the letterforms.',
+desc:'The letters are cut out of the page so something moves behind them. Swap the colour for footage and you get video playing inside your own name.',
 dur:'8s loop', ease:[.45,0,.55,1], trigger:'loop', tags:['background-clip','conic-gradient'],
 code:
 `<style>
@@ -2639,7 +2639,7 @@ code:
 
 fx({
 id:'flip-card', cat:'3d', title:'Flip Card',
-desc:'Two faces stacked in the same space, the back pre-rotated 180&deg;. <code>backface-visibility:hidden</code> is what hides whichever face is turned away &mdash; without it you get both faces bleeding through mid-turn.',
+desc:'The card turns over to show a second face &mdash; a price, a detail, a before and after. Two sides of information in the space of one.',
 dur:'700ms', ease:[.22,1,.36,1], trigger:'hover', tags:['preserve-3d','backface-visibility'],
 code:
 `<style>
@@ -2681,7 +2681,7 @@ code:
 
 fx({
 id:'css-cube', cat:'3d', title:'Rotating Cube',
-desc:'Six faces pushed out to the half-width of the cube with <code>translateZ</code>, then the whole container spins. Every face needs the same offset as half the cube size or the corners will not meet.',
+desc:'A real cube turning in space, each face carrying its own content. Eye-catching for a short set of things you want remembered.',
 dur:'14s loop', ease:[0,0,1,1], trigger:'loop', tags:['preserve-3d','translateZ'],
 code:
 `<style>
@@ -2728,7 +2728,7 @@ code:
 
 fx({
 id:'coverflow', cat:'3d', title:'Coverflow Carousel',
-desc:'Each card is positioned from its offset to the active index: sideways travel, a <code>rotateY</code> that increases with distance, and a <code>translateZ</code> that pushes it back. Clamping the offset keeps far cards stacked instead of flying off.',
+desc:'Cards fan back into the distance either side of the one in focus, so the current item is unmistakable. Good for a gallery where position matters as much as the picture.',
 dur:'620ms', ease:[.22,1,.36,1], trigger:'click', tags:['perspective','index math'],
 code:
 `<style>
@@ -2806,7 +2806,7 @@ code:
 
 fx({
 id:'depth-parallax', cat:'3d', title:'Mouse Depth Parallax',
-desc:'Layers sit at different <code>translateZ</code> depths inside one perspective, and the whole scene tilts toward the pointer. Because perspective does the work, near layers travel further than far ones automatically &mdash; no per-layer speed values to tune.',
+desc:'Layers sit at different depths and the whole scene leans toward the pointer. Near layers travel further than far ones on their own, so it reads as a real space rather than a trick.',
 dur:'follows pointer', ease:[.22,1,.36,1], trigger:'pointermove', tags:['perspective','translateZ'],
 code:
 `<style>
@@ -2865,7 +2865,7 @@ code:
 
 fx({
 id:'extrude-text', cat:'3d', title:'Extruded Type',
-desc:'A stack of <code>text-shadow</code> copies offset one pixel at a time builds a solid side wall, and the whole block rotates in 3D on hover. Fake extrusion, but at display sizes it holds up and costs nothing.',
+desc:'Letters with genuine thickness that turn in three dimensions on hover. At headline sizes it looks carved rather than printed.',
 dur:'600ms', ease:[.34,1.4,.64,1], trigger:'hover', tags:['text-shadow','rotate3d'],
 code:
 `<style>
@@ -2897,7 +2897,7 @@ code:
 
 fx({
 id:'tunnel-grid', cat:'3d', title:'Perspective Tunnel',
-desc:'A flat grid laid down at 78&deg; and scrolled toward the camera. The vanishing point comes from <code>perspective-origin</code>, and a mask fades the far end so the grid does not end in a visible hard edge.',
+desc:'A grid running away to a vanishing point that shifts as you move. Sets a technical, forward-looking tone behind a hero section.',
 dur:'3s loop', ease:[0,0,1,1], trigger:'loop', tags:['perspective-origin','rotateX'],
 code:
 `<style>
@@ -2996,7 +2996,7 @@ code:
 
 fx({
 id:'scroll-rotate-3d', cat:'3d', title:'Scroll-Turned Object',
-desc:'Scroll position drives <code>rotateY</code> directly, so the object turns as you read past it. The standard way to show a product from every side without a video or a model viewer.',
+desc:'The object rotates as you scroll past it, so a product is seen from every side. The standard way to show something in the round without asking anyone to press play.',
 dur:'scroll-linked', ease:[0,0,1,1], trigger:'scroll position', tags:['perspective','rAF'], scroll:true, h:true,
 code:
 `<style>
@@ -3249,7 +3249,7 @@ code:
 
 fx({
 id:'glassmorphism', cat:'bg', title:'Frosted Glass Panel',
-desc:'<code>backdrop-filter</code> blurs whatever sits behind the panel. The detail most people miss is the top-left inner highlight &mdash; without that 1px light edge it reads as a flat translucent box, not glass.',
+desc:'A panel that blurs whatever sits behind it, with a fine light edge along the top. That edge is the entire difference between glass and a flat translucent box.',
 dur:'400ms', ease:[.22,1,.36,1], trigger:'hover', tags:['backdrop-filter','inset shadow'],
 code:
 `<style>
@@ -3289,7 +3289,7 @@ code:
 
 fx({
 id:'morph-blob', cat:'bg', title:'Morphing Blob',
-desc:'Animating all eight <code>border-radius</code> values on offset loops makes an organic shape that never repeats the same silhouette. Cheaper and smoother than animating an SVG path.',
+desc:'An organic shape that drifts endlessly and never repeats the same outline. A soft backdrop that holds attention without competing with the words in front of it.',
 dur:'12s loop', ease:[.45,0,.55,1], trigger:'loop', tags:['border-radius','CSS only'],
 code:
 `<style>
@@ -3474,7 +3474,7 @@ code:
 
 fx({
 id:'progress-ring', cat:'ui', title:'SVG Progress Ring',
-desc:'One circle with its dash pattern set to the full circumference, then <code>stroke-dashoffset</code> pulled back to show a fraction of it. Rotate the SVG &minus;90&deg; so zero starts at the top instead of at three o&rsquo;clock.',
+desc:'A ring that fills to show a percentage, starting from the top. Reads faster than a number for anything you want understood at a glance.',
 dur:'900ms', ease:[.22,1,.36,1], trigger:'click', tags:['stroke-dashoffset','SVG'],
 code:
 `<style>
@@ -3727,7 +3727,7 @@ code:
 
 fx({
 id:'draw-check', cat:'ui', title:'Drawn Confirmation',
-desc:'The circle and tick are drawn on rather than faded in, by animating <code>stroke-dashoffset</code> from the path length down to zero. Sequencing the tick behind the circle is what makes it read as a signature rather than an icon appearing.',
+desc:'The tick is drawn on, stroke by stroke, rather than simply appearing. It reads as a signature, so the moment a form succeeds feels earned.',
 dur:'1.1s sequence', ease:[.65,0,.35,1], trigger:'click', tags:['stroke-dashoffset','sequencing'],
 code:
 `<style>
@@ -3768,7 +3768,7 @@ code:
 
 fx({
 id:'before-after', cat:'layout', title:'Before / After Slider',
-desc:'Two stacked images, the top one clipped by <code>inset()</code> at the handle position. Drag or use the arrow keys. Worth building properly for any trade site &mdash; it is the single most persuasive thing you can put on a portfolio page.',
+desc:'Drag the handle to wipe between two photographs of the same view. Worth building properly for any trade &mdash; it is the single most persuasive thing you can put on a portfolio page.',
 dur:'follows drag', ease:[0,0,1,1], trigger:'drag', tags:['clip-path','pointer capture'],
 code:
 `<style>
@@ -3935,7 +3935,7 @@ code:
 
 fx({
 id:'scroll-snap', cat:'layout', title:'Scroll Snap Gallery',
-desc:'Native snapping with two properties and no JavaScript. <code>scroll-snap-align</code> decides where each panel comes to rest; the browser handles the momentum, the touch feel, and the keyboard.',
+desc:'Panels come to rest neatly one at a time as you swipe. The browser handles the momentum and the feel, so it behaves exactly the way a phone gallery should.',
 dur:'browser-native', ease:[.22,1,.36,1], trigger:'scroll / swipe', tags:['scroll-snap','CSS only'],
 code:
 `<style>
@@ -4058,7 +4058,7 @@ code:
 
 fx({
 id:'custom-scrollbar', cat:'layout', title:'Styled Scroll Region',
-desc:'A scrollbar that matches the site instead of the operating system. Use the standard <code>scrollbar-color</code> and <code>scrollbar-width</code> for Firefox, and the WebKit pseudo-elements for the finer control Chromium allows.',
+desc:'A scrollbar that matches the site rather than the operating system. A small detail, but the kind that separates a considered build from a generic one.',
 dur:'static', ease:[0,0,1,1], trigger:'always', tags:['scrollbar-color','::-webkit-scrollbar'],
 code:
 `<style>
@@ -4472,7 +4472,7 @@ code:
 
 fx({
 id:'popover-menu', cat:'trans', title:'Native Popover Menu',
-desc:'The <code>popover</code> attribute gives you top-layer rendering, light-dismiss on outside click, Esc to close and focus handling with no JavaScript at all. Pair it with <code>@starting-style</code> to animate the open state.',
+desc:'A menu that opens above everything, closes when you click away or press Escape, and handles keyboard focus correctly. All of that comes from the browser itself, so it stays reliable.',
 dur:'260ms', ease:[.34,1.4,.64,1], trigger:'click', tags:['popover','@starting-style'],
 flag:'Chromium 114+ / Safari 17',
 code:
@@ -4790,7 +4790,7 @@ code:
 
 fx({
 id:'ring-carousel', cat:'3d', title:'3D Ring Carousel',
-desc:'Panels arranged around a cylinder by giving each a <code>rotateY</code> of its index share and pushing it out by the ring radius. Rotating the parent spins the whole ring &mdash; no per-item maths at runtime.',
+desc:'Panels arranged around a cylinder that spins to bring each one to the front. Striking for a short set of featured items.',
 dur:'20s loop', ease:[0,0,1,1], trigger:'loop + hover', tags:['preserve-3d','trigonometry'],
 code:
 `<style>
@@ -4973,7 +4973,7 @@ code:
 
 fx({
 id:'range-slider', cat:'ui', title:'Slider with Live Bubble',
-desc:'A real <code>&lt;input type="range"&gt;</code> restyled, with the filled portion drawn by a gradient whose stop tracks the value and a bubble that rides the thumb. Keeps native keyboard and touch behavior.',
+desc:'A slider with the current value riding above the handle in a bubble. Still a proper form control underneath, so keyboard and touch work as expected &mdash; useful for a quote estimator.',
 dur:'live', ease:[.22,1,.36,1], trigger:'drag', tags:['input range','CSS variables'],
 code:
 `<style>
@@ -5352,7 +5352,7 @@ code:
 
 fx({
 id:'holo-card', cat:'3d', title:'Holographic Card',
-desc:'A conic rainbow layered in <code>color-dodge</code> over a tilting card, with the hue angle tied to pointer position. The sheen shifts as though light is raking across foil, rather than a highlight simply sliding about.',
+desc:'A rainbow sheen rakes across the card as it tilts, the way light moves over foil. Memorable for a membership card, a ticket or a premium tier.',
 dur:'follows pointer', ease:[.22,1,.36,1], trigger:'pointermove', tags:['mix-blend-mode','conic-gradient'],
 code:
 `<style>
@@ -5428,7 +5428,7 @@ code:
 
 fx({
 id:'page-fold', cat:'3d', title:'Turning Page',
-desc:'A page hinged on its spine with <code>transform-origin</code> at the left edge, its reverse pre-rotated so the back reads correctly mid-turn. The shadow gradient deepening through the turn is what gives it weight.',
+desc:'A page hinged at the spine turning over, with the shadow deepening through the turn to give it weight. Suits a portfolio or a lookbook.',
 dur:'1.1s', ease:[.65,0,.35,1], trigger:'click', tags:['transform-origin','backface'],
 code:
 `<style>
@@ -5496,7 +5496,7 @@ code:
 
 fx({
 id:'room-box', cat:'3d', title:'Room Interior',
-desc:'Five faces turned inward to make a box you look into rather than at. Moving <code>perspective-origin</code> with the pointer shifts the vanishing point, so the camera appears to lean around the room.',
+desc:'A box you look into rather than at, with the view leaning as you move the pointer. Useful for interiors, showrooms or anything with a sense of place.',
 dur:'follows pointer', ease:[.22,1,.36,1], trigger:'pointermove', tags:['perspective-origin','inward faces'],
 code:
 `<style>
@@ -5904,7 +5904,7 @@ code:
 
 fx({
 id:'path-draw', cat:'bg', title:'Self-Drawing Line',
-desc:'A decorative route that draws on and then erases, by running one animation on <code>stroke-dashoffset</code> and a second on <code>stroke-dasharray</code>. Good behind a process section or a map.',
+desc:'A line draws itself across the section and then clears, like a route being traced. Works well behind a process, a journey or a map.',
 dur:'6s loop', ease:[.65,0,.35,1], trigger:'loop', tags:['stroke-dashoffset','SVG'],
 code:
 `<style>
@@ -7186,7 +7186,7 @@ pairing({
 
 fx({
 id:'fluid-type', cat:'type', title:'Fluid Type with clamp()', static:true,
-desc:'One <code>clamp()</code> replaces a stack of breakpoints: a floor, a viewport-relative middle, and a ceiling. Drag the width to watch it scale smoothly and then stop dead at both limits.',
+desc:'Text that scales smoothly with the screen, from a comfortable size on a phone up to a maximum on a desktop, with nothing jumping in between. Drag the width to watch it move and then stop dead at both limits.',
 meta:'clamp(min, fluid, max)', tags:['responsive','clamp'], h:true,
 code:
 `<style>
@@ -7316,7 +7316,7 @@ code:
 
 fx({
 id:'text-balance', cat:'type', title:'Balanced Headlines', static:true,
-desc:'<code>text-wrap: balance</code> lets the browser even out the lines of a heading so you never get one orphaned word on the last line. One property, and it removes a whole class of manual <code>&lt;br&gt;</code> fixes.',
+desc:'Headings even out their own lines, so you never get one stranded word sitting alone on the last line. One of those details nobody notices until it is missing.',
 meta:'text-wrap', tags:['typography','CSS only'], h:true,
 flag:'Chromium 114+ / FF 121+',
 code:
@@ -7407,7 +7407,7 @@ code:
 
 fx({
 id:'opentype-features', cat:'type', title:'OpenType Features', static:true,
-desc:'Features already sitting inside the font file, switched on with one property each. <code>tabular-nums</code> alone is worth knowing &mdash; it stops figures jittering in any table or counter that updates.',
+desc:'Refinements already built into the typeface, switched on. Figures that line up in columns, proper fractions, true small capitals &mdash; the typographic polish most sites leave sitting unused.',
 meta:'4 features', tags:['font-feature-settings','detail'], h:true,
 code:
 `<style>
@@ -7513,7 +7513,7 @@ code:
 
 fx({
 id:'auto-fit-grid', cat:'layout', title:'Responsive Grid, No Breakpoints', static:true,
-desc:'<code>repeat(auto-fit, minmax(180px, 1fr))</code> &mdash; the single most useful line in CSS layout. Cards reflow from four across to one with no media queries at all. Drag the width and watch the column count change itself.',
+desc:'Cards reflow from four across down to one as the screen narrows, working it out themselves at every width in between. Drag the width and watch the column count change on its own.',
 meta:'one line, no media queries', tags:['CSS grid','auto-fit'], h:true,
 code:
 `<style>
@@ -7567,7 +7567,7 @@ code:
 
 fx({
 id:'holy-grail', cat:'layout', title:'Holy Grail Layout', static:true,
-desc:'Header, footer, two sidebars and a fluid middle &mdash; the layout that took the industry a decade to solve and now takes four lines of <code>grid-template-areas</code>. The named areas make the structure readable at a glance.',
+desc:'Header, footer, two sidebars and a flexible middle &mdash; the page structure the industry took a decade to solve properly. Everything stays where it should at every screen size.',
 meta:'grid-template-areas', tags:['CSS grid','structure'],
 code:
 `<style>
@@ -7659,7 +7659,7 @@ code:
 
 fx({
 id:'sticky-sidebar', cat:'layout', title:'Sticky Sidebar',
-desc:'A sidebar that scrolls with the page until it reaches the top, then pins while the long column keeps moving. The catch nobody mentions: the parent must not have <code>overflow:hidden</code>, or sticky silently stops working.',
+desc:'A sidebar that scrolls with the page, then pins in place while the main column keeps moving. Keeps contact details or a booking form in view through a long read.',
 dur:'scroll-linked', ease:[0,0,1,1], trigger:'scroll position', tags:['position:sticky','grid'], scroll:true, h:true,
 code:
 `<style>
@@ -7701,7 +7701,7 @@ code:
 
 fx({
 id:'magazine-columns', cat:'layout', title:'Magazine Columns', static:true,
-desc:'<code>column-count</code> flows one block of text into newspaper columns, and <code>column-span</code> lets a heading break across all of them. Genuinely useful for long copy on wide screens, where a single column would run far past a comfortable measure.',
+desc:'Long copy flowed into newspaper columns, with a heading able to span the full width. Genuinely easier to read on a wide screen than one very long line of text.',
 meta:'CSS multi-column', tags:['columns','editorial'], h:true,
 code:
 `<style>
@@ -7818,7 +7818,7 @@ code:
 
 fx({
 id:'aspect-gallery', cat:'layout', title:'Aspect-Ratio Gallery', static:true,
-desc:'<code>aspect-ratio</code> reserves each tile&rsquo;s shape before anything loads, so the grid never jumps as images arrive. A feature tile spans two columns and two rows without disturbing the rest.',
+desc:'Every tile holds its shape before the images arrive, so the grid never jumps about as the page loads. A feature tile can take four times the space without disturbing the rest.',
 meta:'no layout shift', tags:['aspect-ratio','grid span'],
 code:
 `<style>
@@ -7859,7 +7859,7 @@ code:
 
 fx({
 id:'masonry-columns', cat:'layout', title:'Masonry Wall', static:true,
-desc:'Mixed-height tiles packed with no gaps, using <code>column-count</code>. The trade-off worth knowing: content flows top-to-bottom down each column rather than left-to-right, so reading order and visual order stop agreeing.',
+desc:'Mixed-height tiles packed together with no gaps between them. Ideal for photography, where the pictures are the point and reading order does not matter.',
 meta:'column-count masonry', tags:['columns','gallery'], h:true,
 code:
 `<style>
@@ -8138,7 +8138,7 @@ code:
 
 fx({
 id:'copy-feedback', cat:'ui', title:'Copy with Confirmation',
-desc:'The label swaps to a tick and reverts on a timer, so the click is acknowledged without a toast. Falls back to <code>execCommand</code> when the async clipboard is unavailable or the window is not focused &mdash; both of which happen more than you would expect.',
+desc:'The label swaps to a tick for a moment, so the click is acknowledged. Small, but without it people press twice and wonder whether anything happened.',
 dur:'220ms swap', ease:[.34,1.4,.64,1], trigger:'click', tags:['clipboard','fallback'],
 code:
 `<style>
@@ -8258,7 +8258,7 @@ code:
 
 fx({
 id:'dropzone', cat:'ui', title:'File Dropzone',
-desc:'The border and fill react the moment a file is dragged over. The awkward part is <code>dragleave</code> firing as the cursor crosses child elements, so this counts enter and leave events instead of trusting a single flag.',
+desc:'The panel reacts the instant a file is dragged over it, so it is obvious where to let go. Handles the awkward cases properly, which most drop areas do not.',
 dur:'260ms', ease:[.22,1,.36,1], trigger:'drag', tags:['drag and drop','counter'],
 code:
 `<style>
@@ -9267,7 +9267,7 @@ code:
 
 fx({
 id:'expand-detail', cat:'trans', title:'Expand in Place',
-desc:'A row opens into its own detail panel without navigating away, using the <code>grid-template-rows</code> trick so it works at any content height. Keeps the list visible, which matters when someone is comparing options.',
+desc:'A row opens into its own detail panel without leaving the list behind. Keeps everything else visible, which matters when someone is comparing options.',
 dur:'440ms', ease:[.22,1,.36,1], trigger:'click', tags:['grid-template-rows','accordion'],
 code:
 `<style>
@@ -9440,7 +9440,7 @@ code:
 
 fx({
 id:'neon-flicker', cat:'text', title:'Neon Sign',
-desc:'Stacked <code>text-shadow</code> layers at growing blur radii make the glow, and an irregular keyframe makes one letter struggle to light. Keep the flicker uneven &mdash; a regular pulse reads as a loading state, not a failing tube.',
+desc:'A glowing sign with one letter struggling to light. The flicker is deliberately irregular &mdash; a steady pulse reads as something loading rather than a failing tube.',
 dur:'4s loop', ease:[0,0,1,1], trigger:'loop', tags:['text-shadow','irregular keyframes'],
 code:
 `<style>
@@ -9607,7 +9607,7 @@ code:
 
 fx({
 id:'handwriting-draw', cat:'text', title:'Handwriting',
-desc:'A script word drawn as an SVG path and animated with <code>stroke-dashoffset</code>, so the line appears to be written rather than faded in. The path has to be a single continuous stroke or the pen visibly jumps.',
+desc:'A script word that appears to be written as you watch, rather than fading in. Personal in a way a static logo is not.',
 dur:'2.2s', ease:[.45,0,.35,1], trigger:'click', tags:['stroke-dashoffset','SVG path'],
 code:
 `<style>
@@ -9841,7 +9841,7 @@ code:
 
 fx({
 id:'strike-price', cat:'text', title:'Strikethrough Reveal',
-desc:'A rule draws across the old price while the new one drops in beside it. Animating the line rather than toggling <code>text-decoration</code> is what lets you control the timing and direction.',
+desc:'A line draws across the old price while the new one drops in beside it. The timing is yours to control, so the saving lands rather than merely appearing.',
 dur:'520ms', ease:[.65,0,.35,1], trigger:'on enter', tags:['scaleX','sequence'], scroll:true,
 code:
 `<style>
@@ -9943,7 +9943,7 @@ code:
 
 fx({
 id:'stretch-letters', cat:'text', title:'Stretch on Hover',
-desc:'The hovered letter widens and its neighbors compress to make room, so the word keeps its overall length. Uses <code>scaleX</code> rather than letter-spacing, which would push everything sideways instead.',
+desc:'The letter under the cursor widens while its neighbours give way, so the word keeps its overall length. Playful on a logo or a short headline.',
 dur:'420ms', ease:[.34,1.4,.64,1], trigger:'hover', tags:['scaleX','neighbor falloff'],
 code:
 `<style>
@@ -10434,7 +10434,7 @@ code:
 
 fx({
 id:'expand-search', cat:'hover', title:'Expanding Search',
-desc:'An icon that widens into a field on focus and collapses again when empty. Animate <code>width</code> here rather than transform, because the field genuinely needs to occupy the space to be typed into.',
+desc:'A search icon that widens into a full field when you click it, and tucks away again when empty. Keeps a header uncluttered without hiding the search.',
 dur:'420ms', ease:[.65,0,.35,1], trigger:'focus', tags:['width','focus-within'],
 code:
 `<style>
@@ -10760,7 +10760,7 @@ code:
 
 fx({
 id:'iris-reveal', cat:'trans', title:'Iris Reveal',
-desc:'A circular aperture opening from the center, like a camera shutter. <code>clip-path: circle()</code> animates cleanly because the browser interpolates the radius directly &mdash; no masking layers required.',
+desc:'A circular aperture opening from the centre, like a camera shutter. A clean, confident way to introduce an image.',
 dur:'760ms', ease:[.65,0,.35,1], trigger:'click', tags:['clip-path','circle()'],
 code:
 `<style>
@@ -11147,7 +11147,7 @@ code:
 
 fx({
 id:'box-open', cat:'3d', title:'Opening Box',
-desc:'A lid hinged on its back edge, swinging up to show the inside. <code>transform-origin</code> on the hinge plus a matching depth on the walls is all a real box needs.',
+desc:'A lid hinged at the back swinging up to show what is inside. Suits packaging, a product reveal or an offer.',
 dur:'900ms', ease:[.34,1.4,.64,1], trigger:'click', tags:['transform-origin','preserve-3d'],
 code:
 `<style>
@@ -11251,7 +11251,7 @@ code:
 
 fx({
 id:'prism-rotate', cat:'3d', title:'Triangular Prism',
-desc:'Three faces at 120&deg; to each other, each pushed out by the inradius of the triangle. Get that distance wrong and the edges either gap or overlap &mdash; it is <code>width / (2&radic;3)</code>.',
+desc:'A three-sided prism that rotates to bring each face forward in turn. Three messages carried by one object.',
 dur:'12s loop', ease:[0,0,1,1], trigger:'loop', tags:['preserve-3d','trigonometry'],
 code:
 `<style>
@@ -11288,7 +11288,7 @@ code:
 
 fx({
 id:'door-open', cat:'3d', title:'Double Doors',
-desc:'Two panels hinged on their outer edges swinging apart to reveal what is behind. Mirror the <code>transform-origin</code> and the rotation sign, and the pair moves symmetrically for free.',
+desc:'Two panels swinging apart to reveal what is behind them. Lends a sense of occasion to a launch or an entrance.',
 dur:'820ms', ease:[.65,0,.35,1], trigger:'click', tags:['transform-origin','mirrored pair'],
 code:
 `<style>
@@ -11600,7 +11600,7 @@ code:
 
 fx({
 id:'dense-packing', cat:'layout', title:'Dense Auto-Packing', static:true,
-desc:'<code>grid-auto-flow: dense</code> lets the browser backfill gaps left by wide items, so a mixed-size gallery packs solid. The cost is that visual order stops matching DOM order &mdash; fine for images, wrong for anything read in sequence.',
+desc:'Wide and narrow items packed together so no gaps are left behind. Right for a photo wall; wrong for anything meant to be read in sequence, because the eye no longer follows a fixed order.',
 meta:'grid-auto-flow: dense', tags:['CSS grid','packing'],
 code:
 `<style>
@@ -11635,7 +11635,7 @@ code:
 
 fx({
 id:'sticky-table-head', cat:'layout', title:'Sticky Table Header',
-desc:'Column headings that pin while the rows scroll under them. <code>position:sticky</code> on <code>&lt;th&gt;</code> rather than <code>&lt;thead&gt;</code> is the part that trips people up &mdash; the row element cannot stick on its own in most browsers.',
+desc:'Column headings stay in view while the rows scroll underneath them. Essential for any price list or specification table longer than a screen.',
 dur:'scroll-linked', ease:[0,0,1,1], trigger:'scroll position', tags:['position:sticky','tables'], scroll:true, h:true,
 code:
 `<style>
@@ -11676,7 +11676,7 @@ code:
 
 fx({
 id:'centered-max-width', cat:'layout', title:'The Modern Center', static:true,
-desc:'Centring a column used to need a wrapper, auto margins and a padding hack. Now it is one grid line: <code>min(100% - 2rem, 60ch)</code> handles the gutter and the cap together, and the value is readable at a glance.',
+desc:'A column that stays centred and readable at every width, with sensible margins on a phone. Unremarkable to look at, and the foundation of every page that feels comfortable to read.',
 meta:'min() + justify-content', tags:['min()','no wrapper'], h:true,
 code:
 `<style>
@@ -11706,7 +11706,7 @@ code:
 
 fx({
 id:'flex-sidebar-collapse', cat:'layout', title:'Self-Collapsing Sidebar', static:true,
-desc:'A sidebar and main column that wrap to a stack on their own, with no media query. The <code>flex-basis</code> on the main column decides the breakpoint &mdash; the layout responds to its own available space rather than the viewport.',
+desc:'A sidebar and main column that stack on their own once there is no longer room side by side. Responds to the space it actually has rather than to a fixed screen size.',
 meta:'flex-wrap, no queries', tags:['flexbox','intrinsic'], h:true,
 code:
 `<style>
@@ -11762,7 +11762,7 @@ code:
 
 fx({
 id:'stacked-hero-layers', cat:'layout', title:'Stacked Hero', static:true,
-desc:'Background, image and copy all placed in the same grid cell with <code>grid-area: 1/1</code>, layered by source order. Cleaner than absolute positioning because the grid still sizes itself to the tallest child.',
+desc:'Background, image and words layered in the same space, sizing themselves to whichever is tallest. The dependable way to build a hero that never clips its own text.',
 meta:'grid-area: 1 / 1', tags:['CSS grid','stacking'],
 code:
 `<style>
@@ -11805,7 +11805,7 @@ code:
 
 fx({
 id:'ratio-split-panels', cat:'layout', title:'Golden Split Panels', static:true,
-desc:'Two panels in a fixed ratio that holds at any width, using <code>fr</code> units rather than percentages. Percentages fight with gaps; fractions divide what is left after the gap, which is almost always what you meant.',
+desc:'Two panels holding a fixed proportion at any width. The ratio stays true as the screen changes, which percentages alone will not manage once there is a gap between them.',
 meta:'1.618fr / 1fr', tags:['fr units','ratio'],
 code:
 `<style>
@@ -11848,7 +11848,7 @@ code:
 
 fx({
 id:'gap-only-dividers', cat:'layout', title:'Dividers Without Extra Markup', static:true,
-desc:'Rules between items drawn by the grid gap itself: color the container, leave the gap, and let the background show through. No <code>:last-child</code> border resets, and it stays correct when items wrap.',
+desc:'Clean rules between items that stay correct when the list wraps or changes length. No stray line left hanging at the end, ever.',
 meta:'gap as a rule', tags:['CSS grid','no pseudo-elements'],
 code:
 `<style>
@@ -12520,7 +12520,7 @@ code:
 
 fx({
 id:'exit-fade', cat:'scroll', title:'Fade Out on Exit',
-desc:'Most reveal scripts only handle entry, so content pops out of existence at the top of the screen. This animates both directions by not unobserving, and by keying the state off <code>boundingClientRect.top</code>.',
+desc:'Content fades as it leaves the top of the screen, not only as it arrives. Most sites animate the way in and nothing else, so things pop out of existence &mdash; this handles both directions.',
 dur:'620ms', ease:[.22,1,.36,1], trigger:'enter and leave', tags:['IntersectionObserver','two-way'], scroll:true, h:true,
 code:
 `<style>
@@ -12579,7 +12579,7 @@ code:
 
 fx({
 id:'scroll-snap-sections', cat:'scroll', title:'Full-Height Snap Sections',
-desc:'Each section fills the viewport and the scroller settles onto one at a time. Use <code>proximity</code> rather than <code>mandatory</code> if any section might exceed the screen height, or short viewports get trapped.',
+desc:'Each section fills the screen and the page settles onto one at a time. Strong for a short, punchy site where every section is a single statement.',
 dur:'browser-native', ease:[.22,1,.36,1], trigger:'scroll / swipe', tags:['scroll-snap','CSS only'], scroll:true, h:true,
 code:
 `<style>
@@ -12680,7 +12680,7 @@ code:
 
 fx({
 id:'sequence-scrub', cat:'scroll', title:'Scroll-Scrubbed Sequence',
-desc:'Scroll position mapped to a frame number and drawn on canvas &mdash; the product-turntable pattern. Here the frames are generated live; a real build preloads an image sequence and swaps <code>drawImage</code> in, which is the only part that changes.',
+desc:'Scrolling turns a product frame by frame, like a turntable you control. The most convincing way to show something physical short of putting it in someone&rsquo;s hands.',
 dur:'scroll-linked', ease:[0,0,1,1], trigger:'scroll position', tags:['canvas','frame mapping'], scroll:true, h:true,
 code:
 `<style>
@@ -12811,7 +12811,7 @@ code:
 
 fx({
 id:'defocus-on-scroll', cat:'scroll', title:'Blur In, Blur Out',
-desc:'Sharpens on entry and blurs back out on exit, using the same two-way IntersectionObserver pattern as Fade Out on Exit but on <code>filter:blur()</code> instead of opacity.',
+desc:'Content sharpens as it arrives and softens again as it leaves, in both directions. A gentler alternative to fading.',
 dur:'620ms', ease:[.22,1,.36,1], trigger:'enter and leave', tags:['filter:blur','two-way'], scroll:true, h:true,
 code:
 `<style>
@@ -12922,7 +12922,7 @@ code:
 
 fx({
 id:'path-follow-scroll', cat:'scroll', title:'Dot Follows an SVG Path',
-desc:'A marker moves along a hand-drawn route as you scroll, positioned each frame with <code>getPointAtLength</code> rather than pre-baked keyframes.',
+desc:'A marker travels along a drawn route as you scroll. Good for a journey, a process, or a map of the areas you cover.',
 dur:'scroll-linked', ease:[0,0,1,1], trigger:'scroll position', tags:['getPointAtLength','SVG'], scroll:true, h:true,
 code:
 `<style>
@@ -13745,7 +13745,7 @@ code:
 
 fx({
 id:'desaturate-reveal-scroll', cat:'scroll', title:'Colour Reveal from Greyscale',
-desc:'A panel starts fully desaturated and blooms into colour as it enters, animating <code>filter:grayscale()</code> rather than opacity so the reveal reads as the colour switching on.',
+desc:'A panel starts in black and white and blooms into colour as it arrives. It reads as the colour switching on, which is more striking than a plain fade.',
 dur:'800ms', ease:[.22,1,.36,1], trigger:'on enter', tags:['filter:grayscale','IntersectionObserver'], scroll:true,
 code:
 `<style>
@@ -14018,7 +14018,7 @@ code:
 
 fx({
 id:'underline-draw-svg', cat:'hover', title:'SVG Underline Draw',
-desc:'A hand-drawn squiggle beneath a link draws itself in on hover using <code>stroke-dashoffset</code>, distinct from the CSS-only Underline Wipe in both mechanism and shape.',
+desc:'A hand-drawn squiggle that draws itself under a link on hover. Looser and more human than a straight rule.',
 dur:'420ms', ease:[.4,0,.2,1], trigger:'hover', tags:['SVG','stroke-dashoffset'],
 code:
 `<style>
@@ -14624,7 +14624,7 @@ code:
 
 fx({
 id:'swap-avatar-ring', cat:'trans', title:'Avatar Ring Swap',
-desc:'A coloured ring around an avatar redraws itself when the status changes, animating <code>stroke-dashoffset</code> rather than swapping a static border colour.',
+desc:'The ring around a profile picture redraws itself when the status changes. Shows that something has updated, rather than silently swapping colour.',
 dur:'420ms', ease:[.65,0,.35,1], trigger:'click', tags:['stroke-dashoffset','status ring'],
 code:
 `<style>
@@ -14710,7 +14710,7 @@ code:
 
 fx({
 id:'radio-check-morph', cat:'trans', title:'Radio to Checkmark Morph',
-desc:'Selecting an option draws a checkmark inside the radio dot with <code>stroke-dashoffset</code> rather than simply swapping to a filled circle.',
+desc:'Choosing an option draws a tick inside the dot rather than just filling it in. Makes a selection feel properly acknowledged.',
 dur:'320ms', ease:[.65,0,.35,1], trigger:'click', tags:['stroke-dashoffset','form control'],
 code:
 `<style>
@@ -15075,7 +15075,7 @@ code:
 
 fx({
 id:'checkbox-check-draw', cat:'trans', title:'Checkbox Tick Draw',
-desc:'A custom checkbox draws its tick with <code>stroke-dashoffset</code> on check, and un-draws it in reverse on uncheck, rather than toggling a solid fill.',
+desc:'The tick draws itself on when checked, and un-draws in reverse when unchecked. A small piece of craft on a form people have to fill in anyway.',
 dur:'260ms', ease:[.65,0,.35,1], trigger:'click', tags:['stroke-dashoffset','form control'],
 code:
 `<style>
@@ -18350,7 +18350,7 @@ code:
 
 fx({
 id:'sidebar-two-level-nav', cat:'layout', title:'Two-Level Sidebar Navigation', static:true,
-desc:'A sidebar with collapsible sub-sections built purely from nested lists and native <code>&lt;details&gt;</code>, needing no JavaScript to expand a group.',
+desc:'A sidebar with sections that fold open and closed. Built on the browser&rsquo;s own expanding panels, so it stays fast and keeps working whatever else is going on.',
 meta:'details/summary, nested lists', tags:['navigation','no JS'], h:true,
 code:
 `<style>
@@ -18382,7 +18382,7 @@ code:
 
 fx({
 id:'timeline-alternating-sides', cat:'layout', title:'Alternating-Side Timeline', static:true,
-desc:'Entries fall on alternating sides of a centre rail using only <code>nth-child</code> selectors, the layout structure behind many company-history pages.',
+desc:'Entries falling either side of a centre line. The layout behind most company-history and process pages.',
 meta:'nth-child, centre rail', tags:['timeline','CSS grid'], h:true,
 code:
 `<style>
@@ -18500,7 +18500,7 @@ code:
 
 fx({
 id:'testimonial-grid-varied', cat:'layout', title:'Varied-Height Testimonial Grid', static:true,
-desc:'Quotes of different lengths sit in a masonry-style grid using <code>column-count</code>, so a short quote and a long one never force each other into an awkward equal height.',
+desc:'Quotes of different lengths sit naturally together, so a short review and a long one never stretch each other to match. Looks composed rather than boxed in.',
 meta:'CSS columns', tags:['masonry','testimonials'], h:true,
 code:
 `<style>
@@ -18690,7 +18690,7 @@ code:
 
 fx({
 id:'form-two-column-fields', cat:'layout', title:'Two-Column Form Fields', static:true,
-desc:'Related short fields pair up side by side while long ones span the full width, using <code>grid-column:span 2</code> to opt individual fields out of the pairing.',
+desc:'Short related fields pair up side by side while longer ones run the full width. Makes a long form look like less work, which is the difference between a form filled in and a form abandoned.',
 meta:'CSS grid, selective span', tags:['forms','CSS grid'], h:true,
 code:
 `<style>
