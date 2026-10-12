@@ -330,13 +330,13 @@
   "use strict";
 
   /* ------------------------------------------------------------------
-     Where "Notify Me" signups are sent. Empty by default, and while it's
-     empty the signup box stays HIDDEN rather than collecting addresses
-     that go nowhere — a form that promises to notify someone and then
-     discards their email is worse than not offering one. Paste a
-     Formspree form URL in and the box appears by itself.
+     Where "Notify Me" signups are sent — the same Formspree form the main
+     site uses. Emptying it again is a supported state: the signup box then
+     stays HIDDEN rather than collecting addresses that go nowhere, because
+     a form that promises to notify someone and then discards their email is
+     worse than not offering one.
      ------------------------------------------------------------------ */
-  const NOTIFY_ENDPOINT = ""; // e.g. "https://formspree.io/f/abcdwxyz"
+  const NOTIFY_ENDPOINT = "https://formspree.io/f/xppqjblz";
 
   document.getElementById("year").textContent = new Date().getFullYear();
 

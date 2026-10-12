@@ -28,13 +28,27 @@ API, which browsers only expose over HTTPS or on `localhost`.
 
 ## Configuration
 
-Two form endpoints are intentionally left empty. Until each is set, the
-feature degrades safely rather than silently discarding anyone's details:
+All three forms post to one Formspree form, `xppqjblz`. They are told apart
+in the inbox by the `_subject` each one sends:
 
-| Setting | Location | Effect while empty |
+| Setting | Location | Subject line it sends |
 | --- | --- | --- |
-| `REWARD_ENDPOINT` | `js/main.js` | The ring-game reward still unlocks, but the email isn't recorded anywhere (logs a console warning) |
-| `NOTIFY_ENDPOINT` | `coming-soon.html` | The "Notify Me" signup box stays hidden entirely, so no address is collected and dropped |
+| `CONTACT_ENDPOINT` | `js/main.js` | New enquiry from orbitstudio |
+| `REWARD_ENDPOINT` | `js/main.js` | Reward claimed on orbitstudio (6RINGS) |
+| `NOTIFY_ENDPOINT` | `coming-soon.html` | (Formspree default) |
+
+Emptying any of them again is a supported state, and each degrades in the way
+that suits what it promises rather than silently discarding someone's details:
+
+| Setting | Effect while empty |
+| --- | --- |
+| `REWARD_ENDPOINT` | The reward still unlocks — it was earned by clearing the game — but the email is not recorded (logs a console warning) |
+| `NOTIFY_ENDPOINT` | The "Notify Me" box stays hidden entirely, since its only promise is future contact |
+
+The contact form never reports success it has not had. A failed send keeps the
+typed message in the form and offers the email address and phone number
+instead, because an enquiry that fails silently is worse than one that fails
+visibly: the sender walks away believing they reached us.
 
 `MAIL_TO` in `the-vault.html` is the address a visitor's shortlist is addressed to.
 It needs no service: "Email my list" builds a `mailto:` link and hands it to the
@@ -42,8 +56,6 @@ visitor's own mail app, which also means nothing is sent without them pressing
 send. Mail clients cap mailto URLs near 2 KB, so long shortlists drop to
 reference numbers only, then to a clipboard copy.
 
-The contact form in `index.html` currently simulates submission and does not
-send anywhere — wire it to a form service before relying on it for enquiries.
 
 ## The Vault
 

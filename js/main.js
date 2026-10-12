@@ -355,13 +355,13 @@
      a reward, but not what it is; the discount amount and code stay hidden
      until an email is submitted.
 
-     REWARD_ENDPOINT is where captured emails get sent. It is intentionally
-     empty by default, and while it's empty the reward still unlocks exactly
-     as normal — the address just isn't recorded anywhere. Paste a Formspree
-     form URL in to start actually collecting them. See the note in the
-     handler for why a send failure never blocks the reveal.
+     REWARD_ENDPOINT is where captured emails get sent — the same Formspree
+     form the contact section posts to, told apart in the inbox by _subject.
+     Emptying it again is a supported state: the reward still unlocks exactly
+     as normal, the address just goes nowhere. See the note in the handler
+     for why a send failure never blocks the reveal.
      ====================================================================== */
-  const REWARD_ENDPOINT = ""; // e.g. "https://formspree.io/f/abcdwxyz"
+  const REWARD_ENDPOINT = "https://formspree.io/f/xppqjblz";
   const REWARD_CLAIMED_KEY = "orbit-reward-claimed";
 
   function rewardAlreadyClaimed() {
@@ -401,7 +401,11 @@
           await fetch(REWARD_ENDPOINT, {
             method: "POST",
             headers: { "Content-Type": "application/json", Accept: "application/json" },
-            body: JSON.stringify({ email, source: "Entrance ring game — 6RINGS reward" }),
+            body: JSON.stringify({
+              email,
+              source: "Entrance ring game — 6RINGS reward",
+              _subject: "Reward claimed on orbitstudio (6RINGS)",
+            }),
           });
         } catch (err) {
           // Non-blocking on purpose: they earned the reward by clearing the
@@ -912,8 +916,12 @@
   }
 
   /* ======================================================================
-     Contact form (client-side only)
+     Contact form
      ====================================================================== */
+  // same Formspree form as the entrance reward capture; the _subject field
+  // on each send is what separates them in the inbox
+  const CONTACT_ENDPOINT = "https://formspree.io/f/xppqjblz";
+
   const form = document.getElementById("contact-form");
   if (form) {
     const successEl = document.getElementById("contact-success");
@@ -943,7 +951,7 @@
       field.addEventListener("blur", () => validateField(field));
     });
 
-    form.addEventListener("submit", (e) => {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const fields = [document.getElementById("f-name"), document.getElementById("f-email"), document.getElementById("f-message")];
       const results = fields.map(validateField);
@@ -955,13 +963,35 @@
 
       submitBtn.classList.add("is-loading");
       submitBtn.disabled = true;
+      successEl.classList.remove("is-error");
+      successEl.textContent = "";
 
-      setTimeout(() => {
-        submitBtn.classList.remove("is-loading");
-        submitBtn.disabled = false;
+      /* Nothing here claims success until the send is confirmed. An enquiry
+         that silently fails is worse than one that visibly fails, because the
+         sender walks away believing they have reached us. On a failure the
+         message they typed is left in the form and they are given the email
+         address, so the attempt is never wasted. */
+      try {
+        const data = new FormData(form);
+        data.append("_subject", "New enquiry from orbitstudio");
+        const res = await fetch(CONTACT_ENDPOINT, {
+          method: "POST",
+          headers: { Accept: "application/json" },
+          body: data,
+        });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+
         successEl.textContent = "Thanks — your message is in! We'll reply within one business day.";
         form.reset();
-      }, 1000);
+      } catch (err) {
+        console.warn("[orbit] Contact form failed to send:", err);
+        successEl.classList.add("is-error");
+        successEl.textContent =
+          "That didn't send — please email mikeyounie@hotmail.com or call (604) 316-8878 and we'll pick it up from there.";
+      } finally {
+        submitBtn.classList.remove("is-loading");
+        submitBtn.disabled = false;
+      }
     });
   }
 
